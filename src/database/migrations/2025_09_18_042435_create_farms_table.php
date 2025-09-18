@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('street_name', 50);
             $table->string('suburb', 50);
             $table->foreignId('state_id')->constrained();
-            $table->char('postcord', 4);
+            $table->char('postcode', 4);
             $table->text('description')->nullable();
             $table->foreignId('created_user_id')->constrained('users');
             $table->timestamps();

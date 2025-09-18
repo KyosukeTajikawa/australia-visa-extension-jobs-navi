@@ -18,7 +18,7 @@ return new class extends Migration
             $table->date('start_date');
             $table->date('end_date')->nullable();
             $table->tinyInteger('work_rating')->unsigned(); //1~5で評価
-            $table->tinyInteger('sarary_rating')->unsigned(); //1~5で評価
+            $table->tinyInteger('salary_rating')->unsigned(); //1~5で評価
             $table->tinyInteger('hour_rating')->unsigned(); //1~5で評価
             $table->tinyInteger('relation_rating')->unsigned(); //1~5で評価
             $table->tinyInteger('overall_rating')->unsigned(); //1~5で評価

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->timestamp('created_at')->useCurrent();
             // 複合主キー
             $table->primary(['user_id', 'review_id']);
+        });
     }
 
     /**

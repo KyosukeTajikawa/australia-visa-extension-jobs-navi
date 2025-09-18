@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use app\Models\Farm;
+use App\Models\Farm;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 

@@ -25,6 +25,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/home', [FarmController::class, 'index'])->name('shop.index');
+//ホーム画面
+Route::get('/home', [FarmController::class, 'index'])->name('index');
+
+//ファーム
+Route::get('/farm/{id}', [FarmController::class, 'detail'])->name('farm.detail');
 
 require __DIR__.'/auth.php';

@@ -16,4 +16,15 @@ class FarmController extends Controller
             'farms' => $farms,
         ]);
     }
+
+    public function detail($id)
+    {
+        $farm = Farm::with('review', 'state')->find($id);
+
+        // dd($farm);
+
+        return Inertia::render('Farm/Detail', [
+            'farm' => $farm,
+        ]);
+    }
 }

@@ -26,6 +26,7 @@ return new class extends Migration
             $table->tinyInteger('pay_type')->unsigned(); //1=hourly,2=pieerate
             $table->tinyInteger('is_car_required')->unsigned(); //1=必要,2=不要
             $table->foreignId('user_id')->constrained();
+            $table->foreignId('farm_id')->constrained();
             $table->timestamps();
         });
     }

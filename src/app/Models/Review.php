@@ -24,11 +24,17 @@ class Review extends Model
         'pay_type',
         'is_car_required',
         'user_id',
+        'farm_id',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function farm()
+    {
+        return $this->belongsTo(Farm::class);
     }
 
     public function favoritedBy()

@@ -20,11 +20,11 @@ Route::middleware(['auth'])->group(function () {
     //     ->name('dashboard');
 });
 
-<<<<<<< HEAD
+
 //ファーム
 Route::get('/farm/{id}', [FarmController::class, 'detail'])->name('farm.detail');
-=======
-Route::get('/home', [FarmController::class, 'index'])->name('shop.index');
->>>>>>> 4f7bbab (controller route 作成)
+
+//ホーム画面
+Route::get('/home', [FarmController::class, 'index'])->name('index');
 
 require __DIR__.'/auth.php';

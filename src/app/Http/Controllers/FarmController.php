@@ -33,5 +33,4 @@ class FarmController extends Controller
             'farm' => $farm,
         ]);
     }
-
 }

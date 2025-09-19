@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('farms', function (Blueprint $table) {
             $table->id();
             $table->string('name', 50);
-            $table->string('street_number', 50);
-            $table->string('street_name', 50);
+            $table->string('street_address', 100);
             $table->string('suburb', 50);
             $table->foreignId('state_id')->constrained();
             $table->char('postcode', 4);

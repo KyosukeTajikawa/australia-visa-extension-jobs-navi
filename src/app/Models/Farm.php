@@ -12,8 +12,7 @@ class Farm extends Model
 
     protected $fillable = [
         'name',
-        'street_number',
-        'street_name',
+        'street_address',
         'suburb',
         'postcode',
         'description',
@@ -29,6 +28,10 @@ class Farm extends Model
     public function state()
     {
         return $this->belongsTo(State::class);
+    }
+    public function review()
+    {
+        return $this->hasMany(Review::class);
     }
 
     public function crop()

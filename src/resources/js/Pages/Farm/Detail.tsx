@@ -6,7 +6,6 @@ import { StarIcon } from '@chakra-ui/icons';
 const Detail = ({ farm }) => {
     return (
         <Box m={4}>
-            {/* ファーム */}
             <Box mb={4}>
                 <Heading as={"h2"} fontSize={{ base: "24px", md: "30px", lg: "40px" }}>{farm.name}</Heading>
             </Box>

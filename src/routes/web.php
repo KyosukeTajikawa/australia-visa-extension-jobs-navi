@@ -20,4 +20,6 @@ Route::middleware(['auth'])->group(function () {
         ->name('dashboard');
 });
 
+Route::get('/home', [FarmController::class, 'index'])->name('shop.index');
+
 require __DIR__.'/auth.php';

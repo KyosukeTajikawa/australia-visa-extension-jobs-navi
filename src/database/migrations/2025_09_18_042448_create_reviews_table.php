@@ -28,7 +28,6 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->comment('レビュー投稿者');
             $table->foreignId('farm_id')->constrained()->comment('レビューが紐づくファームID');
             $table->timestamp('created_at')->useCurrent();
-
         });
     }
 

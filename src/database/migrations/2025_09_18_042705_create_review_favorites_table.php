@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('review_favorites', function (Blueprint $table) {
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('review_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade')->comment('ユーザーID');
+            $table->foreignId('review_id')->constrained()->onDelete('cascade')->comment('レビューID');
 
             $table->primary(['user_id', 'review_id']);
 

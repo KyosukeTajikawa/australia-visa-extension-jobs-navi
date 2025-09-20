@@ -10,7 +10,7 @@ class FarmController extends Controller
 {
     public function index()
     {
-        $farms = Farm::with('review')->get();
+        $farms = Farm::get();
         // dd($farms);
         return Inertia::render('Home', [
             'farms' => $farms,

@@ -50,7 +50,11 @@ class User extends Authenticatable
         ];
     }
 
-    public function favoriteReviews()
+    /**
+     * 紐づくレビューを取得
+     * @ return belongsToMany
+     */
+    public function reviews()
     {
         return $this->belongsToMany(Review::class, 'review_favorites', 'user_id', 'review_id')->withTimestamps();
     }

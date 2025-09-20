@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('farm_images', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('farm_id')->constrained();
-            $table->string('url')->unique();
+            $table->foreignId('farm_id')->constrained()->comment('ファーム写真が紐づくファームID');
+            $table->string('url')->unique()->comment('画像パス');
             $table->timestamps();
         });
     }

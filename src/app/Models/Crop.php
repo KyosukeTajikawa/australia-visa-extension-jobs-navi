@@ -11,7 +11,11 @@ class Crop extends Model
         'name'
     ];
 
-    public function farm()
+    /**
+     * 紐づくファームを取得
+     * @ return belongsToMany
+     */
+    public function farms()
     {
         return $this->belongsToMany(Farm::class, 'farm_crops', 'crop_id', 'farm_id')->withTimestamps();
     }

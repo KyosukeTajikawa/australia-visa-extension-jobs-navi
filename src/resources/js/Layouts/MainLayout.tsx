@@ -5,17 +5,7 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon } from '@chakra-ui/icons';
 
-type Farm = {
-    id: number;
-    name: string;
-    description: string;
-};
-
-type Props = {
-    farms: Farm[]
-};
-
-const Home = ({ farms }) => {
+const MainLayout = ({ children }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     return (
         <Box m={2}>
@@ -57,30 +47,9 @@ const Home = ({ farms }) => {
                     </Drawer>
                 </Box>
             </Box>
-            {/* ファーム一覧 */}
-            <VStack spacing={4} align={"stretch"}>
-                {farms.map((farm) => (
-                    <Link key={farm.id} href={`/farm/${farm.id}`} _hover={{ color: "gray.500" }}>
-                        <Box p={4} border={"1px solid"} borderColor={"gray.300"} borderRadius={"md"} boxShadow={"md"}>
-                            <HStack>
-                                <Image src="https://placehold.co/100x100" boxSize={"100px"} objectFit={"cover"} alt={farm.name} />
-                                <VStack align={"stretch"}>
-                                    <Heading as={"h3"}>{farm.name}</Heading>
-                                    <Text>{farm.description}</Text>
-                                </VStack>
-                            </HStack>
-                        </Box>
-                    </Link>
-                ))}
-            </VStack>
-            {/* Footer */}
-            <Box>
-                <Box bg="green.500" color={"white"} fontWeight={"bold"} textAlign={"center"} py={{ base: 2, md: 3 }}>
-                    <Text fontSize={{ base: 13, md: 16 }}>&copy; 2025 ファーム攻略サイト</Text>
-                </Box>
-            </Box >
-        </Box >
+            <Box></Box>
+        </Box>
     );
 };
 
-export default Home;
+export default MainLayout;

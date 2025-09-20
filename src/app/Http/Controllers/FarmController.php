@@ -19,7 +19,7 @@ class FarmController extends Controller
 
     public function detail($id)
     {
-        $farm = Farm::with('review', 'state')->find($id);
+        $farm = Farm::with('reviews', 'state')->find($id);
 
         // dd($farm);
 

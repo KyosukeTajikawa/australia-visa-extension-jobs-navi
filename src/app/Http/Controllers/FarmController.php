@@ -15,7 +15,6 @@ class FarmController extends Controller
      */
     public function index(): Response
     {
-
         $farms = Farm::get();
 
         return Inertia::render('Home', [

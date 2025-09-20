@@ -21,6 +21,8 @@ class Farm extends Model
         'suburb',
         'state_id',
         'postcode',
+        'phone_number',
+        'email',
         'description',
         'created_user_id',
     ];
@@ -42,7 +44,12 @@ class Farm extends Model
     {
         return $this->belongsTo(State::class);
     }
-    public function review()
+
+    /**
+     * 紐づくレビューを取得
+     * @return hamMany
+     */
+    public function reviews()
     {
         return $this->hasMany(Review::class);
     }

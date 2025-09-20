@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\hasMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Farm extends Model
 {
@@ -22,6 +22,8 @@ class Farm extends Model
         'suburb',
         'state_id',
         'postcode',
+        'phone_number',
+        'email',
         'description',
         'created_user_id',
     ];

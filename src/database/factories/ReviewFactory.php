@@ -32,8 +32,6 @@ class ReviewFactory extends Factory
             'relation_rating' => fake()->numberBetween(1, 5),
             'overall_rating' => fake()->numberBetween(1, 5),
             'comment' => fake()->realText(100),
-            'pay_type' => fake()->numberBetween(1, 2),
-            'is_car_required' => fake()->numberBetween(1, 2),
             'user_id' => User::factory(),
             'farm_id' => Farm::factory(),
         ];

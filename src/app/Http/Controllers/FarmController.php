@@ -18,9 +18,6 @@ class FarmController extends Controller
         $farms = Farm::get();
         // dd($farms);
 
-        return Inertia::render('Home', [
-            'farms' => $farms,
-        ]);
     }
 
     public function detail($id)

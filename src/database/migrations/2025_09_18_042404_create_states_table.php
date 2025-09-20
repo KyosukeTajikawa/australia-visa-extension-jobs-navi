@@ -15,6 +15,7 @@ return new class extends Migration
     {
             $table->id();
             $table->string('name', 50)->unique()->comment('州名');
+            $table->timestamps();
         });
     }
     /**

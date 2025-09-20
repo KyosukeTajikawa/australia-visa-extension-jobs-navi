@@ -11,7 +11,11 @@ class FarmImages extends Model
         'url',
     ];
 
-    public function user()
+    /**
+     * 紐づくファームを取得
+     * return @belongsTo
+     */
+    public function farm()
     {
         return $this->belongsTo(User::class);
     }

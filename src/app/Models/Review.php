@@ -12,7 +12,7 @@ class Review extends Model
 
     protected $fillable = [
         'work_position',
-        'wage',
+        'hourly_wage',
         'start_date',
         'end_date',
         'work_rating',
@@ -27,17 +27,38 @@ class Review extends Model
         'farm_id',
     ];
 
+    /**
+     * 紐づくユーザーを取得
+     * @ return belongsTo
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * 紐づくファームを取得
+     * @ return belongsTo
+     */
     public function farm()
     {
         return $this->belongsTo(Farm::class);
     }
 
-    public function favoritedBy()
+    /**
+     * 紐づくレビューコメントを取得
+     * @ return hasMany
+     */
+    public function reviewComments()
+    {
+        return $this->hasMany(Farm::class);
+    }
+
+    /**
+     * 紐づくユーザーを取得
+     * @ return belongsToMany
+     */
+    public function users()
     {
         return $this->belongsToMany(User::class, 'review_favorites', 'review_id', 'user_id')->withTimestamps();
     }

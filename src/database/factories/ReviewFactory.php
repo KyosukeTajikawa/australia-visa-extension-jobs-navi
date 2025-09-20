@@ -20,7 +20,7 @@ class ReviewFactory extends Factory
     {
         return [
             'work_position' => fake()->realText(10),
-            'wage' => fake()->dayOfMonth(),
+            'hourly_wage' => fake()->dayOfMonth(),
             'start_date' => fake()->date(),
             'end_date' => fake()->date(),
             'work_rating' => fake()->numberBetween(1, 5),

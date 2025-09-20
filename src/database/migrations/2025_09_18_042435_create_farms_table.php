@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('farms', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 50);
-            $table->string('street_address', 100);
-            $table->string('suburb', 50);
-            $table->foreignId('state_id')->constrained();
-            $table->char('postcode', 4);
-            $table->text('description')->nullable();
-            $table->foreignId('created_user_id')->constrained('users');
+            $table->string('name', 50)->comment('ファーム名');
+            $table->string('street_address', 100)->comment('ストリート名');
+            $table->string('suburb', 50)->comment('サバーブ名');
+            $table->foreignId('state_id')->constrained()->comment('州名');
+            $table->char('postcode', 4)->comment('郵便番号');
+            $table->string('phone_number', 15)->unique()->nullable()->comment('電話番号');
+            $table->string('email', 50)->unique()->nullable()->comment('メールアドレス');
+            $table->text('description')->nullable()->comment('ファームの説明文');
+            $table->foreignId('created_user_id')->constrained('users')->comment('作成者');
             $table->timestamps();
             $table->softDeletes('deleted_at')->nullable();
         });

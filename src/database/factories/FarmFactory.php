@@ -19,15 +19,12 @@ class FarmFactory extends Factory
     {
         return [
             'name' => fake()->company(),
+            'phone_number' => fake()->unique()->phoneNumber(),
+            'email' => fake()->unique()->safeEmail(),
             'street_address' => fake()->streetAddress(),
             'suburb' => fake()->streetName(),
             'state_id' => fake()->numberBetween(1, 8),
             'postcode' => fake()->postcode2(),
-<<<<<<< HEAD
-            'phone_number' => fake()->unique()->phoneNumber(),
-            'email' => fake()->unique()->safeEmail(),
-=======
->>>>>>> 75a7975 (controller route 作成)
             'description' => fake()->realText(200),
             'created_user_id' => User::factory(),
         ];

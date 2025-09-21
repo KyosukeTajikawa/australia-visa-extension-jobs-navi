@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
             'gender' => 1,
             'birthday' => "1929-01-01",
-            'password' => 'password123', // ← これでもOK（自動でbcryptされる）
+            'password' => 'password123',
         ]);
     }
 }

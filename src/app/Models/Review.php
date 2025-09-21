@@ -16,6 +16,8 @@ class Review extends Model
     protected $fillable = [
         'work_position',
         'hourly_wage',
+        'pay_type',
+        'is_car_required',
         'start_date',
         'end_date',
         'work_rating',
@@ -24,8 +26,6 @@ class Review extends Model
         'relation_rating',
         'overall_rating',
         'comment',
-        'pay_type',
-        'is_car_required',
         'user_id',
         'farm_id',
     ];

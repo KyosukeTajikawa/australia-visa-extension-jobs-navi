@@ -15,13 +15,13 @@ class Farm extends Model
 
     protected $fillable = [
         'name',
-        'street_address',
-        'suburb',
-        'postcode',
         'phone_number',
         'email',
-        'description',
+        'street_address',
+        'suburb',
         'state_id',
+        'postcode',
+        'description',
         'created_user_id',
     ];
 

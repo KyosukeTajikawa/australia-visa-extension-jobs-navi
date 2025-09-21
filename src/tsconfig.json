@@ -14,12 +14,12 @@
         "lib": [
             "ES2020",
             "DOM"
-        ], // ★ 追加
+        ],
         "types": [
             "vite/client",
             "react",
             "react-dom"
-        ], // ★ 追加
+        ],
         "paths": {
             "@/*": [
                 "./resources/js/*"

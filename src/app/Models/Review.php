@@ -36,6 +36,7 @@ class Review extends Model
         return $this->belongsTo(User::class);
     }
 
+
     /**
      * 紐づくファームを取得
      * @ return belongsTo
@@ -44,6 +45,7 @@ class Review extends Model
     {
         return $this->belongsTo(Farm::class);
     }
+
 
     /**
      * 紐づくレビューコメントを取得

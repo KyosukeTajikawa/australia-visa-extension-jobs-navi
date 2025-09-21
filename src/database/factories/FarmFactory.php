@@ -23,8 +23,16 @@ class FarmFactory extends Factory
             'suburb' => fake()->streetName(),
             'state_id' => fake()->numberBetween(1, 8),
             'postcode' => fake()->postcode2(),
+<<<<<<< HEAD
             'phone_number' => fake()->unique()->phoneNumber(),
             'email' => fake()->unique()->safeEmail(),
+=======
+<<<<<<< HEAD
+            'phone_number' => fake()->unique()->phoneNumber(),
+            'email' => fake()->unique()->safeEmail(),
+=======
+>>>>>>> 75a7975 (controller route 作成)
+>>>>>>> origin/issue-5_migrationfile
             'description' => fake()->realText(200),
             'created_user_id' => User::factory(),
         ];

@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use app\Models\Crop;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\hasMany;
 
 class Farm extends Model
 {
@@ -26,7 +29,7 @@ class Farm extends Model
      * 紐づくユーザーを取得
      * @return belongsTo
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -35,7 +38,7 @@ class Farm extends Model
      * 紐づく州を取得
      * @return belongsTo
      */
-    public function state()
+    public function state(): BelongsTo
     {
         return $this->belongsTo(State::class);
     }
@@ -48,16 +51,16 @@ class Farm extends Model
      * 紐づくレビューを取得
      * @return hamMany
      */
-    public function reviews()
+    public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);
     }
 
     /**
-     * 紐づく作物を取得
+     * 紐づく作物を取得（中間テーブル）
      * @return belongsToMany
      */
-    public function crops()
+    public function crops(): BelongsToMany
     {
         return $this->belongsToMany(Crop::class, 'farm_crops', 'farm_id', 'crop_id')->withTimestamps();
     }

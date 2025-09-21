@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use app\Models\User;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Review extends Model
 {
@@ -29,43 +32,36 @@ class Review extends Model
 
     /**
      * 紐づくユーザーを取得
-     * @ return belongsTo
+     * @return belongsTo
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-<<<<<<< HEAD
     /**
      * 紐づくファームを取得
-     * @ return belongsTo
+     * @return belongsTo
      */
-=======
->>>>>>> 75a7975 (controller route 作成)
-    public function farm()
+    public function farm(): BelongsTo
     {
         return $this->belongsTo(Farm::class);
     }
 
-<<<<<<< HEAD
     /**
      * 紐づくレビューコメントを取得
-     * @ return hasMany
+     * @return hasMany
      */
-    public function reviewComments()
+    public function reviewComments(): HasMany
     {
         return $this->hasMany(Farm::class);
     }
 
     /**
      * 紐づくユーザーを取得
-     * @ return belongsToMany
+     * @return belongsToMany
      */
-    public function users()
-=======
-    public function favoritedBy()
->>>>>>> 75a7975 (controller route 作成)
+    public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'review_favorites', 'review_id', 'user_id')->withTimestamps();
     }

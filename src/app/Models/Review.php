@@ -36,15 +36,19 @@ class Review extends Model
         return $this->belongsTo(User::class);
     }
 
+<<<<<<< HEAD
     /**
      * 紐づくファームを取得
      * @ return belongsTo
      */
+=======
+>>>>>>> 75a7975 (controller route 作成)
     public function farm()
     {
         return $this->belongsTo(Farm::class);
     }
 
+<<<<<<< HEAD
     /**
      * 紐づくレビューコメントを取得
      * @ return hasMany
@@ -59,6 +63,9 @@ class Review extends Model
      * @ return belongsToMany
      */
     public function users()
+=======
+    public function favoritedBy()
+>>>>>>> 75a7975 (controller route 作成)
     {
         return $this->belongsToMany(User::class, 'review_favorites', 'review_id', 'user_id')->withTimestamps();
     }

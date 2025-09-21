@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('farms', function (Blueprint $table) {
             $table->id();
+<<<<<<< HEAD
             $table->string('name', 50)->comment('ファーム名');
             $table->string('street_address', 100)->comment('ストリート名');
             $table->string('suburb', 50)->comment('サバーブ名');
@@ -22,6 +23,15 @@ return new class extends Migration
             $table->string('email', 50)->unique()->nullable()->comment('メールアドレス');
             $table->text('description')->nullable()->comment('ファームの説明文');
             $table->foreignId('created_user_id')->constrained('users')->comment('作成者');
+=======
+            $table->string('name', 50);
+            $table->string('street_address', 100);
+            $table->string('suburb', 50);
+            $table->foreignId('state_id')->constrained();
+            $table->char('postcode', 4);
+            $table->text('description')->nullable();
+            $table->foreignId('created_user_id')->constrained('users');
+>>>>>>> 75a7975 (controller route 作成)
             $table->timestamps();
             $table->softDeletes('deleted_at')->nullable();
         });

@@ -39,6 +39,10 @@ class Farm extends Model
     {
         return $this->belongsTo(State::class);
     }
+    public function review()
+    {
+        return $this->hasMany(Review::class);
+    }
 
     /**
      * 紐づくレビューを取得

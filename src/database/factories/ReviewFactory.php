@@ -20,7 +20,11 @@ class ReviewFactory extends Factory
     {
         return [
             'work_position' => fake()->realText(10),
+<<<<<<< HEAD
             'hourly_wage' => fake()->dayOfMonth(),
+=======
+            'wage' => fake()->dayOfMonth(),
+>>>>>>> 75a7975 (controller route 作成)
             'start_date' => fake()->date(),
             'end_date' => fake()->date(),
             'work_rating' => fake()->numberBetween(1, 5),

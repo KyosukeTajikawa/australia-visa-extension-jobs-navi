@@ -34,7 +34,7 @@ class Review extends Model
      * 紐づくユーザーを取得
      * @return belongsTo
      */
-    public function user(): BelongsTo
+    public function reviewUser(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -61,7 +61,7 @@ class Review extends Model
      * 紐づくユーザーを取得
      * @return belongsToMany
      */
-    public function users(): BelongsToMany
+    public function favoritedUsers(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'review_favorites', 'review_id', 'user_id')->withTimestamps();
     }

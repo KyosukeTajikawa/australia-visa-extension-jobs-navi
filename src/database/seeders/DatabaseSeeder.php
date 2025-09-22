@@ -18,11 +18,11 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        $this->call(CropSeeder::class);
-        $this->call(StateSeeder::class);
+        // $this->call(CropSeeder::class);
+        // $this->call(StateSeeder::class);
 
         // Farm::factory(10)->create();
-        Review::factory(10)->create();
+        // Review::factory(10)->create();
 
         // $this->call(CropSeeder::class);
         // $this->call(StateSeeder::class);
@@ -30,12 +30,12 @@ class DatabaseSeeder extends Seeder
         // Farm::factory(10)->create();
         // Review::factory(10)->create();
 
-        // User::create([
-        //     'nickname' => 'テストユーザー',
-        //     'email' => 'test@example.com',
-        //     'gender' => 1,
-        //     'birthday' => "1929-01-01",
-        //     'password' => 'password123',
-        // ]);
+        User::create([
+            'nickname' => 'テストユーザー',
+            'email' => 'test@example.com',
+            'gender' => 1,
+            'birthday' => "1929-01-01",
+            'password' => 'password123',
+        ]);
     }
 }

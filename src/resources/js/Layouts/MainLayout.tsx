@@ -1,15 +1,20 @@
 import React from "react";
 import {
-    Box, Heading, VStack, HStack, Image, Text, Link, Input, Button, Menu, MenuButton, MenuList, MenuItem, IconButton, Drawer,
+    Box, Heading, VStack, HStack, Image, Text, Link, Input, Button, Menu, MenuButton, MenuList, MenuItem, IconButton, Drawer, rightIcon, DrawerHeader,
     DrawerBody, DrawerOverlay, DrawerContent, DrawerCloseButton, useDisclosure
 } from "@chakra-ui/react";
-import { HamburgerIcon } from '@chakra-ui/icons';
+import { HamburgerIcon, ChevronDownIcon } from '@chakra-ui/icons';
+import { Link as InertiaLink, usePage } from "@inertiajs/react"
 
-const MainLayout = ({ children }) => {
+type AuthUser = { id: number; name: string } | null;
+
+const MainLayout = ({ children, title }) => {
+    const { auth } = usePage().props as { auth: { user: AuthUser } };
     const { isOpen, onOpen, onClose } = useDisclosure()
     return (
         <Box m={2}>
             {/* ヘッダー */}
+            {auth.user ? <Text>{auth.user.name}</Text> : <Text>ログインなし</Text>}
             <Box bg={"green.500"} p={"4px"} mb={2} display={"flex"} justifyContent={"space-between"} alignItems={"center"}>
                 <Heading as={"h1"} color={"white"} fontSize={{ base: "24px", md: "30px", lg: "40px" }}>ファーム一覧</Heading>
                 {/* SPメニュー */}
@@ -47,7 +52,13 @@ const MainLayout = ({ children }) => {
                     </Drawer>
                 </Box>
             </Box>
-            <Box></Box>
+            <Box>{children}</Box>
+            {/* Footer */}
+            <Box>
+                <Box bg="green.500" color={"white"} fontWeight={"bold"} textAlign={"center"} py={{ base: 2, md: 3 }}>
+                    <Text fontSize={{ base: 13, md: 16 }}>&copy; 2025 ファーム攻略サイト</Text>
+                </Box>
+            </Box >
         </Box>
     );
 };

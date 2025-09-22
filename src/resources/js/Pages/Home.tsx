@@ -4,6 +4,7 @@ import {
     DrawerBody, DrawerOverlay, DrawerContent, DrawerCloseButton, useDisclosure
 } from "@chakra-ui/react";
 import { HamburgerIcon } from '@chakra-ui/icons';
+import MainLayout from "@/Layouts/MainLayout";
 
 
 type Farm = {
@@ -21,10 +22,10 @@ const Home = ({ farms }) => {
     return (
         <Box m={2}>
             {/* ヘッダー */}
-            <Box bg={"green.500"} p={"4px"} mb={2} display={"flex"} justifyContent={"space-between"} alignItems={"center"}>
-                <Heading as={"h1"} color={"white"} fontSize={{ base: "24px", md: "30px", lg: "40px" }}>ファーム一覧</Heading>
+            {/* <Box bg={"green.500"} p={"4px"} mb={2} display={"flex"} justifyContent={"space-between"} alignItems={"center"}>
+                <Heading as={"h1"} color={"white"} fontSize={{ base: "24px", md: "30px", lg: "40px" }}>ファーム一覧</Heading> */}
                 {/* SPメニュー */}
-                <Box display={{ base: "block", md: "none" }}>
+                {/* <Box display={{ base: "block", md: "none" }}>
                     <Menu>
                         <MenuButton as={IconButton} aria-label="Options" icon={<HamburgerIcon color={"white"} />} variant={"ghost"} _hover={{ bg: "green.300" }} _active={{ bg: "green.300" }} />
                         <MenuList>
@@ -32,9 +33,9 @@ const Home = ({ farms }) => {
                             <MenuItem>新規登録</MenuItem>
                         </MenuList>
                     </Menu>
-                </Box>
+                </Box> */}
                 {/* PCメニュー */}
-                <Box display={{ base: "none", md: "block" }}>
+                {/* <Box display={{ base: "none", md: "block" }}>
                     <Button colorScheme='teal' onClick={onOpen} bg={"green.500"} _hover={{ bg: "green.300" }}>
                         <HamburgerIcon />
                     </Button>
@@ -57,7 +58,7 @@ const Home = ({ farms }) => {
                         </DrawerContent>
                     </Drawer>
                 </Box>
-            </Box>
+            </Box> */}
             {/* ファーム一覧 */}
             <VStack spacing={4} align={"stretch"}>
                 {farms.map((farm) => (
@@ -75,13 +76,14 @@ const Home = ({ farms }) => {
                 ))}
             </VStack>
             {/* Footer */}
-            <Box>
+            {/* <Box>
                 <Box bg="green.500" color={"white"} fontWeight={"bold"} textAlign={"center"} py={{ base: 2, md: 3 }}>
                     <Text fontSize={{ base: 13, md: 16 }}>&copy; 2025 ファーム攻略サイト</Text>
                 </Box>
-            </Box >
+            </Box > */}
         </Box >
     );
 };
 
+Home.layout = page => <MainLayout children={page} title="ファーム情報サイト" />
 export default Home;

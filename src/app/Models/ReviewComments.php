@@ -14,7 +14,7 @@ class ReviewComments extends Model
     ];
 
     /**
-     * 紐づくユーザーを取得
+     * レビューコメントの投稿者を取得
      * @return belongsTo
      */
     public function user(): BelongsTo
@@ -23,7 +23,7 @@ class ReviewComments extends Model
     }
 
     /**
-     * 紐づくレビューを取得
+     * レビューコメントが紐づくレビューを取得
      * @return belongsTo
      */
     public function review(): belongsTo

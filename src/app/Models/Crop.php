@@ -13,7 +13,7 @@ class Crop extends Model
     ];
 
     /**
-     * 紐づくファームを取得(中間テーブル)
+     * 作物が扱われているファーム取得(中間テーブル)
      * @return belongsToMany
      */
     public function farms(): BelongsToMany

@@ -26,7 +26,7 @@ class Farm extends Model
     ];
 
     /**
-     * 紐づくユーザーを取得
+     * ファーム情報を登録したユーザーを取得
      * @return belongsTo
      */
     public function user(): BelongsTo
@@ -35,7 +35,7 @@ class Farm extends Model
     }
 
     /**
-     * 紐づく州を取得
+     * ファームの住所（州）を取得
      * @return belongsTo
      */
     public function state(): BelongsTo
@@ -48,7 +48,7 @@ class Farm extends Model
     }
 
     /**
-     * 紐づくレビューを取得
+     * ファームに対するレビューを取得
      * @return hamMany
      */
     public function reviews(): HasMany
@@ -57,7 +57,7 @@ class Farm extends Model
     }
 
     /**
-     * 紐づく作物を取得（中間テーブル）
+     * ファームで扱っている作物を取得(中間テーブル)
      * @return belongsToMany
      */
     public function crops(): BelongsToMany

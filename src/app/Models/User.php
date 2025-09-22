@@ -52,7 +52,7 @@ class User extends Authenticatable
     }
 
     /**
-     * 紐づくレビューを取得
+     * ユーザーがお気に入りしたレビューを取得（中間テーブル）
      * @return belongsToMany
      */
     public function reviews(): BelongsToMany

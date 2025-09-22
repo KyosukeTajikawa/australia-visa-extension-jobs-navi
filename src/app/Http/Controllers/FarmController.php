@@ -8,7 +8,11 @@ use Inertia\Inertia;
 
 class FarmController extends Controller
 {
-    public function index()
+    /**
+     * 農場の一覧ページを表示
+     * @return \Inertia\Response
+    */
+    public function index(): \Inertia\Response
     {
         $farms = Farm::get();
         // dd($farms);

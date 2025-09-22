@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ReviewComments extends Model
 {
@@ -13,19 +14,19 @@ class ReviewComments extends Model
     ];
 
     /**
-     * 紐づくユーザーを取得
-     * @ return belongsTo
+     * レビューコメントの投稿者を取得
+     * @return belongsTo
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
     /**
-     * 紐づくレビューを取得
-     * @ return belongsTo
+     * レビューコメントが紐づくレビューを取得
+     * @return belongsTo
      */
-    public function review()
+    public function review(): belongsTo
     {
         return $this->belongsTo(Review::class);
     }

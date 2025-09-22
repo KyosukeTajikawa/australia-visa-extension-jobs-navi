@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('farm_crops', function (Blueprint $table) {
-            $table->foreignId('farm_id')->constrained()->onDelete('cascade')->comment('ファームID');
-            $table->foreignId('crop_id')->constrained()->onDelete('cascade')->comment('作物ID');
-            // 複合主キー
-            $table->primary(['farm_id', 'crop_id']);
+        Schema::create('crops', function (Blueprint $table) {
+            $table->id();
+            $table->string('name', 50)->unique()->comment('作物名');
             $table->timestamps();
         });
     }
@@ -25,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('farm_crops');
+        Schema::dropIfExists('crops');
     }
 };

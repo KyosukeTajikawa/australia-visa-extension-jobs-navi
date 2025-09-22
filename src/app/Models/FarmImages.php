@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class FarmImages extends Model
 {
@@ -12,10 +13,10 @@ class FarmImages extends Model
     ];
 
     /**
-     * 紐づくファームを取得
+     * 画像が紐づくファームを取得
      * return @belongsTo
      */
-    public function farm()
+    public function farm(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

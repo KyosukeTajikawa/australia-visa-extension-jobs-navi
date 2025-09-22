@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use app\Models\Review;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -51,10 +52,10 @@ class User extends Authenticatable
     }
 
     /**
-     * 紐づくレビューを取得
-     * @ return belongsToMany
+     * ユーザーがお気に入りしたレビューを取得（中間テーブル）
+     * @return belongsToMany
      */
-    public function reviews()
+    public function reviews(): BelongsToMany
     {
         return $this->belongsToMany(Review::class, 'review_favorites', 'user_id', 'review_id')->withTimestamps();
     }

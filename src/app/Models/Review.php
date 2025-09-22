@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use app\Models\User;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Review extends Model
 {
@@ -13,6 +16,8 @@ class Review extends Model
     protected $fillable = [
         'work_position',
         'hourly_wage',
+        'pay_type',
+        'is_car_required',
         'start_date',
         'end_date',
         'work_rating',
@@ -21,46 +26,42 @@ class Review extends Model
         'relation_rating',
         'overall_rating',
         'comment',
-        'pay_type',
-        'is_car_required',
         'user_id',
         'farm_id',
     ];
 
     /**
-     * 紐づくユーザーを取得
-     * @ return belongsTo
+     * レビューしたユーザーを取得
+     * @return belongsTo
      */
-    public function user()
+    public function reviewUser(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-
     /**
-     * 紐づくファームを取得
-     * @ return belongsTo
+     * レビューが紐づくファームを取得
+     * @return belongsTo
      */
-    public function farm()
+    public function farm(): BelongsTo
     {
         return $this->belongsTo(Farm::class);
     }
 
-
     /**
-     * 紐づくレビューコメントを取得
-     * @ return hasMany
+     * レビューに紐づくレビューコメントを取得
+     * @return hasMany
      */
-    public function reviewComments()
+    public function reviewComments(): HasMany
     {
         return $this->hasMany(Farm::class);
     }
 
     /**
-     * 紐づくユーザーを取得
-     * @ return belongsToMany
+     * レビューをお気に入りしたユーザーを取得（中間テーブル）
+     * @return belongsToMany
      */
-    public function users()
+    public function favoritedUsers(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'review_favorites', 'review_id', 'user_id')->withTimestamps();
     }

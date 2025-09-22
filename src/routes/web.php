@@ -20,7 +20,6 @@ Route::middleware(['auth'])->group(function () {
     //     ->name('dashboard');
 });
 
-
 //ファーム
 Route::get('/farm/{id}', [FarmController::class, 'detail'])->name('farm.detail');
 

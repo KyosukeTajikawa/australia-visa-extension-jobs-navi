@@ -6,6 +6,7 @@ import {
 import { HamburgerIcon } from '@chakra-ui/icons';
 import MainLayout from "@/Layouts/MainLayout";
 
+
 type Farm = {
     id: number;
     name: string;
@@ -19,7 +20,6 @@ type Props = {
 const Home = ({ farms }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     return (
-
         <Box m={2}>
             {/* ファーム一覧 */}
             <VStack spacing={4} align={"stretch"}>

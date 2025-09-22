@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
         // Farm::factory(10)->create();
         Review::factory(10)->create();
 
+
         User::create([
             'nickname' => 'テストユーザー',
             'email' => 'test@example.com',

@@ -23,7 +23,7 @@ return new class extends Migration
             $table->text('description')->nullable()->comment('ファームの説明文');
             $table->foreignId('created_user_id')->constrained('users')->comment('作成者');
             $table->timestamps();
-            $table->softDeletes('deleted_at')->nullable();
+            $table->softDeletes();
         });
     }
 

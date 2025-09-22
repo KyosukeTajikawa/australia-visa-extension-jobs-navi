@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->comment('レビューコメント投稿者');
             $table->string('comment')->comment('自由記述欄');
             $table->timestamps();
-            $table->softDeletes('deleted_at');
+            $table->softDeletes();
         });
     }
 

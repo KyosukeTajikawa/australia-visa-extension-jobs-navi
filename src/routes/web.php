@@ -16,12 +16,9 @@ Route::get('/login-test', function () {return Inertia::render('LoginTest');});
 Route::get('/home', [FarmController::class, 'index'])->name('home');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', fn() => Inertia::render('Dashboard'))
-        ->name('dashboard');
+    // Route::get('/dashboard', fn() => Inertia::render('Dashboard'))
+    //     ->name('dashboard');
 });
-
-//ホーム画面
-Route::get('/home', [FarmController::class, 'index'])->name('index');
 
 //ファーム
 Route::get('/farm/{id}', [FarmController::class, 'detail'])->name('farm.detail');

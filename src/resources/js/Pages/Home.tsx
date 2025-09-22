@@ -5,7 +5,10 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon } from '@chakra-ui/icons';
 import MainLayout from "@/Layouts/MainLayout";
+<<<<<<< HEAD
 
+=======
+>>>>>>> 4056a28 (トップページ作成とログイン後トップページに遷移)
 
 type Farm = {
     id: number;

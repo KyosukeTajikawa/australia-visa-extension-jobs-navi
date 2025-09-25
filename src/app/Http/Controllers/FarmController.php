@@ -11,7 +11,7 @@ class FarmController extends Controller
 {
     /**
      * 農場の一覧ページを表示
-     *@return \Inertia\Response
+     * @return Response
      */
     public function index(): Response
     {

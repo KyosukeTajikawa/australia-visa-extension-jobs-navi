@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class FarmImages extends Model
 {
+
     protected $fillable = [
         'farm_id',
         'url',

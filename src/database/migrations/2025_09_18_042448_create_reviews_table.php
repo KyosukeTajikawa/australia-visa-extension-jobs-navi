@@ -24,7 +24,7 @@ return new class extends Migration
             $table->tinyInteger('hour_rating')->unsigned()->comment('労働時間の評価'); //1~5で評価
             $table->tinyInteger('relation_rating')->unsigned()->comment('人間関係の評価'); //1~5で評価
             $table->tinyInteger('overall_rating')->unsigned()->comment('総合評価'); //1~5で評価
-            $table->text('comment')->comment('自由記述欄');
+            $table->text('comment')->nullable()->comment('自由記述欄');
             $table->foreignId('user_id')->constrained()->comment('レビュー投稿者');
             $table->foreignId('farm_id')->constrained()->comment('レビューが紐づくファームID');
             $table->timestamps();

@@ -14,7 +14,7 @@ class FarmImages extends Model
 
     /**
      * 画像が紐づくファームを取得
-     * return @belongsTo
+     * @return belongsTo
      */
     public function farm(): BelongsTo
     {

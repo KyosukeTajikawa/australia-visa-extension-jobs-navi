@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('farm_images', function (Blueprint $table) {
             $table->id();
             $table->foreignId('farm_id')->constrained()->comment('ファーム写真が紐づくファームID');
-            $table->string('url')->unique()->comment('画像URL');
+            $table->string('url', 500)->unique()->comment('画像URL');
             $table->timestamps();
         });
     }

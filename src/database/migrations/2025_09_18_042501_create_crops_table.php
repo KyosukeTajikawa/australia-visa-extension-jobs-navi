@@ -13,7 +13,11 @@ return new class extends Migration
     {
         Schema::create('crops', function (Blueprint $table) {
             $table->id();
+<<<<<<< HEAD
             $table->string('name', 50)->unique()->comment('作物名');
+=======
+            $table->string('name', 50)->unique();
+>>>>>>> 102594d (マイグレーションファイル・テーブル作成)
             $table->timestamps();
         });
     }

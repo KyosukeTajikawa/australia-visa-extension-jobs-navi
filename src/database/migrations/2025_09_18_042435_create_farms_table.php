@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreignId('state_id')->constrained()->comment('州id');
             $table->char('postcode', 4)->comment('郵便番号');
             $table->text('description')->nullable()->comment('ファームの説明文');
-            $table->foreignId('created_user_id')->constrained('users')->comment('作成者');
+            $table->foreignId('created_user_id')->constrained('users')->onDelete('cascade')->comment('作成者');
             $table->timestamps();
             $table->softDeletes();
         });

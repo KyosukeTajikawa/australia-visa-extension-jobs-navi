@@ -24,6 +24,7 @@ return new class extends Migration
             $table->foreignId('created_user_id')->constrained('users')->onDelete('cascade')->comment('作成者');
             $table->timestamps();
             $table->softDeletes();
+
         });
     }
 

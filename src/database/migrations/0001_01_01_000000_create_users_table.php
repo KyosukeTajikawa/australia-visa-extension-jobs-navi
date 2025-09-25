@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nickname', 50)->unique()->comment('ニックネーム');
             $table->string('email', 50)->unique()->comment('メールアドレス');
             $table->timestamp('email_verified_at')->nullable()->comment('ユーザーがメール認証を完了した日時');
-            $table->tinyInteger('gender')->unsigned()->comment('性別'); //1=male,2=female
+            $table->tinyInteger('gender')->unsigned()->comment('性別(1=male, 2=female)');
             $table->date('birthday')->comment('誕生日');
             $table->string('password')->comment('パスワード');
             $table->rememberToken();

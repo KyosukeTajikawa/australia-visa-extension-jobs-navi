@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Crop;
+use app\Models\Crop;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -21,8 +21,6 @@ class Farm extends Model
         'suburb',
         'state_id',
         'postcode',
-        'phone_number',
-        'email',
         'description',
         'created_user_id',
     ];
@@ -44,12 +42,7 @@ class Farm extends Model
     {
         return $this->belongsTo(State::class);
     }
-
-    /**
-     * 紐づくレビューを取得
-     * @return hamMany
-     */
-    public function reviews()
+    public function review()
     {
         return $this->hasMany(Review::class);
     }

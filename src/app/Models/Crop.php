@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Farm;
+
 use Illuminate\Database\Eloquent\Model;
-use app\Models\Farm;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Crop extends Model
@@ -13,10 +14,10 @@ class Crop extends Model
     ];
 
     /**
-     * 作物が扱われているファーム取得(中間テーブル)
-     * @return belongsToMany
+     * 紐づくファームを取得
+     * @ return belongsToMany
      */
-    public function farms(): BelongsToMany
+    public function farms()
     {
         return $this->belongsToMany(Farm::class, 'farm_crops', 'crop_id', 'farm_id')->withTimestamps();
     }

@@ -14,14 +14,16 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('nickname', 50)->unique()->comment('ニックネーム');
-            $table->string('email', 50)->unique()->comment('メールアドレス');
+            $table->string('email')->comment('メールアドレス');
             $table->timestamp('email_verified_at')->nullable()->comment('ユーザーがメール認証を完了した日時');
-            $table->tinyInteger('gender')->unsigned()->comment('性別'); //1=male,2=female
+            $table->tinyInteger('gender')->unsigned()->comment('性別(1=male, 2=female)');
             $table->date('birthday')->comment('誕生日');
             $table->string('password')->comment('パスワード');
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
+            $table->unsignedTinyInteger('exist')->virtualAs('IF(ISNULL(deleted_at), 1, NULL)')->nullable();
+            $table->unique(['email', 'exist']);
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

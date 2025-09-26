@@ -2,16 +2,19 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use app\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+
 class Review extends Model
 {
     use HasFactory;
+
+    public $timestamps = false;
 
     protected $fillable = [
         'work_position',
@@ -47,7 +50,6 @@ class Review extends Model
     {
         return $this->belongsTo(Farm::class);
     }
-
     /**
      * レビューに紐づくレビューコメントを取得
      * @return hasMany

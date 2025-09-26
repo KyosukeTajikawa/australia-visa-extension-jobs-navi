@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class FarmImages extends Model
 {
+
     protected $fillable = [
         'farm_id',
         'url',
@@ -14,7 +15,7 @@ class FarmImages extends Model
 
     /**
      * 画像が紐づくファームを取得
-     * return @belongsTo
+     * @return belongsTo
      */
     public function farm(): BelongsTo
     {

@@ -13,6 +13,8 @@ class Review extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $fillable = [
         'work_position',
         'hourly_wage',

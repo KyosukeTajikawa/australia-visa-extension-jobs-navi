@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         // $this->call(StateSeeder::class);
 
         // Farm::factory(10)->create();
-        // Review::factory(10)->create();
+        Review::factory(10)->create();
 
         // User::create([
         //     'nickname' => 'テストユーザー',

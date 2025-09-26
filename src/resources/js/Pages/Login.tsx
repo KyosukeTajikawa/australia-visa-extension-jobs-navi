@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Heading, FormControl, FormLabel, FormErrorMessage, Input, Button } from "@chakra-ui/react";
 import { LockIcon } from '@chakra-ui/icons';
-import { useForm, router } from "@inertiajs/react";
+import { useForm } from "@inertiajs/react";
 import MainLayout from "@/Layouts/MainLayout";
 
 const Login = () => {

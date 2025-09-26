@@ -12,7 +12,7 @@ const MainLayout = ({ children, title }) => {
     const { auth } = usePage().props;
     const { isOpen, onOpen, onClose } = useDisclosure()
     return (
-        <Box m={2}>
+        <Box m={2} minH={"98vh"} display={"flex"} flexDirection={"column"}>
             {/* ヘッダー */}
             <Box bg={"green.500"} p={"4px"} mb={2} display={"flex"} justifyContent={"space-between"} alignItems={"center"}>
                 <Heading as={"h1"} color={"white"} fontSize={{ base: "24px", md: "30px", lg: "40px" }}>ファーム一覧</Heading>
@@ -98,7 +98,7 @@ const MainLayout = ({ children, title }) => {
                     </Box>
                 }
             </Box>
-            <Box>{children}</Box>
+            <Box as="main" flex={1} display={"flex"}>{children}</Box>
             {/* Footer */}
             <Box>
                 <Box bg="green.500" color={"white"} fontWeight={"bold"} textAlign={"center"} py={{ base: 2, md: 3 }}>

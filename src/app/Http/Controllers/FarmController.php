@@ -33,14 +33,12 @@ class FarmController extends Controller
         ]);
     }
 
-    // public function detail($id)
-    // {
-    //     $farm = Farm::with('reviews', 'state')->find($id);
+    public function detail(int $id)
+    {
+        $farm = $this->farmRepository->getDetailById($id);
 
-    //     // dd($farm);
-
-    //     return Inertia::render('Farm/Detail', [
-    //         'farm' => $farm,
-    //     ]);
-    // }
+        return Inertia::render('Farm/Detail', [
+            'farm' => $farm,
+        ]);
+    }
 }

@@ -23,7 +23,4 @@ Route::middleware(['auth'])->group(function () {
 //ファーム
 Route::get('/farm/{id}', [FarmController::class, 'detail'])->name('farm.detail');
 
-//ホーム画面
-Route::get('/home', [FarmController::class, 'index'])->name('index');
-
 require __DIR__.'/auth.php';

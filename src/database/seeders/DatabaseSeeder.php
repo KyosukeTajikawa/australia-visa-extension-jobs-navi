@@ -8,9 +8,6 @@ use App\Models\Farm;
 use App\Models\Review;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use App\Models\Farm;
-use App\Models\Review;
-use App\Models\User;
 
 class DatabaseSeeder extends Seeder
 {
@@ -25,7 +22,7 @@ class DatabaseSeeder extends Seeder
         // $this->call(StateSeeder::class);
 
         // Farm::factory(10)->create();
-        Review::factory(10)->create();
+        // Review::factory(10)->create();
 
         User::create([
             'nickname' => 'テストユーザー',

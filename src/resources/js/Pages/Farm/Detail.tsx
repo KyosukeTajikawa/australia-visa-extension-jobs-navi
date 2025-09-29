@@ -1,9 +1,45 @@
 import React from "react";
-import { Box, Heading, VStack, HStack, Image, Text, Link, useToast } from "@chakra-ui/react";
+import MainLayout from "@/Layouts/MainLayout";
+
+import { Box, Heading, VStack, HStack, Image, Text, } from "@chakra-ui/react";
 import { StarIcon } from '@chakra-ui/icons';
 
+type State = {
+    id: number;
+    name: string;
+};
 
-const Detail = ({ farm }) => {
+type Review = {
+    id: number;
+    type2: string;
+    start_date: string;
+    end_date: string;
+    work_position: string;
+    pay_type: string;
+    hourly_wage: number;
+    is_car_required: boolean;
+    work_rating: number;
+    salary_rating: number;
+    hour_rating: number;
+    relation_rating: number;
+    overall_rating: number;
+    comment: string;
+};
+
+type Farm = {
+    id: number;
+    name: string;
+    description: string;
+    street_address: string;
+    suburb: string;
+    postcode: string;
+    state: State;
+    reviews: Review[];
+};
+
+type DetailProps = { farm: Farm };
+
+const Detail = ({ farm }: DetailProps) => {
     return (
         <Box m={4}>
             <Box mb={4}>
@@ -85,4 +121,5 @@ const Detail = ({ farm }) => {
     );
 };
 
+Detail.layout = (page: React.ReactNode) => (<MainLayout title="ファーム情報サイト">{page}</MainLayout>);
 export default Detail;

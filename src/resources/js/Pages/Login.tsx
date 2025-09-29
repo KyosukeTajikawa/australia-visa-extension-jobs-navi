@@ -1,7 +1,8 @@
 import React from "react";
+import axios from 'axios';
 import { Box, Heading, FormControl, FormLabel, FormErrorMessage, Input, Button } from "@chakra-ui/react";
 import { LockIcon } from '@chakra-ui/icons';
-import { useForm } from "@inertiajs/react";
+import { useForm, router } from "@inertiajs/react";
 import MainLayout from "@/Layouts/MainLayout";
 
 const Login = () => {
@@ -11,9 +12,19 @@ const Login = () => {
         password: "",
     });
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        post(route("login"));
+    async function handleLogin(email: string, password: string) {
+        // 1. CSRF初期化
+        await axios.get('/sanctum/csrf-cookie');
+
+        // 2. ログイン
+        await axios.post('/login', { email, password });
+
+        router.visit("/home");
+    }
+
+    const handleSubmit = (ev: React.FormEvent) => {
+        ev.preventDefault();
+        handleLogin(data.email, data.password);
     }
 
 

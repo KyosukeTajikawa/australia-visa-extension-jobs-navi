@@ -22,4 +22,8 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+<<<<<<< HEAD
 /.vscode
+=======
+/storage/debugbar
+>>>>>>> origin/issue-11_Laravel_Breeze_file_delete

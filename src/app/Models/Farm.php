@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\belongsTo;
-use Illuminate\Database\Eloquent\Relations\belongsToMany;
-use Illuminate\Database\Eloquent\Relations\hasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Farm extends Model
 {
@@ -28,36 +28,36 @@ class Farm extends Model
 
     /**
      * ファーム情報を登録したユーザーを取得
-     * @return belongsTo
+     * @return BelongsTo
      */
-    public function user(): belongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
     /**
      * ファームの住所（州）を取得
-     * @return belongsTo
+     * @return BelongsTo
      */
-    public function state(): belongsTo
+    public function state(): BelongsTo
     {
         return $this->belongsTo(State::class);
     }
 
     /**
      * ファームに対するレビューを取得
-     * @return hasMany
+     * @return HasMany
      */
-    public function reviews(): hasMany
+    public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);
     }
 
     /**
      * ファームで扱っている作物を取得(中間テーブル)
-     * @return belongsToMany
+     * @return BelongsToMany
      */
-    public function crops(): belongsToMany
+    public function crops(): BelongsToMany
     {
         return $this->belongsToMany(Crop::class, 'farm_crops', 'farm_id', 'crop_id')->withTimestamps();
     }

@@ -4,7 +4,7 @@ import {
     DrawerBody, DrawerOverlay, DrawerContent, DrawerCloseButton, useDisclosure
 } from "@chakra-ui/react";
 import { HamburgerIcon, ChevronDownIcon } from '@chakra-ui/icons';
-import { Link, usePage } from "@inertiajs/react";
+import { Link, router, usePage, } from "@inertiajs/react";
 
 // type AuthUser = { id: number; nickname: string } | null;
 
@@ -31,9 +31,7 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                             <MenuList>
                                 <MenuItem>ファーム登録</MenuItem>
                                 <MenuItem>お気に入りレビュー</MenuItem>
-                                <Link href={route("logout")} method="post">
-                                <MenuItem>ログアウト</MenuItem>
-                                </Link>
+                                    <MenuItem onClick={() => router.post(route("logout"))}>ログアウト</MenuItem>
                             </MenuList>
                         </Menu>
                     </Box>
@@ -42,7 +40,7 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                         <Menu>
                             <MenuButton as={IconButton} aria-label="Options" icon={<HamburgerIcon color={"white"} />} variant={"ghost"} _hover={{ bg: "green.300" }} _active={{ bg: "green.300" }} />
                             <MenuList>
-                                <MenuItem>ログイン</MenuItem>
+                                <MenuItem onClick={() => router.visit(route("login"))}>ログイン</MenuItem>
                                 <MenuItem>新規登録</MenuItem>
                             </MenuList>
                         </Menu>
@@ -71,7 +69,7 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                                         </Link>
                                     </Box>
                                     <Box mb={1} _hover={{ opacity: 0.7, bg: "gray.100" }}>
-                                        <Link _hover={{ color: "none" }} href={route("logout")} method="post">
+                                        <Link _hover={{ color: "none" }} href={route("logout")} method="post" onClick={onClose}>
                                             <Text>ログアウト</Text>
                                         </Link>
                                     </Box>
@@ -90,7 +88,7 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                                 <DrawerCloseButton />
                                 <DrawerBody mt={"60px"} textAlign={"center"} w={"100%"}>
                                     <Box mb={1} _hover={{ opacity: 0.7, bg: "gray.100" }}>
-                                        <Link _hover={{ color: "none" }}>
+                                        <Link _hover={{ color: "none" }}  href={route("login")} onClick={onClose}>
                                             <Text>ログイン</Text>
                                         </Link>
                                     </Box>

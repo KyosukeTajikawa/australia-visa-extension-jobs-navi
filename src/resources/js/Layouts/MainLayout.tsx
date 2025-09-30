@@ -31,7 +31,9 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                             <MenuList>
                                 <MenuItem>ファーム登録</MenuItem>
                                 <MenuItem>お気に入りレビュー</MenuItem>
+                                <Link href={route("logout")} method="post">
                                 <MenuItem>ログアウト</MenuItem>
+                                </Link>
                             </MenuList>
                         </Menu>
                     </Box>
@@ -69,7 +71,7 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                                         </Link>
                                     </Box>
                                     <Box mb={1} _hover={{ opacity: 0.7, bg: "gray.100" }}>
-                                        <Link _hover={{ color: "none" }}>
+                                        <Link _hover={{ color: "none" }} href={route("logout")} method="post">
                                             <Text>ログアウト</Text>
                                         </Link>
                                     </Box>

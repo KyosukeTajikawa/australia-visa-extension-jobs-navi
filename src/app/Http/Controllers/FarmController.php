@@ -3,21 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Interfaces\FarmRepositoryInterface;
-use App\Models\Farm;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
-// use Illuminate\Http\Response;
 
 class FarmController extends Controller
 {
-    private FarmRepositoryInterface $farmRepository;
 
-    public function __construct(FarmRepositoryInterface $farmRepository)
-    {
-        $this->farmRepository = $farmRepository;
-    }
+    /**
+     * FarmController constructor
+     * @param FarmRepositoryInterface $farmRepository ファーム情報を扱うリポジトリの実装
+     */
+    public function __construct(
+        private readonly FarmRepositoryInterface $farmRepository
+    ) {}
 
 
     /**
@@ -33,7 +31,11 @@ class FarmController extends Controller
         ]);
     }
 
-    public function detail(int $id)
+/**
+ * ファーム詳細ページの表示
+ * @return Response
+ */
+    public function detail(int $id): Response
     {
         $farm = $this->farmRepository->getDetailById($id);
 

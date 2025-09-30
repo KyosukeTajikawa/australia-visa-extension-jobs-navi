@@ -186,5 +186,4 @@ const Create = ({ states }: CreateProps) => {
 Create.layout = (page: React.ReactNode) => (
     <MainLayout title="ファーム情報サイト">{page}</MainLayout>
 );
-
 export default Create;

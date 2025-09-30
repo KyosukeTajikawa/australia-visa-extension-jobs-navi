@@ -41,4 +41,13 @@ class FarmController extends Controller
             'farm' => $farm,
         ]);
     }
+
+    /**
+     * ファーム新規作成のページを表示
+     * @return Response
+     */
+    public function create(): Response
+    {
+        return Inertia::render('Farm/Create');
+    }
 }

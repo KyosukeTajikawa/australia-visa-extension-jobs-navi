@@ -19,6 +19,7 @@ Route::get('/home', [FarmController::class, 'index'])->name('home');
 
 Route::middleware(['auth'])->group(function () {
     //ファーム
+    Route::get('/farm/create', [FarmController::class, 'create'])->name('farm.create');
     Route::get('/farm/{id}', [FarmController::class, 'detail'])->name('farm.detail');
 });
 

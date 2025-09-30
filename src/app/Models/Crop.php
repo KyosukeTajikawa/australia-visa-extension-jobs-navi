@@ -15,10 +15,10 @@ class Crop extends Model
 
     /**
      * 紐づくファームを取得
-     * @ return belongsToMany
+     * @return BelongsToMany
      */
-    public function farms()
+    public function farms(): BelongsToMany
     {
-        return $this->belongsToMany(Farm::class, 'farm_crops', 'crop_id', 'farm_id')->withTimestamps();
+        return $this->BelongsToMany(Farm::class, 'farm_crops', 'crop_id', 'farm_id')->withTimestamps();
     }
 }

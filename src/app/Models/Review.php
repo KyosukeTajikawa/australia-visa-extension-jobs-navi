@@ -35,7 +35,7 @@ class Review extends Model
 
     /**
      * レビューしたユーザーを取得
-     * @return belongsTo
+     * @return BelongsTo
      */
     public function reviewUser(): BelongsTo
     {
@@ -44,7 +44,7 @@ class Review extends Model
 
     /**
      * レビューが紐づくファームを取得
-     * @return belongsTo
+     * @return BelongsTo
      */
     public function farm(): BelongsTo
     {
@@ -52,7 +52,7 @@ class Review extends Model
     }
     /**
      * レビューに紐づくレビューコメントを取得
-     * @return hasMany
+     * @return HasMany
      */
     public function reviewComments(): HasMany
     {
@@ -61,7 +61,7 @@ class Review extends Model
 
     /**
      * レビューをお気に入りしたユーザーを取得（中間テーブル）
-     * @return belongsToMany
+     * @return BelongsToMany
      */
     public function favoritedUsers(): BelongsToMany
     {

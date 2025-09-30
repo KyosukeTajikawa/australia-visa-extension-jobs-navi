@@ -1,4 +1,4 @@
-import React, {ReactNode} from "react";
+import React, { ReactNode } from "react";
 import {
     Box, Heading, Text, Button, Menu, MenuButton, MenuList, MenuItem, IconButton, Drawer, DrawerHeader,
     DrawerBody, DrawerOverlay, DrawerContent, DrawerCloseButton, useDisclosure
@@ -20,7 +20,9 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
         <Box m={2} minH={"98vh"} display={"flex"} flexDirection={"column"}>
             {/* ヘッダー */}
             <Box bg={"green.500"} p={"4px"} mb={2} display={"flex"} justifyContent={"space-between"} alignItems={"center"}>
-                <Heading as={"h1"} color={"white"} fontSize={{ base: "24px", md: "30px", lg: "40px" }}>ファーム一覧</Heading>
+                <Link href={route("home")}>
+                <Heading as={"h1"} color={"white"} fontSize={{ base: "24px", md: "30px", lg: "40px" }} >ファーム一覧</Heading>
+                </Link>
                 {auth.user ?
                     /* SP ログイン*/
                     < Box display={{ base: "block", md: "none" }}>
@@ -31,7 +33,7 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                             <MenuList>
                                 <MenuItem>ファーム登録</MenuItem>
                                 <MenuItem>お気に入りレビュー</MenuItem>
-                                    <MenuItem onClick={() => router.post(route("logout"))}>ログアウト</MenuItem>
+                                <MenuItem onClick={() => router.post(route("logout"))}>ログアウト</MenuItem>
                             </MenuList>
                         </Menu>
                     </Box>
@@ -42,6 +44,7 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                             <MenuList>
                                 <MenuItem onClick={() => router.visit(route("login"))}>ログイン</MenuItem>
                                 <MenuItem>新規登録</MenuItem>
+                                <MenuItem onClick={() => router.visit(route("home"))}>ファーム一覧</MenuItem>
                             </MenuList>
                         </Menu>
                     </Box>
@@ -88,13 +91,18 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                                 <DrawerCloseButton />
                                 <DrawerBody mt={"60px"} textAlign={"center"} w={"100%"}>
                                     <Box mb={1} _hover={{ opacity: 0.7, bg: "gray.100" }}>
-                                        <Link _hover={{ color: "none" }}  href={route("login")} onClick={onClose}>
+                                        <Link _hover={{ color: "none" }} href={route("login")} onClick={onClose}>
                                             <Text>ログイン</Text>
                                         </Link>
                                     </Box>
                                     <Box mb={1} _hover={{ opacity: 0.7, bg: "gray.100" }}>
                                         <Link _hover={{ color: "none" }}>
                                             <Text>新規登録</Text>
+                                        </Link>
+                                    </Box>
+                                    <Box mb={1} _hover={{ opacity: 0.7, bg: "gray.100" }}>
+                                        <Link _hover={{ color: "none" }} href={route("home")} onClick={onClose}>
+                                            <Text>ファーム一覧</Text>
                                         </Link>
                                     </Box>
                                 </DrawerBody>

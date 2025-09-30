@@ -8,12 +8,14 @@ use Inertia\Response;
 
 class FarmController extends Controller
 {
-    private FarmRepositoryInterface $farmRepository;
 
-    public function __construct(FarmRepositoryInterface $farmRepository)
-    {
-        $this->farmRepository = $farmRepository;
-    }
+    /**
+     * FarmController constructor
+     * @param FarmRepositoryInterface $farmRepository ファーム情報を扱うリポジトリの実装
+     */
+    public function __construct(
+        private readonly FarmRepositoryInterface $farmRepository
+    ) {}
 
 
     /**

@@ -21,11 +21,11 @@ class FarmRepository implements FarmRepositoryInterface
     /**
      * 指定したIDのファーム詳細を取得する
      * レビュー情報（reviews）と州情報（state）も同時に取得する。
-     * @param int $id 取得したいファームのID
-     * @return Farm|null 該当するFarmモデル。存在しない場合はnull
+     *  * @param array<string, mixed> $relations リレーション名
+     * @return Farm|null
      */
-    public function getDetailById(int $id)
+    public function getDetailById(int $id, array $relations = []): ?Farm
     {
-        return Farm::with('reviews', 'state')->find($id);
+        return Farm::with($relations)->findOrFail($id);
     }
 }

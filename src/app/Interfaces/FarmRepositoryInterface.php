@@ -2,13 +2,17 @@
 
 namespace App\Interfaces;
 
+use App\Models\Farm;
+use Illuminate\Database\Eloquent\Collection;
+
+
 interface FarmRepositoryInterface
 {
     /**
      * すべてのファーム情報を取得する
      * @return Collection<Farm>
      */
-    public function getAllFarms();
+    public function getAllFarms(): Collection;
 
     /**
      * 指定したIDのファーム詳細を取得する
@@ -16,5 +20,5 @@ interface FarmRepositoryInterface
      * @param int $id 取得したいファームのID
      * @return Farm|null 該当するFarmモデル。存在しない場合はnull
      */
-    public function getDetailById(int $id);
+    public function getDetailById(int $id): ?Farm;
 }

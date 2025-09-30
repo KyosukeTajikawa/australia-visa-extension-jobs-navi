@@ -21,7 +21,7 @@ class FarmRepository implements FarmRepositoryInterface
     /**
      * 指定したIDのファーム詳細を取得する
      * レビュー情報（reviews）と州情報（state）も同時に取得する。
-     *  * @param array<string, mixed> $relations リレーション名
+     * @param array<string, mixed> $relations リレーション名
      * @return Farm|null
      */
     public function getDetailById(int $id, array $relations = []): ?Farm

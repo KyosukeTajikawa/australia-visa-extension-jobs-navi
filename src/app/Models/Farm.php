@@ -20,8 +20,6 @@ class Farm extends Model
         'suburb',
         'state_id',
         'postcode',
-        'phone_number',
-        'email',
         'description',
         'created_user_id',
     ];

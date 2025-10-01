@@ -31,10 +31,10 @@ class FarmController extends Controller
         ]);
     }
 
-/**
- * ファーム詳細ページの表示
- * @return Response
- */
+    /**
+     * ファーム詳細ページの表示
+     * @return Response
+     */
     public function detail(int $id): Response
     {
         $farm = $this->farmRepository->getDetailById($id);

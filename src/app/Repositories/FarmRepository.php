@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Farm;
-use App\Interfaces\FarmRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 
 class FarmRepository implements FarmRepositoryInterface

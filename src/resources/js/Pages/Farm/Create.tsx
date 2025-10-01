@@ -38,7 +38,7 @@ const Create = ({ states }: CreateProps) => {
         router.post(route("farm.store"), data);
     }
     return (
-        <Box m={2}>
+        <Box m={2} w={"90%"}>
             <Heading as={"h4"}>ファーム新規登録</Heading>
             <form onSubmit={handleSubmit}>
                 <FormControl mb={2} isRequired isInvalid={!!errors.name}>

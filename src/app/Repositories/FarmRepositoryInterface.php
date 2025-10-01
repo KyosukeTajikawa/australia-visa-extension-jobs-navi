@@ -29,5 +29,4 @@ interface FarmRepositoryInterface
      * @return Collection<State>
      */
     public function getStates(): Collection;
-
 }

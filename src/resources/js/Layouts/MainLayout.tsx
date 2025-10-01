@@ -6,8 +6,6 @@ import {
 import { HamburgerIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import { Link, router, usePage, } from "@inertiajs/react";
 
-// type AuthUser = { id: number; nickname: string } | null;
-
 type MainLayoutProps = {
     children: ReactNode;
     title?: string;

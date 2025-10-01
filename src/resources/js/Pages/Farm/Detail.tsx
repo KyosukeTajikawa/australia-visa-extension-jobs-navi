@@ -1,6 +1,5 @@
 import React from "react";
 import MainLayout from "@/Layouts/MainLayout";
-
 import { Box, Heading, Link, HStack, Image, Text, } from "@chakra-ui/react";
 import { StarIcon, EditIcon } from '@chakra-ui/icons';
 

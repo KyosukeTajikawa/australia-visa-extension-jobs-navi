@@ -21,4 +21,10 @@ interface FarmRepositoryInterface
      * @return Farm|null 該当するFarmモデル。存在しない場合はnull
      */
     public function getDetailById(int $id): ?Farm;
+
+    /**
+     * すべてのファーム情報を取得する
+     * @return Collection<State>
+     */
+    public function getStates(): Collection;
 }

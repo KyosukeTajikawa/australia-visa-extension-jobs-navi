@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Farm;
+use App\Models\State;
 use App\Interfaces\FarmRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -27,5 +28,14 @@ class FarmRepository implements FarmRepositoryInterface
     public function getDetailById(int $id, array $relations = []): ?Farm
     {
         return Farm::with($relations)->findOrFail($id);
+    }
+
+    /**
+     * すべてのファーム情報を取得する
+     * @return Collection<State>
+     */
+    public function getStates(): Collection
+    {
+        return State::get();
     }
 }

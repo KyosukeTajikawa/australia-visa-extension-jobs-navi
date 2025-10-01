@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Interfaces\FarmRepositoryInterface;
+use App\Repositories\FarmRepositoryInterface;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -17,7 +17,6 @@ class FarmController extends Controller
         private readonly FarmRepositoryInterface $farmRepository
     ) {}
 
-
     /**
      * 農場の一覧ページを表示
      * @return Response
@@ -30,7 +29,6 @@ class FarmController extends Controller
             'farms' => $farms,
         ]);
     }
-
 
     /**
      * ファーム詳細ページの表示

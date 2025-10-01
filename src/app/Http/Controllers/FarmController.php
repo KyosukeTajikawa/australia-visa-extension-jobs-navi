@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Interfaces\FarmRepositoryInterface;
+use App\Repositories\FarmRepositoryInterface;
 use Inertia\Inertia;
 use Inertia\Response;
 

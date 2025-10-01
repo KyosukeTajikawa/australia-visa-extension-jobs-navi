@@ -95,6 +95,7 @@ class FarmController extends Controller
         );
 
         $validated['created_user_id'] = $request->user()->id;
+
         $farm = Farm::create($validated);
 
         return redirect()->route('farm.detail', ['id' => $farm->id,]);

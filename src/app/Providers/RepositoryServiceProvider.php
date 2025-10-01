@@ -13,7 +13,6 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
         $this->app->bind(FarmRepositoryInterface::class, FarmRepository::class);
     }
 

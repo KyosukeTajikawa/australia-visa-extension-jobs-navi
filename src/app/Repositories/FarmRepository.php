@@ -7,12 +7,12 @@ use App\Interfaces\FarmRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 
 
-/**
- * すべてのファーム情報を取得する
- * @return Collection<Farm>
- */
 class FarmRepository implements FarmRepositoryInterface
 {
+    /**
+     * すべてのファーム情報を取得する
+     * @return Collection<Farm>
+     */
     public function getAllFarms(): Collection
     {
         return Farm::get();

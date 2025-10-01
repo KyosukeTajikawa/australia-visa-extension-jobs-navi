@@ -23,7 +23,7 @@ interface FarmRepositoryInterface
     public function getDetailById(int $id): ?Farm;
 
     /**
-     * すべてのファーム情報を取得する
+     * すべての州情報を取得する
      * @return Collection<State>
      */
     public function getStates(): Collection;

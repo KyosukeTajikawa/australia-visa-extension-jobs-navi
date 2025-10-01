@@ -22,7 +22,7 @@ const Create = ({ states }: CreateProps) => {
         postcode: "",
         state_id: "",
         description: "",
-    })
+    });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const {name, value} = e.target;

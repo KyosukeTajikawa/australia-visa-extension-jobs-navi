@@ -66,6 +66,7 @@ class FarmController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+
     $validated = $request->validate([
             'name'            => ['required', 'string', 'max:255'],
             'phone_number'    => ['nullable', 'string', 'max:15'],
@@ -75,6 +76,8 @@ class FarmController extends Controller
             'postcode'        => ['required', 'digits:4'],
             'state_id'        => ['required', 'exists:states,id'],
         ]);
+
+        $validated['created_user_id'] = $request->user()->id;
 
         $farm = Farm::create($validated);
 

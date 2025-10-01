@@ -21,5 +21,5 @@ interface FarmRepositoryInterface
      * @return Farm ファームID,state,あればreviews
      * @throws ModelNotFoundException 例外時404が表示される
      */
-    public function getDetailById(int $id, array $relations = []): ?Farm;
+    public function getDetailById(int $id, array $relations = []): Farm;
 }

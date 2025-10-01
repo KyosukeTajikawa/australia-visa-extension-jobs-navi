@@ -10,14 +10,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 // 認証テスト
-Route::get('/login-test', function () {return Inertia::render('LoginTest');});
+Route::get('/login-test', function () {
+    return Inertia::render('LoginTest');
+});
 
 // ホーム画面
 Route::get('/home', [FarmController::class, 'index'])->name('home');
 
-Route::middleware(['auth'])->group(function () {
-
-});
+Route::middleware(['auth'])->group(function () {});
 
 //ファーム
 Route::get('/farm/{id}', [FarmController::class, 'detail'])->name('farm.detail');
@@ -25,4 +25,4 @@ Route::get('/farm/{id}', [FarmController::class, 'detail'])->name('farm.detail')
 //ホーム画面
 Route::get('/home', [FarmController::class, 'index'])->name('index');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

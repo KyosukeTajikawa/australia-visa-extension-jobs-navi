@@ -41,7 +41,6 @@ const Create = ({ states }: CreateProps) => {
     return (
         <Box m={2} w={"90%"}>
             <Heading as={"h4"} mb={4}>ファーム新規登録</Heading>
-
             <form onSubmit={handleSubmit}>
                 {/* ファーム名 */}
                 <FormControl mb={2} isRequired isInvalid={!!serverErrors.name}>

@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Interfaces\FarmRepositoryInterface;
 use App\Repositories\FarmRepository;
+use App\Repositories\FarmRepositoryInterface as RepositoriesFarmRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -13,7 +13,7 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(FarmRepositoryInterface::class, FarmRepository::class);
+        $this->app->bind(RepositoriesFarmRepositoryInterface::class, FarmRepository::class);
     }
 
     /**

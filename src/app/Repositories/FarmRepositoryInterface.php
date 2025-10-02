@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Farm;
 use Illuminate\Database\Eloquent\Collection;
-
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 interface FarmRepositoryInterface
 {
@@ -17,7 +17,8 @@ interface FarmRepositoryInterface
     /**
      * 指定したIDのファーム詳細を取得する
      * レビュー情報（reviews）と州情報（state）も同時に取得する。
-     * @param list<string>
+     * @param int $id
+     * @param array $relations
      * @return Farm ファームID,state,あればreviews
      * @throws ModelNotFoundException 例外時404が表示される
      */

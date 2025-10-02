@@ -1,4 +1,3 @@
-import '../css/app.css';
 import './bootstrap';
 import { ChakraProvider } from '@chakra-ui/react';
 import { createInertiaApp } from '@inertiajs/react';

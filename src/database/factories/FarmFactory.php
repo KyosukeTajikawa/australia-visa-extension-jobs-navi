@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\State;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -23,8 +24,10 @@ class FarmFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'street_address' => fake()->streetAddress(),
             'suburb' => fake()->streetName(),
-            'state_id' => fake()->numberBetween(1, 8),
+            // 'state_id' => fake()->numberBetween(1, 8),
+            'state_id' => State::factory(),
             'postcode' => fake()->postcode2(),
+            // 'postcode' => str_pad((string)random_int(0, 9999), 4, '0', STR_PAD_LEFT),
             'phone_number' => fake()->unique()->phoneNumber(),
             'email' => fake()->unique()->safeEmail(),
             'description' => fake()->realText(200),

@@ -26,9 +26,8 @@ class HomeTest extends TestCase
             ->create();
 
         $response = $this->get('/home');
-        //画面が開くか
         $response->assertStatus(200);
-        //viewにDBからのデータが渡っているか。中身が正しいか。
+
         $response->assertInertia(
             fn(Assert $page) => $page
                 ->component('Home')
@@ -36,7 +35,8 @@ class HomeTest extends TestCase
                 ->has(
                     'farms.0',
                     fn(Assert $farm) => $farm
-                        ->hasAll(['id', 'name'])
+                        ->whereNot('id', null)
+                        ->whereNot('name', null)
                         ->etc()
                 )
         );

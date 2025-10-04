@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('states', function (Blueprint $table) {
-
             $table->id();
             $table->string('name', 50)->unique()->comment('州名');
             $table->timestamps();

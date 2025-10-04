@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Models\Farm;
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -19,6 +18,6 @@ class Crop extends Model
      */
     public function farms(): BelongsToMany
     {
-        return $this->BelongsToMany(Farm::class, 'farm_crops', 'crop_id', 'farm_id')->withTimestamps();
+        return $this->belongsToMany(Farm::class, 'farm_crops', 'crop_id', 'farm_id')->withTimestamps();
     }
 }

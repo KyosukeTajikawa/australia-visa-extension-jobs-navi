@@ -45,7 +45,7 @@ const Detail = ({ farm }: DetailProps) => {
         <Box m={4}>
             {/* ファーム */}
             <Box mb={4}>
-                <Heading as={"h2"} fontSize={{ base: "24px", md: "30px", lg: "40px" }}>{farm.name}</Heading>
+                <Heading as={"h2"} fontSize={{ base: "24px", md: "30px", lg: "40px" }} wordBreak={"break-word"} whiteSpace={"normal"}>{farm.name}</Heading>
             </Box>
             <Box mb={4}>
                 <Image src="https://placehold.co/300x300" boxSize={"300px"} alt={farm.name} objectFit={"contain"} />

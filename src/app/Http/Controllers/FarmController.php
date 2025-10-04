@@ -67,15 +67,27 @@ class FarmController extends Controller
     public function store(Request $request): RedirectResponse
     {
 
-    $validated = $request->validate([
-            'name'            => ['required', 'string', 'max:255'],
-            'phone_number'    => ['nullable', 'string', 'max:15'],
-            'email'           => ['nullable', 'email:rfc', 'max:255'],
-            'street_address'  => ['required', 'string', 'max:100'],
-            'suburb'          => ['required', 'string', 'max:50'],
-            'postcode'        => ['required', 'digits:4'],
-            'state_id'        => ['required', 'exists:states,id'],
-        ]);
+
+        $validated = $request->validate(
+            [
+                'name'            => ['required', 'string', 'max:50'],
+                'phone_number'    => ['nullable', 'string', 'max:15'],
+                'email'           => ['nullable', 'email:rfc', 'max:255'],
+                'street_address'  => ['required', 'string', 'max:100'],
+                'suburb'          => ['required', 'string', 'max:50'],
+                'postcode'        => ['required',  'digits:4'],
+                'state_id'        => ['required', 'exists:states,id'],
+            ],
+            [
+                'name.required'           => 'ファーム名は必須です。',
+                'email.email'             => 'メールアドレスの形式が正しくありません。',
+                'street_address.required' => '住所を入力してください。',
+                'suburb.required'         => '地域を入力してください。',
+                'postcode.required'       => '郵便番号は必須です。',
+                'postcode.digits'         => '郵便番号は4桁の数字で入力してください。',
+                'state_id.required'       => '州を選択してください。',
+            ]
+        );
 
         $validated['created_user_id'] = $request->user()->id;
 

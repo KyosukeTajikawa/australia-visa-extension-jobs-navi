@@ -4,16 +4,16 @@ namespace App\Repositories;
 
 use App\Models\Farm;
 use App\Models\State;
-use App\Interfaces\FarmRepositoryInterface;
+use App\Repositories\FarmRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-
-/**
- * すべてのファーム情報を取得する
- * @return Collection<Farm>
- */
 class FarmRepository implements FarmRepositoryInterface
 {
+    /**
+     * すべてのファーム情報を取得する
+     * @return Collection<Farm>
+     */
     public function getAllFarms(): Collection
     {
         return Farm::get();
@@ -22,10 +22,12 @@ class FarmRepository implements FarmRepositoryInterface
     /**
      * 指定したIDのファーム詳細を取得する
      * レビュー情報（reviews）と州情報（state）も同時に取得する。
-     * @param array<string, mixed> $relations リレーション名
-     * @return Farm|null
+     * @param int $id
+     * @param array $relations
+     * @return Farm ファームID,state,あればreviews
+     * @throws ModelNotFoundException 例外時404が表示される
      */
-    public function getDetailById(int $id, array $relations = []): ?Farm
+    public function getDetailById(int $id, array $relations = []): Farm
     {
         return Farm::with($relations)->findOrFail($id);
     }

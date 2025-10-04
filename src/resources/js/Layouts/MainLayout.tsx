@@ -115,8 +115,8 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                 <Box bg="green.500" color={"white"} fontWeight={"bold"} textAlign={"center"} py={{ base: 2, md: 3 }}>
                     <Text fontSize={{ base: 13, md: 16 }}>&copy; 2025 ファーム攻略サイト</Text>
                 </Box>
-            </Box >
-        </Box >
+            </Box>
+        </Box>
     );
 };
 

@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('farm_crops', function (Blueprint $table) {
             $table->foreignId('farm_id')->constrained()->onDelete('cascade')->comment('ファームID');
             $table->foreignId('crop_id')->constrained()->onDelete('cascade')->comment('作物ID');
-
             // 複合主キー
             $table->primary(['farm_id', 'crop_id']);
             $table->timestamps();

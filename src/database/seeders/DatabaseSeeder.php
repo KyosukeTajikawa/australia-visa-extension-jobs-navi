@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-
 use App\Models\Farm;
 use App\Models\Review;
 use App\Models\User;
@@ -16,6 +14,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+
+        // NOTE: テストデータを作り直す際に必要なので取っておく
         // User::factory(10)->create();
 
         // $this->call(CropSeeder::class);

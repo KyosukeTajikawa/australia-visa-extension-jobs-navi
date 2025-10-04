@@ -28,7 +28,7 @@ const Detail = ({ farm }) => {
                 <Heading mt={8} as={"h2"} fontSize={{ base: "24px", md: "30px", lg: "40px" }}>レビュー</Heading>
             </Box>
             {farm.reviews.map((review) => (
-                <Box border={"1px"} borderRadius={"md"} borderColor={"gray.300"} boxShadow={"md"}>
+                <Box key={review.id} border={"1px"} borderRadius={"md"} borderColor={"gray.300"} boxShadow={"md"}>
                     <Text>仕事のポジション:{review.work_position}</Text>
                     <Text>支払種別:{review.pay_type}</Text>
                     <Text>時給:{review.hourly_wage}</Text>

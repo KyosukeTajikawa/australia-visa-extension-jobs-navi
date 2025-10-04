@@ -17,10 +17,7 @@ Route::get('/login-test', function () {
 // ホーム画面
 Route::get('/home', [FarmController::class, 'index'])->name('home');
 
-Route::middleware(['auth'])->group(function () {
-    // Route::get('/dashboard', fn() => Inertia::render('Dashboard'))
-    //     ->name('dashboard');
-});
+Route::middleware(['auth'])->group(function () {});
 
 //ファーム
 Route::get('/farm/{id}', [FarmController::class, 'detail'])->name('farm.detail');

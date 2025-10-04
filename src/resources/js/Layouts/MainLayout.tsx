@@ -109,7 +109,7 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                     </Box>
                 }
             </Box>
-            <Box as="main" flex={1} display={"flex"}>{children}</Box>
+            <Box as="main">{children}</Box>
             {/* Footer */}
             <Box>
                 <Box bg="green.500" color={"white"} fontWeight={"bold"} textAlign={"center"} py={{ base: 2, md: 3 }}>

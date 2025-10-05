@@ -6,7 +6,7 @@ use App\Models\Farm;
 use App\Models\Review;
 use App\Models\State;
 use App\Models\User;
-use App\Repositories\FarmRepository;
+use App\Repositories\FarmRepositoryInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -15,12 +15,12 @@ class FarmRepositoryTest extends TestCase
 {
     use RefreshDatabase;
 
-    private FarmRepository $repo;
+    private FarmRepositoryInterface $repository;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->repo = new FarmRepository();
+        $this->repository = app(FarmRepositoryInterface::class);
     }
 
     /**
@@ -38,7 +38,7 @@ class FarmRepositoryTest extends TestCase
             ->for($user, 'user')
             ->count(2)->create();
 
-        $farms = $this->repo->getAllFarms();
+        $farms = $this->repository->getAllFarms();
 
         $this->assertCount(2, $farms);
         $this->assertInstanceOf(Farm::class, $farms->first());
@@ -51,7 +51,7 @@ class FarmRepositoryTest extends TestCase
     public function testDetailByIdNotComeWithReviewsAndState(): void
     {
         $farm = Farm::factory()->create();
-        $found = $this->repo->getDetailById($farm->id);
+        $found = $this->repository->getDetailById($farm->id);
 
         $this->assertSame($farm->id, $found->id);
         $this->assertFalse($found->relationLoaded('reviews'));
@@ -71,7 +71,7 @@ class FarmRepositoryTest extends TestCase
             ->has(Review::factory()->count(2), 'reviews')
             ->create();
 
-        $found = $this->repo->getDetailById($farm->id, ['state', 'reviews']);
+        $found = $this->repository->getDetailById($farm->id, ['state', 'reviews']);
 
         $this->assertTrue($found->relationLoaded('reviews'));
         $this->assertCount(2, $found->reviews);
@@ -86,6 +86,6 @@ class FarmRepositoryTest extends TestCase
     public function testGetDetailByIdThrowsWhenNotFound(): void
     {
         $this->expectException(ModelNotFoundException::class);
-        $this->repo->getDetailById(999999);
+        $this->repository->getDetailById(999999);
     }
 }

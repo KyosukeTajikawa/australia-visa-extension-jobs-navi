@@ -16,7 +16,11 @@ class DetailTest extends TestCase
 
     use RefreshDatabase;
 
-    public function test_Detail_receive_farm_props_not_come_with_reviews(): void
+    /**
+     * フロント(Detail)の確認
+     * Httpリクエスト(200)が返り、リレーションがない場合の確認
+     */
+    public function testDetailReceiveFarmPropsNotComeWithReviews(): void
     {
         $user = User::factory()->create();
         $state = State::factory()->create();
@@ -48,7 +52,11 @@ class DetailTest extends TestCase
             );
     }
 
-    public function test_Detail_receive_farm_props_come_with_reviews_state(): void
+    /**
+     * フロント(Detail)の確認
+     * Httpリクエスト(200)が返り、リレーションがある時の場合の確認
+     */
+    public function testDetailReceiveFarmPropsComeWithReviewsState(): void
     {
         $user  = User::factory()->create();
         $state = State::factory()->create();
@@ -78,7 +86,11 @@ class DetailTest extends TestCase
             );
     }
 
-    public function test_detail_throws_model_not_found_exception(): void
+    /**
+     * フロント(Detail)の確認
+     * Httpリクエスト(404)が返るかの確認
+     */
+    public function testDetailThrowsModelNotFoundException(): void
     {
         $this->get(route('farm.detail', ['id' => 999999]))
             ->assertNotFound();

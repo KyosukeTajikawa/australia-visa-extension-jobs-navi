@@ -24,4 +24,4 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/farm/{id}', [FarmController::class, 'detail'])->name('farm.detail');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

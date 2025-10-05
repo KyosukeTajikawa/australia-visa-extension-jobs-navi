@@ -50,8 +50,8 @@ const Detail = ({ farm }: DetailProps) => {
             <Box mb={4}>
                 <Image src="https://placehold.co/300x300" boxSize={"300px"} alt={farm.name} objectFit={"contain"} />
             </Box>
-                <Text mb={1}>電話番号:{farm.phone_number}</Text>
-                <Text mb={1}>メールアドレス:{farm.email}</Text>
+            <Text mb={1}>電話番号:{farm.phone_number ? farm.phone_number : "登録なし"}</Text>
+            <Text mb={1}>メールアドレス:{farm.email ? farm.email : "登録なし"}</Text>
             <HStack mb={2}>
                 <Text>住所:{farm.street_address}</Text>
                 <Text>{farm.suburb}</Text>

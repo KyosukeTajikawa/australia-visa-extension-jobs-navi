@@ -66,6 +66,11 @@ class FarmController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        //ユニーク制約、かつ、任意（nullable）なので空文字をnullに変換
+        $request->merge([
+            'phone_number' => $request->filled('phone_number') ? $request->input('phone_number') : null,
+            'email' => $request->filled('email') ? $request->input('email') : null,
+        ]);
 
 
         $validated = $request->validate(

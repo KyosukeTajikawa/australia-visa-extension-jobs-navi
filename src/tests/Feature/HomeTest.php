@@ -14,7 +14,11 @@ class HomeTest extends TestCase
 
     use RefreshDatabase;
 
-    public function test_home_receive_farm_props(): void
+    /**
+     * フロント(Home)の確認
+     * プロップスが届いており、その配列が期待しているプロップスであるかの確認
+     */
+    public function testHomeReceiveFarmProps(): void
     {
         $user = User::factory()->create();
         $state = State::factory()->create();
@@ -42,14 +46,17 @@ class HomeTest extends TestCase
         );
     }
 
-    public function test_home_shows_empty_farms_when_none_exist(): void
+    /**
+     * フロント(Home)の確認
+     * プロップスが空配列でも届くか
+     */
+    public function testHomeShowsEmptyFarmsWhenNoneExist(): void
     {
         $this->get('/home')
             ->assertOk()
             ->assertInertia(
                 fn(Assert $page) => $page
                     ->component('Home')
-                    // farmsが空配列として存在していることを確認
                     ->has('farms', 0)
             );
     }

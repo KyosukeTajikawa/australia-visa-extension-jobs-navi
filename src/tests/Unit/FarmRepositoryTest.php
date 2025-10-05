@@ -23,7 +23,11 @@ class FarmRepositoryTest extends TestCase
         $this->repo = new FarmRepository();
     }
 
-    public function test_get_all_farms(): void
+    /**
+     * FarmRepository::getAllFarms() メソッドのテスト
+     * getAllFarms() が全てのファームを正しく取得できるかを確認する。
+     */
+    public function testGetAllFarms(): void
     {
 
         $state = State::factory()->create();
@@ -40,7 +44,11 @@ class FarmRepositoryTest extends TestCase
         $this->assertInstanceOf(Farm::class, $farms->first());
     }
 
-    public function test_detail_by_id_not_come_with_reviews_and_state(): void
+    /**
+     * FarmRepository::getDetailById() メソッドのテスト
+     * getAllFarms() の引数がidのみの時、イーガーロードをしていないかを確認する。
+     */
+    public function testDetailByIdNotComeWithReviewsAndState(): void
     {
         $farm = Farm::factory()->create();
         $found = $this->repo->getDetailById($farm->id);
@@ -50,7 +58,11 @@ class FarmRepositoryTest extends TestCase
         $this->assertFalse($found->relationLoaded('state'));
     }
 
-    public function test_detail_by_id_come_with_reviews_and_state(): void
+    /**
+     * FarmRepository::getDetailById() メソッドのテスト
+     * getAllFarms() の引数にリレーションがある時、データを取得しているかを確認する。
+     */
+    public function testDetailByIdComeWithReviewsAndState(): void
     {
         $state = State::factory()->create();
 
@@ -67,7 +79,11 @@ class FarmRepositoryTest extends TestCase
         $this->assertSame($state->id, $found->state->id);
     }
 
-    public function test_get_detail_by_id_throws_when_not_found(): void
+    /**
+     * FarmRepository::getDetailById() メソッドのテスト
+     * getAllFarms() に引数がない時、findOrFailのModelNotFoundExceptionを返すか確認
+     */
+    public function testGetDetailByIdThrowsWhenNotFound(): void
     {
         $this->expectException(ModelNotFoundException::class);
         $this->repo->getDetailById(999999);

@@ -30,20 +30,20 @@ class HomeTest extends TestCase
             ->create();
 
         $response = $this->get('/home');
-        $response->assertStatus(200);
 
-        $response->assertInertia(
-            fn(Assert $page) => $page
-                ->component('Home')
-                ->has('farms', 2)
-                ->has(
-                    'farms.0',
-                    fn(Assert $farm) => $farm
-                        ->whereNot('id', null)
-                        ->whereNot('name', null)
-                        ->etc()
-                )
-        );
+        $response->assertOk()
+            ->assertInertia(
+                fn(Assert $page) => $page
+                    ->component('Home')
+                    ->has('farms', 2)
+                    ->has(
+                        'farms.0',
+                        fn(Assert $farm) => $farm
+                            ->whereNot('id', null)
+                            ->whereNot('name', null)
+                            ->etc()
+                    )
+            );
     }
 
     /**

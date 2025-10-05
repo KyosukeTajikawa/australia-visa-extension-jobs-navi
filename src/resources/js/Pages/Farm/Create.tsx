@@ -29,7 +29,6 @@ const Create = ({ states }: CreateProps) => {
             ...data,
             [name]: value,
         });
-        console.log(data);
     };
 
     const handleSubmit = (e: React.FormEvent) => {

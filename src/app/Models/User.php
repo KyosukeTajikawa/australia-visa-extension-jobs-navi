@@ -25,7 +25,6 @@ class User extends Authenticatable
         'password',
         'gender',
         'birthday',
-        'password',
     ];
 
     /**
@@ -53,7 +52,7 @@ class User extends Authenticatable
 
     /**
      * ユーザーがお気に入りしたレビューを取得（中間テーブル）
-     * @return belongsToMany
+     * @return BelongsToMany
      */
     public function reviews(): BelongsToMany
     {

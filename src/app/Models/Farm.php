@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use app\Models\Crop;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\hasMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Farm extends Model
 {
@@ -27,7 +26,7 @@ class Farm extends Model
 
     /**
      * ファーム情報を登録したユーザーを取得
-     * @return belongsTo
+     * @return BelongsTo
      */
     public function user(): BelongsTo
     {
@@ -36,20 +35,16 @@ class Farm extends Model
 
     /**
      * ファームの住所（州）を取得
-     * @return belongsTo
+     * @return BelongsTo
      */
     public function state(): BelongsTo
     {
         return $this->belongsTo(State::class);
     }
-    public function review()
-    {
-        return $this->hasMany(Review::class);
-    }
 
     /**
      * ファームに対するレビューを取得
-     * @return hamMany
+     * @return HasMany
      */
     public function reviews(): HasMany
     {
@@ -58,7 +53,7 @@ class Farm extends Model
 
     /**
      * ファームで扱っている作物を取得(中間テーブル)
-     * @return belongsToMany
+     * @return BelongsToMany
      */
     public function crops(): BelongsToMany
     {

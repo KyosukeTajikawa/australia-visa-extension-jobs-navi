@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use app\Models\Farm;
+use App\Models\Farm;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -13,8 +13,8 @@ class Crop extends Model
     ];
 
     /**
-     * 作物が扱われているファーム取得(中間テーブル)
-     * @return belongsToMany
+     * 紐づくファームを取得
+     * @return BelongsToMany
      */
     public function farms(): BelongsToMany
     {

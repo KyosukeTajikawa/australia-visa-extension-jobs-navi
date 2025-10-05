@@ -10,14 +10,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 // 認証テスト
-Route::get('/login-test', function () {return Inertia::render('LoginTest');});
+Route::get('/login-test', function () {
+    return Inertia::render('LoginTest');
+});
 
 // ホーム画面
 Route::get('/home', [FarmController::class, 'index'])->name('home');
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', fn() => Inertia::render('Dashboard'))
-        ->name('dashboard');
-});
+Route::middleware(['auth'])->group(function () {});
 
-require __DIR__.'/auth.php';
+//ファーム
+Route::get('/farm/{id}', [FarmController::class, 'detail'])->name('farm.detail');
+
+//ホーム画面
+Route::get('/home', [FarmController::class, 'index'])->name('index');
+
+require __DIR__ . '/auth.php';

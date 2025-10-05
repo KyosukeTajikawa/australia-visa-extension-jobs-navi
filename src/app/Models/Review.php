@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-use app\Models\User;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+
 
 class Review extends Model
 {
@@ -34,7 +35,7 @@ class Review extends Model
 
     /**
      * レビューしたユーザーを取得
-     * @return belongsTo
+     * @return BelongsTo
      */
     public function reviewUser(): BelongsTo
     {
@@ -43,16 +44,15 @@ class Review extends Model
 
     /**
      * レビューが紐づくファームを取得
-     * @return belongsTo
+     * @return BelongsTo
      */
     public function farm(): BelongsTo
     {
         return $this->belongsTo(Farm::class);
     }
-
     /**
      * レビューに紐づくレビューコメントを取得
-     * @return hasMany
+     * @return HasMany
      */
     public function reviewComments(): HasMany
     {
@@ -61,7 +61,7 @@ class Review extends Model
 
     /**
      * レビューをお気に入りしたユーザーを取得（中間テーブル）
-     * @return belongsToMany
+     * @return BelongsToMany
      */
     public function favoritedUsers(): BelongsToMany
     {

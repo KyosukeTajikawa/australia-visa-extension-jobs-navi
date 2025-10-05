@@ -15,7 +15,7 @@ class ReviewComments extends Model
 
     /**
      * レビューコメントの投稿者を取得
-     * @return belongsTo
+     * @return BelongsTo
      */
     public function user(): BelongsTo
     {
@@ -24,9 +24,9 @@ class ReviewComments extends Model
 
     /**
      * レビューコメントが紐づくレビューを取得
-     * @return belongsTo
+     * @return BelongsTo
      */
-    public function review(): belongsTo
+    public function review(): BelongsTo
     {
         return $this->belongsTo(Review::class);
     }

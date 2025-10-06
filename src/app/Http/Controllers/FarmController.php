@@ -6,6 +6,7 @@ use App\Http\Requests\Farms\FarmStoreRequest;
 use App\Repositories\FarmRepositoryInterface;
 use App\Services\FarmServiceInterface;
 use Illuminate\Http\RedirectResponse;
+
 use Inertia\Inertia;
 use Inertia\Response;
 

@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Farm;
+use App\Models\FarmImages;
 use App\Repositories\FarmRepositoryInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -96,7 +100,25 @@ class FarmController extends Controller
 
         $validated['created_user_id'] = $request->user()->id;
 
-        $farm = Farm::create($validated);
+        DB::beginTransaction();
+        try {
+            $uploadInfo = Storage::disk('s3')->putFile("/test", $request->file('(file'), 'public');
+            $url = Storage::disk('s3')->url($uploadInfo);
+
+            $farmImages = new FarmImages();
+            $farmImages->url = $url;
+            $farmImages->save();
+
+            $farm = Farm::create($validated);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            $message = $e->getMessage();
+            Log::error($message);
+            DB::rollBack();
+            throw $e;
+        }
+
 
         return redirect()->route('farm.detail', ['id' => $farm->id,]);
     }

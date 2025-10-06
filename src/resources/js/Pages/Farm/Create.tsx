@@ -6,11 +6,24 @@ import {
 } from "@chakra-ui/react";
 import { useForm } from "@inertiajs/react";
 
+type FormData = {
+    name: string;
+    phone_number: string;
+    email: string;
+    street_address: string;
+    suburb: string;
+    postcode: string;
+    state_id: string;
+    description: string;
+    file: File | null;
+}
+
 type State = { id: number; name: string; };
-type CreateProps = { states: State[]; };
+
+type CreateProps = { states: State[]};
 
 const Create = ({ states }: CreateProps) => {
-    const { data, setData, post, processing, errors: serverErrors } = useForm({
+    const { data, setData, post, processing, errors: serverErrors, reset } = useForm<FormData>({
         name: "",
         phone_number: "",
         email: "",
@@ -19,22 +32,30 @@ const Create = ({ states }: CreateProps) => {
         postcode: "",
         state_id: "",
         description: "",
+        file: null,
     });
 
-    const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-    ) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setData({
-            ...data,
-            [name]: value,
-        });
+        setData(name as keyof typeof data, value);
     };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0] ?? null;
+
+        if (file && file.size > 5 * 1024 *1024) {
+            alert("5MBまでの画像を選択してください");
+            e.currentTarget.value = "";
+            return
+        }
+        setData("file", file);
+    }
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         post(route("farm.store"), {
             preserveScroll: true,
+            onSuccess: () => reset("file"),
         });
     };
 
@@ -42,7 +63,7 @@ const Create = ({ states }: CreateProps) => {
         <Box m={2} w={"90%"}>
             <Heading as={"h4"} mb={4}>ファーム新規登録</Heading>
 
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} encType="multipart/form-data">
                 {/* ファーム名 */}
                 <FormControl mb={2} isRequired isInvalid={!!serverErrors.name}>
                     <FormLabel htmlFor="name">ファーム名</FormLabel>
@@ -102,7 +123,7 @@ const Create = ({ states }: CreateProps) => {
                     <FormLabel htmlFor="postcode">Postcode</FormLabel>
                     <Input
                         id="postcode" type="text" name="postcode" value={data.postcode}
-                        onChange={handleChange} placeholder="4343" inputMode="numeric"
+                        onChange={handleChange} placeholder="4343" inputMode="numeric" maxLength={4}
                     />
                     <FormErrorMessage>{serverErrors.postcode}</FormErrorMessage>
                 </FormControl>
@@ -131,6 +152,13 @@ const Create = ({ states }: CreateProps) => {
                         onChange={handleChange} placeholder="自由記述欄（なるべく記入をお願いします）"
                     />
                     <FormErrorMessage>{serverErrors.description}</FormErrorMessage>
+                </FormControl>
+
+                {/* 画像 */}
+                <FormControl mb={2} isInvalid={!!serverErrors.file}>
+                    <FormLabel htmlFor="file">ファーム画像（最大5MB目安）</FormLabel>
+                        <Input type="file" name="file" id="file" accept="image/*" onChange={handleFileChange}/>
+                    <FormErrorMessage>{serverErrors.file}</FormErrorMessage>
                 </FormControl>
 
                 {/* ボタン */}

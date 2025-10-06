@@ -10,8 +10,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
+
 
 class FarmController extends Controller
 {
@@ -85,7 +87,9 @@ class FarmController extends Controller
                 'street_address'  => ['required', 'string', 'max:100'],
                 'suburb'          => ['required', 'string', 'max:50'],
                 'postcode'        => ['required',  'digits:4'],
-                'state_id'        => ['required', 'exists:states,id'],
+                'state_id'        => ['required', 'integer', 'exists:states,id'],
+                'description'     => ['nullable', 'string', 'max:1000'],
+                'file'            => ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png', 'max:5120'],
             ],
             [
                 'name.required'           => 'ファーム名は必須です。',
@@ -95,6 +99,9 @@ class FarmController extends Controller
                 'postcode.required'       => '郵便番号は必須です。',
                 'postcode.digits'         => '郵便番号は4桁の数字で入力してください。',
                 'state_id.required'       => '州を選択してください。',
+                'file.image'              => '画像ファイルを選択してください。',
+                'file.mimes'              => 'jpg/jpeg/png のいずれかを選択してください。',
+                'file.max'                => '画像サイズは5MB以下にしてください。',
             ]
         );
 
@@ -102,14 +109,26 @@ class FarmController extends Controller
 
         DB::beginTransaction();
         try {
-            $uploadInfo = Storage::disk('s3')->putFile("/test", $request->file('(file'), 'public');
-            $url = Storage::disk('s3')->url($uploadInfo);
-
-            $farmImages = new FarmImages();
-            $farmImages->url = $url;
-            $farmImages->save();
-
             $farm = Farm::create($validated);
+
+            if ($request->hasFile('file')) {
+                $file = $request->file('file');
+
+                $extension = $file->getClientOriginalExtension();
+                $name = (String)Str::uuid() . '.' . $extension;
+                $dir = "farms/{$farm->id}";
+
+                $path = Storage::disk('s3')->putFileAs($dir, $file, $name, ['visibility' => 'public']);
+
+                /** @var \Illuminate\Filesystem\FilesystemAdapter $s3 */
+                $s3 = Storage::disk('s3');
+                $url = $s3->url($path);
+
+                FarmImages::create([
+                    'farm_id' => $farm->id,
+                    'url'     => $url,
+                ]);
+            }
 
             DB::commit();
         } catch (\Exception $e) {

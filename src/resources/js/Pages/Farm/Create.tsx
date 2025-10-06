@@ -1,9 +1,6 @@
 import React from "react";
 import MainLayout from "@/Layouts/MainLayout";
-import {
-    Box, Heading, Text, FormControl, FormLabel, FormErrorMessage,
-    Input, Select, Textarea, Button,
-} from "@chakra-ui/react";
+import { Box, Heading, Text, FormControl, FormLabel, FormErrorMessage, Input, Select, Textarea, Button } from "@chakra-ui/react";
 import { useForm } from "@inertiajs/react";
 
 type FormData = {
@@ -20,7 +17,7 @@ type FormData = {
 
 type State = { id: number; name: string; };
 
-type CreateProps = { states: State[]};
+type CreateProps = { states: State[] };
 
 const Create = ({ states }: CreateProps) => {
     const { data, setData, post, processing, errors: serverErrors, reset } = useForm<FormData>({
@@ -43,7 +40,7 @@ const Create = ({ states }: CreateProps) => {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0] ?? null;
 
-        if (file && file.size > 5 * 1024 *1024) {
+        if (file && file.size > 5 * 1024 * 1024) {
             alert("5MBまでの画像を選択してください");
             e.currentTarget.value = "";
             return
@@ -149,15 +146,15 @@ const Create = ({ states }: CreateProps) => {
                     </FormLabel>
                     <Textarea
                         id="description" name="description" value={data.description}
-                        onChange={handleChange} placeholder="自由記述欄（なるべく記入をお願いします）"
-                    />
+                        onChange={handleChange} placeholder="自由記述欄（なるべく記入をお願いします）" maxLength={1000}
+                        />
                     <FormErrorMessage>{serverErrors.description}</FormErrorMessage>
                 </FormControl>
 
                 {/* 画像 */}
                 <FormControl mb={2} isInvalid={!!serverErrors.file}>
                     <FormLabel htmlFor="file">ファーム画像（最大5MB目安）</FormLabel>
-                        <Input type="file" name="file" id="file" accept="image/*" onChange={handleFileChange}/>
+                    <Input type="file" name="file" id="file" accept="image/*" onChange={handleFileChange} />
                     <FormErrorMessage>{serverErrors.file}</FormErrorMessage>
                 </FormControl>
 

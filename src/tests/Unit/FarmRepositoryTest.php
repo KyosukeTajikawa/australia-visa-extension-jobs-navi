@@ -83,7 +83,7 @@ class FarmRepositoryTest extends TestCase
 
     /**
      * getDetailById() メソッドのテスト
-     * getAllFarms() に引数がない時、findOrFailのModelNotFoundExceptionを返すか確認
+     * getAllFarms() に存在しない引数が渡された時、findOrFailのModelNotFoundExceptionを返すか確認
      */
     public function testGetDetailByIdThrowsWhenNotFound(): void
     {

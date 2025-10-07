@@ -24,7 +24,7 @@ class FarmRepositoryTest extends TestCase
     }
 
     /**
-     * FarmRepository::getAllFarms() メソッドのテスト
+     * getAllFarms() メソッドのテスト
      * getAllFarms() が全てのファームを正しく取得できるかを確認する。
      */
     public function testGetAllFarms(): void
@@ -45,7 +45,7 @@ class FarmRepositoryTest extends TestCase
     }
 
     /**
-     * FarmRepository::getDetailById() メソッドのテスト
+     * getDetailById() メソッドのテスト
      * getAllFarms() の引数がidのみの時、イーガーロードをしていないかを確認する。
      */
     public function testDetailByIdNotComeWithReviewsAndState(): void
@@ -59,7 +59,7 @@ class FarmRepositoryTest extends TestCase
     }
 
     /**
-     * FarmRepository::getDetailById() メソッドのテスト
+     * getDetailById() メソッドのテスト
      * getAllFarms() の引数にリレーションがある時、データを取得しているかを確認する。
      */
     public function testDetailByIdComeWithReviewsAndState(): void
@@ -80,7 +80,7 @@ class FarmRepositoryTest extends TestCase
     }
 
     /**
-     * FarmRepository::getDetailById() メソッドのテスト
+     * getDetailById() メソッドのテスト
      * getAllFarms() に引数がない時、findOrFailのModelNotFoundExceptionを返すか確認
      */
     public function testGetDetailByIdThrowsWhenNotFound(): void

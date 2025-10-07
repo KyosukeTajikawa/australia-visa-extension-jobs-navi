@@ -83,7 +83,7 @@ const Create = ({ states }: CreateProps) => {
                     </FormLabel>
                     <Input
                         id="phone_number" type="tel" name="phone_number" value={data.phone_number}
-                        onChange={handleChange} placeholder="07-5466-3200" inputMode="numeric" maxLength={15}
+                        onChange={handleChange} placeholder="0754663200" inputMode="numeric" pattern="^\d{10,11}$" title="電話番号はハイフンなしの数字10桁または11桁で入力してください。"
                     />
                     <FormErrorMessage>{serverErrors.phone_number}</FormErrorMessage>
                 </FormControl>

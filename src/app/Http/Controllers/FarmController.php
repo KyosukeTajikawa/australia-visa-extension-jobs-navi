@@ -82,7 +82,7 @@ class FarmController extends Controller
         $validated = $request->validate(
             [
                 'name'            => ['required', 'string', 'max:50'],
-                'phone_number'    => ['nullable', 'string', 'max:15'],
+                'phone_number'    => ['nullable', 'string', 'regex:/^\d{10,11}$/'],
                 'email'           => ['nullable', 'email:rfc', 'max:255'],
                 'street_address'  => ['required', 'string', 'max:100'],
                 'suburb'          => ['required', 'string', 'max:50'],
@@ -94,6 +94,7 @@ class FarmController extends Controller
             ],
             [
                 'name.required'           => 'ファーム名は必須です。',
+                'phone_number.regex'      => '電話番号はハイフンなしの数字10桁,11桁で入力してください。',
                 'email.email'             => 'メールアドレスの形式が正しくありません。',
                 'street_address.required' => '住所を入力してください。',
                 'suburb.required'         => '地域を入力してください。',

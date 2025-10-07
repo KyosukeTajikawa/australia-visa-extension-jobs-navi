@@ -59,4 +59,16 @@ class Farm extends Model
     {
         return $this->belongsToMany(Crop::class, 'farm_crops', 'farm_id', 'crop_id')->withTimestamps();
     }
+
+    // 全画像（将来ギャラリーに使う）
+    public function images()
+    {
+        return $this->hasMany(FarmImages::class);
+    }
+
+    // 表示用の“最新1枚”
+    public function latestImage()
+    {
+        return $this->hasOne(FarmImages::class)->latestOfMany();
+    }
 }

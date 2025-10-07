@@ -8,6 +8,11 @@ type State = {
     name: string;
 };
 
+type FarmImage = {
+    id: number;
+    url: string;
+};
+
 type Review = {
     id: number;
     type2: string;
@@ -36,6 +41,7 @@ type Farm = {
     postcode: string;
     state: State;
     reviews: Review[];
+    latest_image?: FarmImage | null;
 };
 
 type DetailProps = { farm: Farm };
@@ -48,7 +54,8 @@ const Detail = ({ farm }: DetailProps) => {
                 <Heading as={"h2"} fontSize={{ base: "24px", md: "30px", lg: "40px" }} wordBreak={"break-word"} whiteSpace={"normal"}>{farm.name}</Heading>
             </Box>
             <Box mb={4}>
-                <Image src="https://placehold.co/300x300" boxSize={"300px"} alt={farm.name} objectFit={"contain"} />
+                <Image src={farm.latest_image?.url ?? "https://placehold.co/300x300"} alt={farm.name} objectFit={"contain"} onError={(e) => {(e.currentTarget as HTMLImageElement).src = "https://placehold.co/300x300";
+                }} />
             </Box>
             <Text mb={1}>電話番号:{farm.phone_number ? farm.phone_number : "登録なし"}</Text>
             <Text mb={1}>メールアドレス:{farm.email ? farm.email : "登録なし"}</Text>

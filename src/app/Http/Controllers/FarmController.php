@@ -46,7 +46,7 @@ class FarmController extends Controller
      */
     public function detail(int $id): Response
     {
-        $farm = $this->farmRepository->getDetailById($id, ['reviews', 'state']);
+        $farm = $this->farmRepository->getDetailById($id, ['reviews', 'state', 'latestImage']);
 
         return Inertia::render('Farm/Detail', [
             'farm' => $farm,
@@ -118,7 +118,7 @@ class FarmController extends Controller
                 $name = (String)Str::uuid() . '.' . $extension;
                 $dir = "farms/{$farm->id}";
 
-                $path = Storage::disk('s3')->putFileAs($dir, $file, $name, ['visibility' => 'public']);
+                $path = Storage::disk('s3')->putFileAs($dir, $file, $name, file_get_contents($file), ['visibility' => 'public']);
 
                 /** @var \Illuminate\Filesystem\FilesystemAdapter $s3 */
                 $s3 = Storage::disk('s3');

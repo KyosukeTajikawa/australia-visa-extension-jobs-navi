@@ -12,7 +12,8 @@ type FormData = {
     postcode: string;
     state_id: string;
     description: string;
-    file: File | null;
+    // file: File | null;
+    files: File[];
 }
 
 type State = { id: number; name: string; };
@@ -29,7 +30,7 @@ const Create = ({ states }: CreateProps) => {
         postcode: "",
         state_id: "",
         description: "",
-        file: null,
+        files: [],
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -38,21 +39,17 @@ const Create = ({ states }: CreateProps) => {
     };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0] ?? null;
+        const images = e.target.files ? Array.from(e.target.files) : [];
+        const newFiles = [...data.files, ...images];
 
-        if (file && file.size > 5 * 1024 * 1024) {
-            alert("5MBまでの画像を選択してください");
-            e.currentTarget.value = "";
-            return
-        }
-        setData("file", file);
+        setData("files", newFiles);
     }
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         post(route("farm.store"), {
             preserveScroll: true,
-            onSuccess: () => reset("file"),
+            onSuccess: () => reset("files"),
         });
     };
 
@@ -152,10 +149,10 @@ const Create = ({ states }: CreateProps) => {
                 </FormControl>
 
                 {/* 画像 */}
-                <FormControl mb={2} isInvalid={!!serverErrors.file}>
-                    <FormLabel htmlFor="file">ファーム画像（最大5MB目安）</FormLabel>
-                    <Input type="file" name="file" id="file" accept="image/*" onChange={handleFileChange} />
-                    <FormErrorMessage>{serverErrors.file}</FormErrorMessage>
+                <FormControl mb={2} isInvalid={!!serverErrors.files}>
+                    <FormLabel htmlFor="files">ファーム画像（最大5MB目安）</FormLabel>
+                    <Input type="file" name="files" id="files" accept="image/*" multiple onChange={handleFileChange} />
+                    <FormErrorMessage>{serverErrors.files}</FormErrorMessage>
                 </FormControl>
 
                 {/* ボタン */}

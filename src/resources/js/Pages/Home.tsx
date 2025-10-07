@@ -1,8 +1,7 @@
 import React from "react";
-import { Box, Heading, VStack, HStack, Image, Text, Link, } from "@chakra-ui/react";
+import {Box, Heading, VStack, HStack, Image, Text, Link,} from "@chakra-ui/react";
 import MainLayout from "@/Layouts/MainLayout";
 import type {Page} from "@inertiajs/core";
-
 
 type Farm = {
     id: number;
@@ -37,5 +36,5 @@ const Home = ({ farms }: HomeProps) => {
     );
 };
 
-Home.layout = (page: React.ReactNode) => (<MainLayout title="ファーム情報サイト">{page}</MainLayout>);
+Home.layout = (page: React.ReactNode) => <MainLayout children={page} title="ファーム情報サイト" />
 export default Home;

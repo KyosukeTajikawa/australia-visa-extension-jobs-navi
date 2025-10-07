@@ -33,15 +33,17 @@ class FarmRepositoryTest extends TestCase
         $state = State::factory()->create();
         $user = User::factory()->create();
 
-        Farm::Factory()
+        $farms = Farm::Factory()
             ->for($state, 'state')
             ->for($user, 'user')
             ->count(2)->create();
 
-        $farms = $this->repository->getAllFarms();
+        $result = $this->repository->getAllFarms();
 
-        $this->assertCount(2, $farms);
-        $this->assertInstanceOf(Farm::class, $farms->first());
+        $this->assertCount(2, $result);
+        $this->assertSame($farms[0]->id, $result[0]->id);
+        $this->assertSame($farms[1]->id, $result[1]->id);
+        $this->assertInstanceOf(Farm::class, $result->first());
     }
 
     /**

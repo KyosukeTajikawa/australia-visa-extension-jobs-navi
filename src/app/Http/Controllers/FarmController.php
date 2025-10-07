@@ -89,7 +89,8 @@ class FarmController extends Controller
                 'postcode'        => ['required',  'digits:4'],
                 'state_id'        => ['required', 'integer', 'exists:states,id'],
                 'description'     => ['nullable', 'string', 'max:1000'],
-                'file'            => ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png', 'max:5120'],
+                'files'           => ['nullable', 'array', ],
+                'files.*'         => ['image', 'mimes:jpg,jpeg,png', 'max:5120'],
             ],
             [
                 'name.required'           => 'ファーム名は必須です。',
@@ -99,9 +100,9 @@ class FarmController extends Controller
                 'postcode.required'       => '郵便番号は必須です。',
                 'postcode.digits'         => '郵便番号は4桁の数字で入力してください。',
                 'state_id.required'       => '州を選択してください。',
-                'file.image'              => '画像ファイルを選択してください。',
-                'file.mimes'              => 'jpg/jpeg/png のいずれかを選択してください。',
-                'file.max'                => '画像サイズは5MB以下にしてください。',
+                'file.*.image'            => '画像ファイルを選択してください。',
+                'file.*.mimes'            => 'jpg/jpeg/png のいずれかを選択してください。',
+                'file.*.max'              => '画像サイズは5MB以下にしてください。',
             ]
         );
 

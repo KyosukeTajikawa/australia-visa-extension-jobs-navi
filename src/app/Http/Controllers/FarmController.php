@@ -111,23 +111,25 @@ class FarmController extends Controller
         try {
             $farm = Farm::create($validated);
 
-            if ($request->hasFile('file')) {
-                $file = $request->file('file');
+            if ($request->hasFile('files')) {
+                $files = $request->file('files');
 
-                $extension = $file->getClientOriginalExtension();
-                $name = (String)Str::uuid() . '.' . $extension;
-                $dir = "farms/{$farm->id}";
+                foreach ($files as $file) {
+                    $extension = $file->getClientOriginalExtension();
+                    $name = (string)Str::uuid() . '.' . $extension;
+                    $dir = "farms/{$farm->id}";
 
-                $path = Storage::disk('s3')->putFileAs($dir, $file, $name, file_get_contents($file), ['visibility' => 'public']);
+                    $path = Storage::disk('s3')->putFileAs($dir, $file, $name, file_get_contents($file), ['visibility' => 'public']);
 
-                /** @var \Illuminate\Filesystem\FilesystemAdapter $s3 */
-                $s3 = Storage::disk('s3');
-                $url = $s3->url($path);
+                    /** @var \Illuminate\Filesystem\FilesystemAdapter $s3 */
+                    $s3 = Storage::disk('s3');
+                    $url = $s3->url($path);
 
-                FarmImages::create([
-                    'farm_id' => $farm->id,
-                    'url'     => $url,
-                ]);
+                    FarmImages::create([
+                        'farm_id' => $farm->id,
+                        'url'     => $url,
+                    ]);
+                }
             }
 
             DB::commit();

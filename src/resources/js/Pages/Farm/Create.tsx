@@ -1,6 +1,6 @@
-import React from "react";
+import React, {useState} from "react";
 import MainLayout from "@/Layouts/MainLayout";
-import { Box, Heading, Text, FormControl, FormLabel, FormErrorMessage, Input, Select, Textarea, Button } from "@chakra-ui/react";
+import { Box, Heading, Text, FormControl, FormLabel, FormErrorMessage, Input, Select, Textarea, Button, HStack } from "@chakra-ui/react";
 import { useForm } from "@inertiajs/react";
 
 type FormData = {
@@ -12,7 +12,6 @@ type FormData = {
     postcode: string;
     state_id: string;
     description: string;
-    // file: File | null;
     files: File[];
 }
 
@@ -41,6 +40,15 @@ const Create = ({ states }: CreateProps) => {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const images = e.target.files ? Array.from(e.target.files) : [];
         const newFiles = [...data.files, ...images];
+
+        if (newFiles.length > 3) {
+            const initialize = newFiles.slice(0,0);
+            setData("files", initialize);
+            e.target.value = "";
+
+            alert("画像は3枚以下にしてください。");
+            return;
+        }
 
         setData("files", newFiles);
     }
@@ -144,14 +152,24 @@ const Create = ({ states }: CreateProps) => {
                     <Textarea
                         id="description" name="description" value={data.description}
                         onChange={handleChange} placeholder="自由記述欄（なるべく記入をお願いします）" maxLength={1000}
-                        />
+                    />
                     <FormErrorMessage>{serverErrors.description}</FormErrorMessage>
                 </FormControl>
 
                 {/* 画像 */}
                 <FormControl mb={2} isInvalid={!!serverErrors.files}>
                     <FormLabel htmlFor="files">ファーム画像（最大5MB目安）</FormLabel>
-                    <Input type="file" name="files" id="files" accept="image/*" multiple onChange={handleFileChange} />
+                    {/* プレビュー */}
+                    <HStack mb={2}>
+                        {
+                            data.files.map((file) => (
+                                <Box key={file.name} px={2} >
+                                    <img src={URL.createObjectURL(file)} alt={file.name} style={{ "width": 100, "height": 100, objectFit: "contain" }} />
+                                </Box>
+                            ))
+                        }
+                    </HStack>
+                    <Input type="file" name="file[]" id="files" accept="image/*" multiple onChange={handleFileChange} />
                     <FormErrorMessage>{serverErrors.files}</FormErrorMessage>
                 </FormControl>
 

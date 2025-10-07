@@ -158,7 +158,7 @@ const Create = ({ states }: CreateProps) => {
 
                 {/* 画像 */}
                 <FormControl mb={2} isInvalid={!!serverErrors.files}>
-                    <FormLabel htmlFor="files">ファーム画像（最大5MB目安）</FormLabel>
+                    <FormLabel htmlFor="files">ファーム画像（最大5MB目安）<Text as="span" color="gray.500" fontSize="sm">（任意）</Text></FormLabel>
                     {/* プレビュー */}
                     <HStack mb={2}>
                         {

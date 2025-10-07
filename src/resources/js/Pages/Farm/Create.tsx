@@ -15,7 +15,10 @@ type FormData = {
     files: File[];
 }
 
-type State = { id: number; name: string; };
+type State = {
+    id: number;
+    name: string;
+};
 
 type CreateProps = { states: State[] };
 

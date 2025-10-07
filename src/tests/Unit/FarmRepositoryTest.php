@@ -53,11 +53,11 @@ class FarmRepositoryTest extends TestCase
     public function testDetailByIdNotComeWithReviewsAndState(): void
     {
         $farm = Farm::factory()->create();
-        $found = $this->repository->getDetailById($farm->id);
+        $result = $this->repository->getDetailById($farm->id);
 
-        $this->assertSame($farm->id, $found->id);
-        $this->assertFalse($found->relationLoaded('reviews'));
-        $this->assertFalse($found->relationLoaded('state'));
+        $this->assertSame($farm->id, $result->id);
+        $this->assertFalse($result->relationLoaded('reviews'));
+        $this->assertFalse($result->relationLoaded('state'));
     }
 
     /**
@@ -73,12 +73,12 @@ class FarmRepositoryTest extends TestCase
             ->has(Review::factory()->count(2), 'reviews')
             ->create();
 
-        $found = $this->repository->getDetailById($farm->id, ['state', 'reviews']);
+        $result = $this->repository->getDetailById($farm->id, ['state', 'reviews']);
 
-        $this->assertTrue($found->relationLoaded('reviews'));
-        $this->assertCount(2, $found->reviews);
-        $this->assertTrue($found->relationLoaded('state'));
-        $this->assertSame($state->id, $found->state->id);
+        $this->assertTrue($result->relationLoaded('reviews'));
+        $this->assertCount(2, $result->reviews);
+        $this->assertTrue($result->relationLoaded('state'));
+        $this->assertSame($state->id, $result->state->id);
     }
 
     /**

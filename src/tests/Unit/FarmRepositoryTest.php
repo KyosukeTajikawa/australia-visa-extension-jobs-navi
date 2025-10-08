@@ -30,12 +30,7 @@ class FarmRepositoryTest extends TestCase
     public function testGetAllFarms(): void
     {
 
-        $state = State::factory()->create();
-        $user = User::factory()->create();
-
         $farms = Farm::Factory()
-            ->for($state, 'state')
-            ->for($user, 'user')
             ->count(2)->create();
 
         $result = $this->repository->getAllFarms();

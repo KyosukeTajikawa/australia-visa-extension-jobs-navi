@@ -7,7 +7,7 @@ import MainLayout from "@/Layouts/MainLayout";
 
 const Login = () => {
 
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, processing, errors } = useForm({
         email: "",
         password: "",
     });

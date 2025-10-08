@@ -1,10 +1,7 @@
 import React from "react";
-import {
-    Box, Heading, VStack, HStack, Image, Text, Link, Input, Button, Menu, MenuButton, MenuList, MenuItem, IconButton, Drawer,
-    DrawerBody, DrawerOverlay, DrawerContent, DrawerCloseButton, useDisclosure
-} from "@chakra-ui/react";
-import { HamburgerIcon } from '@chakra-ui/icons';
+import { Box, Heading, VStack, HStack, Image, Text, Link, } from "@chakra-ui/react";
 import MainLayout from "@/Layouts/MainLayout";
+import type {Page} from "@inertiajs/core";
 
 
 type Farm = {
@@ -13,12 +10,11 @@ type Farm = {
     description: string;
 };
 
-type Props = {
-    farms: Farm[]
+type HomeProps = {
+    farms: Farm[];
 };
 
-const Home = ({ farms }) => {
-    const { isOpen, onOpen, onClose } = useDisclosure()
+const Home = ({ farms }: HomeProps) => {
     return (
         <Box m={2}>
             {/* ファーム一覧 */}
@@ -41,5 +37,5 @@ const Home = ({ farms }) => {
     );
 };
 
-Home.layout = page => <MainLayout children={page} title="ファーム情報サイト" />
+Home.layout = (page: React.ReactNode) => (<MainLayout title="ファーム情報サイト">{page}</MainLayout>);
 export default Home;

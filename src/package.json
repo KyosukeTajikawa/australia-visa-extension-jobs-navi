@@ -3,8 +3,10 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "tsc && vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "typecheck": "tsc --noEmit -p tsconfig.json",
+        "build": "tsc --noEmit -p tsconfig.json && vite build",
+        "preview": "vite preview"
     },
     "devDependencies": {
         "@headlessui/react": "^2.0.0",
@@ -20,13 +22,15 @@
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "typescript": "^5.9.2",
-        "vite": "^7.0.4"
+        "vite": "^7.0.4",
+        "vite-plugin-checker": "^0.10.3"
     },
     "dependencies": {
         "@chakra-ui/icons": "^2.2.4",
         "@chakra-ui/react": "^2.8.2",
         "@emotion/react": "^11.14.0",
         "@emotion/styled": "^11.14.1",
-        "framer-motion": "^10.18.0"
+        "framer-motion": "^10.18.0",
+        "ziggy-js": "^2.6.0"
     }
 }

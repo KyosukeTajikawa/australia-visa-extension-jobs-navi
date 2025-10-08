@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import react from '@vitejs/plugin-react';
+import checker from 'vite-plugin-checker';
 
 export default defineConfig({
     plugins: [
@@ -9,5 +10,10 @@ export default defineConfig({
             refresh: true,
         }),
         react(),
+        checker({
+            typescript: true,
+            // ついでに ESLint も見たい場合は↓（ESLint導入済みなら）
+            // eslint: { lintCommand: 'eslint "./resources/**/*.{ts,tsx}"' }
+        })
     ],
 });

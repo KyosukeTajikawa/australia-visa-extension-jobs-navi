@@ -20,14 +20,14 @@ const Home = ({ farms }: HomeProps) => {
             {/* ファーム一覧 */}
             <VStack spacing={4} align={"stretch"}>
                 {farms.map((farm) => (
-                    <Link key={farm.id} href={`/farm/${farm.id}`} _hover={{ color: "gray.500" }}>
+                    <Link display={"block"} w={"100%"} key={farm.id} href={`/farm/${farm.id}`} _hover={{ color: "gray.500" }}>
                         <Box p={4} border={"1px solid"} borderColor={"gray.300"} borderRadius={"md"} boxShadow={"md"}>
                             <HStack>
                                 <Image src="https://placehold.co/100x100" boxSize={"100px"} objectFit={"cover"} alt={farm.name} />
-                                <VStack align={"stretch"}>
+                                <Box flex="1" minW={0}>
                                     <Heading as={"h3"}>{farm.name}</Heading>
                                     <Text>{farm.description}</Text>
-                                </VStack>
+                                </Box>
                             </HStack>
                         </Box>
                     </Link>

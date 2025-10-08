@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Farm;
+use App\Models\State;
 use App\Repositories\FarmRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -29,5 +30,14 @@ class FarmRepository implements FarmRepositoryInterface
     public function getDetailById(int $id, array $relations = []): Farm
     {
         return Farm::with($relations)->findOrFail($id);
+    }
+
+    /**
+     * すべての州情報を取得する
+     * @return Collection<State>
+     */
+    public function getStates(): Collection
+    {
+        return State::get();
     }
 }

@@ -12,11 +12,12 @@ class FarmRepository implements FarmRepositoryInterface
 {
     /**
      * すべてのファーム情報を取得する
+     * ファーム画像(images)も同時に取得する
      * @return Collection<Farm>
      */
-    public function getAllFarms(): Collection
+    public function getAllFarms(array $relation = []): Collection
     {
-        return Farm::get();
+        return Farm::with($relation)->get();
     }
 
     /**

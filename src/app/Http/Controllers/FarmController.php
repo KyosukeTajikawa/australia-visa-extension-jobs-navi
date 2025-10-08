@@ -32,10 +32,14 @@ class FarmController extends Controller
      */
     public function index(): Response
     {
-        $farms = $this->farmRepository->getAllFarms();
+        $farms = $this->farmRepository->getAllFarms([
+            'images' => function ($query) {
+                $query->orderBy('id')->limit(1);
+            },
+        ]);
 
         return Inertia::render('Home', [
-            'farms' => $farms,
+            'farms'     => $farms,
         ]);
     }
 
@@ -143,6 +147,8 @@ class FarmController extends Controller
         }
 
 
-        return redirect()->route('farm.detail', ['id' => $farm->id,]);
+        return redirect()->route('farm.detail', [
+            'id' => $farm->id,
+        ]);
     }
 }

@@ -3,11 +3,17 @@ import { Box, Heading, VStack, HStack, Image, Text, Link, } from "@chakra-ui/rea
 import MainLayout from "@/Layouts/MainLayout";
 import type {Page} from "@inertiajs/core";
 
+type FarmImage = {
+    id: number;
+    farm_id: number;
+    url: string;
+}
 
 type Farm = {
     id: number;
     name: string;
     description: string;
+    images: FarmImage[];
 };
 
 type HomeProps = {
@@ -23,7 +29,7 @@ const Home = ({ farms }: HomeProps) => {
                     <Link display={"block"} w={"100%"} key={farm.id} href={`/farm/${farm.id}`} _hover={{ color: "gray.500" }}>
                         <Box p={4} border={"1px solid"} borderColor={"gray.300"} borderRadius={"md"} boxShadow={"md"}>
                             <HStack>
-                                <Image src="https://placehold.co/100x100" boxSize={"100px"} objectFit={"cover"} alt={farm.name} />
+                                <Image src={farm.images?.[0]?.url ??"https://placehold.co/100x100"} boxSize={"100px"} objectFit={"cover"} alt={farm.name} />
                                 <Box flex="1" minW={0}>
                                     <Heading as={"h3"}>{farm.name}</Heading>
                                     <Text>{farm.description}</Text>

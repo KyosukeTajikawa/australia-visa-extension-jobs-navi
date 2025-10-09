@@ -2,15 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Farm;
-use App\Models\FarmImages;
+use App\Http\Requests\Farms\FarmStoreRequest;
 use App\Repositories\FarmRepositoryInterface;
+use App\Services\FarmServiceInterface;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -23,7 +18,8 @@ class FarmController extends Controller
      * @param FarmRepositoryInterface $farmRepository ファーム情報を扱うリポジトリの実装
      */
     public function __construct(
-        private readonly FarmRepositoryInterface $farmRepository
+        private readonly FarmRepositoryInterface $farmRepository,
+        private readonly FarmServiceInterface $farmService
     ) {}
 
     /**
@@ -74,78 +70,15 @@ class FarmController extends Controller
      * ファームの新規登録
      * @return RedirectResponse
      */
-    public function store(Request $request): RedirectResponse
+    public function store(FarmStoreRequest $request): RedirectResponse
     {
-        //ユニーク制約、かつ、任意（nullable）なので空文字をnullに変換
-        $request->merge([
-            'phone_number' => $request->filled('phone_number') ? $request->input('phone_number') : null,
-            'email' => $request->filled('email') ? $request->input('email') : null,
-        ]);
-
-
-        $validated = $request->validate(
-            [
-                'name'            => ['required', 'string', 'max:50'],
-                'phone_number'    => ['nullable', 'string', 'regex:/^\d{10,11}$/'],
-                'email'           => ['nullable', 'email:rfc', 'max:255'],
-                'street_address'  => ['required', 'string', 'max:100'],
-                'suburb'          => ['required', 'string', 'max:50'],
-                'postcode'        => ['required',  'digits:4'],
-                'state_id'        => ['required', 'integer', 'exists:states,id'],
-                'description'     => ['nullable', 'string', 'max:1000'],
-                'files'           => ['nullable', 'array', ],
-                'files.*'         => ['image', 'mimes:jpg,jpeg,png', 'max:5120'],
-            ],
-            [
-                'name.required'           => 'ファーム名は必須です。',
-                'phone_number.regex'      => '電話番号はハイフンなしの数字10桁,11桁で入力してください。',
-                'email.email'             => 'メールアドレスの形式が正しくありません。',
-                'street_address.required' => '住所を入力してください。',
-                'suburb.required'         => '地域を入力してください。',
-                'postcode.required'       => '郵便番号は必須です。',
-                'postcode.digits'         => '郵便番号は4桁の数字で入力してください。',
-                'state_id.required'       => '州を選択してください。',
-                'file.*.image'            => '画像ファイルを選択してください。',
-                'file.*.mimes'            => 'jpg/jpeg/png のいずれかを選択してください。',
-                'file.*.max'              => '画像サイズは5MB以下にしてください。',
-            ]
-        );
+        $validated = $request->validated();
 
         $validated['created_user_id'] = $request->user()->id;
 
-        DB::beginTransaction();
-        try {
-            $farm = Farm::create($validated);
 
-            if ($request->hasFile('files')) {
-                $files = $request->file('files');
-
-                foreach ($files as $file) {
-                    $extension = $file->getClientOriginalExtension();
-                    $name = (string)Str::uuid() . '.' . $extension;
-                    $dir = "farms/{$farm->id}";
-
-                    $path = Storage::disk('s3')->putFileAs($dir, $file, $name, file_get_contents($file), ['visibility' => 'public']);
-
-                    /** @var \Illuminate\Filesystem\FilesystemAdapter $s3 */
-                    $s3 = Storage::disk('s3');
-                    $url = $s3->url($path);
-
-                    FarmImages::create([
-                        'farm_id' => $farm->id,
-                        'url'     => $url,
-                    ]);
-                }
-            }
-
-            DB::commit();
-        } catch (\Exception $e) {
-            $message = $e->getMessage();
-            Log::error($message);
-            DB::rollBack();
-            throw $e;
-        }
-
+        $files = $request->file('files');
+        $farm = $this->farmService->store($validated, $files);
 
         return redirect()->route('farm.detail', [
             'id' => $farm->id,

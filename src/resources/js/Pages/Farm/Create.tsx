@@ -172,7 +172,7 @@ const Create = ({ states }: CreateProps) => {
                             ))
                         }
                     </HStack>
-                    <Input type="file" name="file[]" id="files" accept="image/*" multiple onChange={handleFileChange} />
+                    <Input type="file" name="files[]" id="files" accept="image/*" multiple onChange={handleFileChange} />
                     <FormErrorMessage>{serverErrors.files}</FormErrorMessage>
                 </FormControl>
 

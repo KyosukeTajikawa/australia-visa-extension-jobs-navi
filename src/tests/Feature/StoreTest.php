@@ -18,7 +18,7 @@ class StoreTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testStore()
+    public function testStore(): void
     {
         $user = User::factory()->create();
         $State = State::factory()->create();
@@ -30,7 +30,7 @@ class StoreTest extends TestCase
             'phone_number' => '0492845949',
             'email' => 'test@gmail.com',
             'street_address' => '2-4-5',
-            'suburb' => 'plainland',
+            'suburb' => 'PlainLand',
             'state_id' => $State->id,
             'postcode' => '4000',
             'description' => 'such a good farm',
@@ -43,9 +43,17 @@ class StoreTest extends TestCase
         );
 
         $response->assertStatus(302);
+        $response->assertRedirect('(farm.detail', ['id' => $post['id']]);
         $response->assertSessionHasNoErrors();
-        $farm = \App\Models\Farm::first();
+        $farm = Farm::first();
         Storage::disk('s3')->assertExists("farms/{$farm->id}");
+        Storage::disk('s3')->assertExists($post['files']->hashName());
+
+        $this->assertDatabaseHas('farms', [
+            'name' => 'A_farm',
+            'phone_number' => '0492845949',
+            'email' => 'test@gmail.com',
+        ]);
     }
 
 

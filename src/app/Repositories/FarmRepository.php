@@ -15,7 +15,7 @@ class FarmRepository implements FarmRepositoryInterface
      */
     public function getAllFarms(): Collection
     {
-        return Farm::get();
+        return Farm::orderBy('id', 'asc')->get();
     }
 
     /**

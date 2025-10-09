@@ -6,7 +6,6 @@ use App\Models\Farm;
 use App\Models\Review;
 use App\Models\State;
 use App\Repositories\FarmRepositoryInterface;
-use ArgumentCountError;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -78,15 +77,15 @@ class FarmRepositoryTest extends TestCase
 
     /**
      * getDetailById() メソッドのテスト
-     * getAllFarms() に存在しない引数が渡された時、findOrFailのArgumentCountErrorを返すか確認
-     * getAllFarms() に引数が渡されなかった時、findOrFailのArgumentCountErrorを返すか確認
+     * getAllFarms() に存在しない引数が渡された時、findOrFailのModelNotFoundExceptionを返すか確認
+     * getAllFarms() に引数が渡されなかった時、findOrFailのModelNotFoundExceptionを返すか確認
      */
     public function testGetDetailByIdThrowsWhenNotFound(): void
     {
         $this->expectException(ModelNotFoundException::class);
         $this->repository->getDetailById(999999);
 
-        $this->expectException(ArgumentCountError::class);
-        $this->repository->getDetailById(999999);
+        $this->expectException(ModelNotFoundException::class);
+        $this->repository->getDetailById();
     }
 }

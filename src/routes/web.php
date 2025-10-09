@@ -22,4 +22,12 @@ Route::middleware(['auth'])->group(function () {});
 //ファーム
 Route::get('/farm/{id}', [FarmController::class, 'detail'])->name('farm.detail');
 
-require __DIR__.'/auth.php';
+
+//以下はログアウト機能が作成できた後に削除する。
+//今はこれがないとhomeにリダイレクトされてloginが開けないため。
+//ログイン
+Route::get('/login', [AuthenticatedSessionController::class, 'create'])
+    ->name('login');
+Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+
+// require __DIR__.'/auth.php';

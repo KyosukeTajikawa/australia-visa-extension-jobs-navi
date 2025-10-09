@@ -29,14 +29,16 @@ class FarmRepositoryTest extends TestCase
     public function testGetAllFarms(): void
     {
 
-        $farms = Farm::Factory()->count(3)->create();
+        $farms = Farm::Factory()->sequence(
+            ['id' => 50],
+            ['id' => 51],
+            ['id' => 52],
+        )->count(3)->create();
 
         $result = $this->repository->getAllFarms();
 
         $this->assertCount(3, $result);
-        $this->assertSame($farms[0]->id, $result[0]->id);
-        $this->assertSame($farms[1]->id, $result[1]->id);
-        $this->assertSame($farms[2]->id, $result[2]->id);
+        $this->assertSame([50,51,52], $result->modelKeys());
         $this->assertInstanceOf(Farm::class, $result->first());
     }
 

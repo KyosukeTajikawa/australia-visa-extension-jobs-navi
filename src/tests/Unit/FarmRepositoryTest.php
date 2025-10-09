@@ -31,13 +31,14 @@ class FarmRepositoryTest extends TestCase
     {
 
         $farms = Farm::Factory()
-            ->count(2)->create();
+            ->count(3)->create()->sortBy('id')->values();
 
         $result = $this->repository->getAllFarms();
 
-        $this->assertCount(2, $result);
+        $this->assertCount(3, $result);
         $this->assertSame($farms[0]->id, $result[0]->id);
         $this->assertSame($farms[1]->id, $result[1]->id);
+        $this->assertSame($farms[2]->id, $result[2]->id);
         $this->assertInstanceOf(Farm::class, $result->first());
     }
 

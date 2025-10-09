@@ -30,8 +30,7 @@ class FarmRepositoryTest extends TestCase
     public function testGetAllFarms(): void
     {
 
-        $farms = Farm::Factory()
-            ->count(3)->create()->sortBy('id')->values();
+        $farms = Farm::Factory()->count(3)->create();
 
         $result = $this->repository->getAllFarms();
 

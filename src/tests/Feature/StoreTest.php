@@ -4,7 +4,10 @@ namespace Tests\Feature;
 
 use App\Http\Requests\Farms\FarmStoreRequest;
 use App\Models\Farm;
+<<<<<<< HEAD
 use App\Models\FarmImages;
+=======
+>>>>>>> 9f3e378 (StoreTest作成)
 use App\Models\State;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -13,14 +16,19 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Validator;
 use PHPUnit\Framework\Attributes\DataProvider;
+<<<<<<< HEAD
 use Ramsey\Uuid\Uuid;
 use Tests\TestCase;
 use Illuminate\Support\Str;
+=======
+use Tests\TestCase;
+>>>>>>> 9f3e378 (StoreTest作成)
 
 class StoreTest extends TestCase
 {
     use RefreshDatabase;
 
+<<<<<<< HEAD
     /**
      * storeの処理の確認テスト
      * ルート：作成したルートをたどるか
@@ -42,11 +50,21 @@ class StoreTest extends TestCase
         Str::createUuidsUsing(fn() => $uuid);
 
         //ユーザー登録のと同じ形を再現
+=======
+    public function testStore()
+    {
+        $user = User::factory()->create();
+        $State = State::factory()->create();
+
+        Storage::fake('s3');
+
+>>>>>>> 9f3e378 (StoreTest作成)
         $post = [
             'name' => 'A_farm',
             'phone_number' => '0492845949',
             'email' => 'test@gmail.com',
             'street_address' => '2-4-5',
+<<<<<<< HEAD
             'suburb' => 'PlainLand',
             'state_id' => $State->id,
             'postcode' => '4000',
@@ -55,11 +73,21 @@ class StoreTest extends TestCase
         ];
 
         //ユーザーが$postをしたことを再現
+=======
+            'suburb' => 'plainland',
+            'state_id' => $State->id,
+            'postcode' => '4000',
+            'description' => 'such a good farm',
+            'files' => UploadedFile::fake()->image('avatar.jpg')
+        ];
+
+>>>>>>> 9f3e378 (StoreTest作成)
         $response = $this->actingAs($user)->post(
             route('farm.store'),
             $post
         );
 
+<<<<<<< HEAD
         //302リダイレクトができることを想定
         $response->assertStatus(302);
         //ここまででエラーがないことを想定
@@ -148,6 +176,17 @@ class StoreTest extends TestCase
         $validator->assertValid('phone_number', 'email', 'street_address', 'suburb', 'state_id', 'description');
         $validator->assertInvalid('name', 'postcode');
     }
+=======
+        $response->assertStatus(302);
+        $response->assertSessionHasNoErrors();
+        $farm = \App\Models\Farm::first();
+        Storage::disk('s3')->assertExists("farms/{$farm->id}");
+    }
+
+
+
+
+>>>>>>> 9f3e378 (StoreTest作成)
 
 
 

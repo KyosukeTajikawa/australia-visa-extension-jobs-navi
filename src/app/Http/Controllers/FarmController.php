@@ -68,6 +68,7 @@ class FarmController extends Controller
 
     /**
      * ファームの新規登録
+     * @param FarmStoreRequest $request
      * @return RedirectResponse
      */
     public function store(FarmStoreRequest $request): RedirectResponse
@@ -78,6 +79,7 @@ class FarmController extends Controller
 
 
         $files = $request->file('files');
+
         $farm = $this->farmService->store($validated, $files);
 
         return redirect()->route('farm.detail', [

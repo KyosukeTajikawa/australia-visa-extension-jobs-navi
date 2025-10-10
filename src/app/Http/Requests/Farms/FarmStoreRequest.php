@@ -6,11 +6,19 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class FarmStoreRequest extends FormRequest
 {
+    /**
+     * ユーザーの権限チェック
+     * @return bool
+     */
     public function authorize(): bool
     {
         return true;
     }
 
+    /**
+     * バリデーションチェック
+     * @return array
+     */
     public function rules(): array
     {
         return             [
@@ -27,6 +35,10 @@ class FarmStoreRequest extends FormRequest
         ];
     }
 
+    /**
+     * バリデーションエラーメッセージ
+     * @return array
+     */
     public function messages(): array
     {
         return             [
@@ -44,6 +56,9 @@ class FarmStoreRequest extends FormRequest
         ];
     }
 
+    /**
+     * バリデーション前の入力値を整形
+     */
     protected function prepareForValidation(): void
     {
         //ユニーク制約、かつ、任意（nullable）なので空文字をnullに変換

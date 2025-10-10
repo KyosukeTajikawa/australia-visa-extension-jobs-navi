@@ -17,7 +17,6 @@ class FarmController extends Controller
         private readonly FarmRepositoryInterface $farmRepository
     ) {}
 
-
     /**
      * 農場の一覧ページを表示
      * @return Response

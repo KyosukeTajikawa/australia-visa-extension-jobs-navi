@@ -16,6 +16,7 @@ class FarmController extends Controller
     /**
      * FarmController constructor
      * @param FarmRepositoryInterface $farmRepository ファーム情報を扱うリポジトリの実装
+     * @param FarmServiceInterface $farmService ファーム情報を扱うリポジトリの実装
      */
     public function __construct(
         private readonly FarmRepositoryInterface $farmRepository,
@@ -76,7 +77,6 @@ class FarmController extends Controller
         $validated = $request->validated();
 
         $validated['created_user_id'] = $request->user()->id;
-
 
         $files = $request->file('files');
 

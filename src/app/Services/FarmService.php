@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\Farm;
-use App\Models\FarmImages;
+use App\Repositories\FarmRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -13,18 +13,30 @@ use Illuminate\Support\Str;
 class FarmService implements FarmServiceInterface
 {
     /**
+     * FarmController constructor
+     * @param FarmRepositoryInterface $farmRepository ファーム情報を扱うリポジトリの実装
+     */
+    public function __construct(
+        private readonly FarmRepositoryInterface $farmRepository,
+    ) {}
+
+    /**
      * ファームの登録処理
-     * @param array $validated バリデーション済みの配列
+     * @param array $validated バリデーション済み
      * @param array $fiiles 画像ファイル | null
      * @return Farm
      */
     public function store(array $validated, ?array $files = null): Farm
     {
 
+
         DB::beginTransaction();
         try {
 
-            $farm = Farm::create($validated);
+            $farm = $this->farmRepository->registerFarm($validated);
+            // $farm = Farm::create($validated);
+
+            // dd($farm);
 
             if ($files) {
 
@@ -48,7 +60,12 @@ class FarmService implements FarmServiceInterface
                     ];
                 }
 
-                FarmImages::insert($filesStock);
+                $FarmImages = $this->farmRepository->registerFarmImage($filesStock);
+
+                dd($FarmImages);
+
+
+                // FarmImages::insert($filesStock);
 
             }
             DB::commit();

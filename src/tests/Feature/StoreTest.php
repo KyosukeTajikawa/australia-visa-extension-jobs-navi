@@ -7,6 +7,7 @@ use App\Models\Farm;
 use App\Models\FarmImages;
 use App\Models\State;
 use App\Models\User;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -28,6 +29,8 @@ class StoreTest extends TestCase
      */
     public function testStoreWithFileSuccess(): void
     {
+        $this->withoutMiddleware(VerifyCsrfToken::class);
+
         //fakeデータの作成
         $user = User::factory()->create();
         $State = State::factory()->create();
@@ -41,14 +44,14 @@ class StoreTest extends TestCase
 
         //ユーザー登録のと同じ形を再現
         $post = [
-            'name' => 'A_farm',
-            'phone_number' => '0492845949',
-            'email' => 'test@gmail.com',
+            'name'           => 'A_farm',
+            'phone_number'   => '0492845949',
+            'email'          => 'test@gmail.com',
             'street_address' => '2-4-5',
-            'suburb' => 'PlainLand',
-            'state_id' => $State->id,
-            'postcode' => '4000',
-            'description' => 'such a good farm',
+            'suburb'         => 'PlainLand',
+            'state_id'       => $State->id,
+            'postcode'       => '4000',
+            'description'    => 'such a good farm',
             'files' => [UploadedFile::fake()->image('avatar.jpg')]
         ];
 
@@ -61,91 +64,96 @@ class StoreTest extends TestCase
         //302リダイレクトができることを想定
         $response->assertStatus(302);
         //ここまででエラーがないことを想定
-        // $response->assertSessionHasNoErrors();
-        // //findorfailでidを取得できないのでfirstorfailにてlimit=1のように登録された$postを取得
-        // $farm = Farm::firstOrFail();
+        $response->assertSessionHasNoErrors();
+        //findorfailでidを取得できないのでfirstorfailにてlimit=1のように登録された$postを取得
+        $farm = Farm::firstOrFail();
 
-        // //Farm_images_tableから画像を取得
-        // $farmImages =FarmImages::firstOrFail();
+        //Farm_images_tableから画像を取得
+        $farmImages = FarmImages::firstOrFail();
 
-        // //本番と同じディレクトリにする。
-        // //そこにいファイルを保存(postしているため、storeにてputFileAs)がされている
-        // $path = "farms/{$farm->id}/{$uuid}.jpg";
+        //本番と同じディレクトリにする。
+        //そこにいファイルを保存(postしているため、storeにてputFileAs)がされている
+        $path = "farms/{$farm->id}/{$uuid}.jpg";
 
-        // //以下にファイルがある事を確認
-        // Storage::disk('s3')->assertExists($path);
+        //以下にファイルがある事を確認
+        Storage::disk('s3')->assertExists($path);
 
-        // //Farm_images_tableのurlとS3への登録名が同じか確認
-        // $this->assertSame($farmImages->url, "{uuid}.jpg");
+        //S3に保存されたファイルのURLを取得（DBと比較用）
+        $expectedUrl = Storage::disk('s3')->url($path);
 
-        // //データベースに画像以外が保存されているか確認
-        // $this->assertDatabaseHas('farms', [
-        //     'name' => 'A_farm',
-        //     'phone_number' => '0492845949',
-        //     'email' => 'test@gmail.com',
-        // ]);
+        //Farm_images_tableのurlとS3への登録名が同じか確認
+        $this->assertSame($expectedUrl, $farmImages->url);
 
-        // //リダイレクトされるか確認
-        // $response->assertRedirect('(farm.detail', ['id' => $farm['id']]);
-        // //Uuid::fromStringをリセット
-        // Str::createUuidsNormally();
+        //データベースに画像以外が保存されているか確認
+        $this->assertDatabaseHas('farms', [
+            'name' => 'A_farm',
+            'phone_number' => '0492845949',
+            'email' => 'test@gmail.com',
+        ]);
+
+        //リダイレクトされるか確認
+        $response->assertRedirect(route('farm.detail', ['id' => $farm->id]));
+        //Uuid::fromStringをリセット
+        Str::createUuidsNormally();
     }
 
     /**
      * storeのバリデーション確認
      * 正しい情報の登録をエラーなしで通るか
      */
-    // public function testStoreValidateSuccess(): void
-    // {
-    //     $State = State::factory()->create();
+    public function testStoreValidateSuccess(): void
+    {
+        $State = State::factory()->create();
+        $user = User::factory()->create();
 
-    //     //ユーザー登録のと同じ形を再現
-    //     $data = [
-    //         'name' => 'A_farm',
-    //         'phone_number' => '0492845949',
-    //         'email' => 'test@gmail.com',
-    //         'street_address' => '2-4-5',
-    //         'suburb' => 'PlainLand',
-    //         'state_id' => $State->id,
-    //         'postcode' => '4000',
-    //         'description' => 'such a good farm',
-    //     ];
+        //ユーザー登録のと同じ形を再現
+        $data = [
+            'name' => 'A_farm',
+            'phone_number' => '0492845949',
+            'email' => 'test@gmail.com',
+            'street_address' => '2-4-5',
+            'suburb' => 'PlainLand',
+            'state_id' => $State->id,
+            'postcode' => '4000',
+            'description' => 'such a good farm',
+            'created_user_id' => $user->id,
+        ];
 
-    //     $rules = (new FarmStoreRequest())->rule();
+        $rules = (new FarmStoreRequest())->rules();
 
-    //     $validator = Validator::make($data, $rules);
+        $validator = Validator::make($data, $rules);
 
-    //     $this->assertTrue($validator->passes());
-    // }
+        $this->assertTrue($validator->passes());
+    }
 
     /**
      * storeのバリデーション確認
      * 誤った情報の登録をエラーが出るか
      */
-    // public function testStoreValidateFail(): void
-    // {
-    //     $State = State::factory()->create();
+    public function testStoreValidateFail(): void
+    {
+        $State = State::factory()->create();
+        $user = User::factory()->create();
 
-    //     //ユーザー登録のと同じ形を再現
-    //     $data = [
-    //         'name' => '',
-    //         'phone_number' => '0492845949',
-    //         'email' => 'test@gmail.com',
-    //         'street_address' => '2-4-5',
-    //         'suburb' => 'PlainLand',
-    //         'state_id' => $State->id,
-    //         'postcode' => '40004',
-    //         'description' => 'such a good farm',
-    //     ];
+        //ユーザー登録のと同じ形を再現
+        $data = [
+            'name' => '',
+            'phone_number' => '0492845949',
+            'email' => 'test@gmail.com',
+            'street_address' => '2-4-5',
+            'suburb' => 'PlainLand',
+            'state_id' => $State->id,
+            'postcode' => '40004',
+            'description' => 'such a good farm',
+            'created_user_id' => $user->id,
+        ];
 
-    //     $rules = (new FarmStoreRequest())->rule();
+        $rules = (new FarmStoreRequest())->rules();
 
-    //     $validator = Validator::make($data, $rules);
+        $validator = Validator::make($data, $rules);
 
-    //     $this->assertFalse($validator->passes());
-    //     $validator->assertValid('phone_number', 'email', 'street_address', 'suburb', 'state_id', 'description');
-    //     $validator->assertInvalid('name', 'postcode');
-    // }
+        $this->assertFalse($validator->passes());
+    }
 
 
 

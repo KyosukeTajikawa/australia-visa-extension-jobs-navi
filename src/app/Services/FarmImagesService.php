@@ -25,15 +25,17 @@ class FarmImagesService implements FarmImagesServiceInterface
             $filesStock = [];
 
             foreach ($files as $file) {
-                $extension = $file->getClientOriginalExtension();
-                $name = (string)Str::uuid() . '.' . $extension;
+                $extension = $file->guessExtension() ?: $file->getClientOriginalExtension() ?: 'bin';
+
+                $name = Str::uuid()->toString() . '.' . $extension;
                 $dir = "farms/{$farm->id}";
 
-                $path = Storage::disk('s3')->putFileAs($dir, $file, $name, file_get_contents($file), ['visibility' => 'public']);
+                $path = Storage::disk('s3')->putFileAs($dir, $file, $name);
 
                 /** @var \Illuminate\Filesystem\FilesystemAdapter $s3 */
                 $s3 = Storage::disk('s3');
                 $url = $s3->url($path);
+
                 $filesStock[] = [
                     'farm_id'    => $farm->id,
                     'url'        => $url,

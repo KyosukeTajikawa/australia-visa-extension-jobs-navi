@@ -37,7 +37,6 @@ class FarmService implements FarmServiceInterface
 
             DB::commit();
             return $farm;
-
         } catch (\Exception $e) {
             $message = $e->getMessage();
             Log::error($message);

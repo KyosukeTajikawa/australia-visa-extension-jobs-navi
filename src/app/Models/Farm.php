@@ -65,10 +65,4 @@ class Farm extends Model
     {
         return $this->hasMany(FarmImages::class);
     }
-
-    // 表示用の“最新1枚”
-    public function latestImage()
-    {
-        return $this->hasOne(FarmImages::class)->latestOfMany();
-    }
 }

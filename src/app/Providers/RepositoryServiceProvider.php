@@ -15,8 +15,8 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(FarmRepositoryInterface::class, FarmRepository::class);
-        $this->app->bind(FarmServiceInterface::class, FarmService::class);
+        // $this->app->bind(FarmRepositoryInterface::class, FarmRepository::class);
+        // $this->app->bind(FarmServiceInterface::class, FarmService::class);
     }
 
     /**

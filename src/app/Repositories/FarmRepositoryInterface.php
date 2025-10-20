@@ -11,9 +11,11 @@ interface FarmRepositoryInterface
 {
     /**
      * すべてのファーム情報を取得する
+     * 登録があればファーム画像(images)も一枚（最も古い）同時に取得する
+     * @param array $relation
      * @return Collection<Farm>
      */
-    public function getAllFarms(): Collection;
+    public function getAllFarmsWithImageIfExist(): Collection;
 
     /**
      * 指定したIDのファーム詳細を取得する
@@ -41,7 +43,7 @@ interface FarmRepositoryInterface
     /**
      * 画像登録
      * @param array $fileStock 画像が３つまで配列である
-     * @return FarmImages 登録後のモデルインスタンス
+     * @return bool 登録後のモデルインスタンス
      */
-    public function registerFarmImage(array $filesStock): FarmImages;
+    public function registerFarmImage(array $filesStock): bool;
 }

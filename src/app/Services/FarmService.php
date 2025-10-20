@@ -4,11 +4,9 @@ namespace App\Services;
 
 use App\Models\Farm;
 use App\Repositories\FarmRepositoryInterface;
+use App\Services\FarmImagesServiceInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-
 
 class FarmService implements FarmServiceInterface
 {
@@ -18,58 +16,28 @@ class FarmService implements FarmServiceInterface
      */
     public function __construct(
         private readonly FarmRepositoryInterface $farmRepository,
+        private readonly FarmImagesServiceInterface $farmImagesService
     ) {}
 
     /**
      * ファームの登録処理
-     * @param array $validated バリデーション済み
-     * @param array $fiiles 画像ファイル | null
+     * @param array $validated
+     * @param array $files 画像ファイル | null
      * @return Farm
      */
     public function store(array $validated, ?array $files = null): Farm
     {
-
-
         DB::beginTransaction();
+
         try {
 
             $farm = $this->farmRepository->registerFarm($validated);
-            // $farm = Farm::create($validated);
 
-            // dd($farm);
+            $this->farmImagesService->imagesStore($farm, $files);
 
-            if ($files) {
-
-                $filesStock = [];
-
-                foreach ($files as $file) {
-                    $extension = $file->getClientOriginalExtension();
-                    $name = (string)Str::uuid() . '.' . $extension;
-                    $dir = "farms/{$farm->id}";
-
-                    $path = Storage::disk('s3')->putFileAs($dir, $file, $name, file_get_contents($file), ['visibility' => 'public']);
-
-                    /** @var \Illuminate\Filesystem\FilesystemAdapter $s3 */
-                    $s3 = Storage::disk('s3');
-                    $url = $s3->url($path);
-                    $filesStock[] = [
-                        'farm_id'    => $farm->id,
-                        'url'        => $url,
-                        'created_at' => now(),
-                        'updated_at' => now()
-                    ];
-                }
-
-                $FarmImages = $this->farmRepository->registerFarmImage($filesStock);
-
-                dd($FarmImages);
-
-
-                // FarmImages::insert($filesStock);
-
-            }
             DB::commit();
             return $farm;
+
         } catch (\Exception $e) {
             $message = $e->getMessage();
             Log::error($message);

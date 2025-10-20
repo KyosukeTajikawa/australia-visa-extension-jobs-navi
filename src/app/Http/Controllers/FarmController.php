@@ -29,7 +29,7 @@ class FarmController extends Controller
      */
     public function index(): Response
     {
-        $farms = $this->farmRepository->getAllFarms([
+        $farms = $this->farmRepository->getAllFarmsWithImageIfExist([
             'images' => function ($query) {
                 $query->orderBy('id')->limit(1);
             },
@@ -76,11 +76,7 @@ class FarmController extends Controller
     {
         $validated = $request->validated();
 
-        $validated['created_user_id'] = $request->user()->id;
-
-        $files = $request->file('files');
-
-        $farm = $this->farmService->store($validated, $files);
+        $farm = $this->farmService->store($validated, $request->file('files'));
 
         return redirect()->route('farm.detail', [
             'id' => $farm->id,

@@ -41,7 +41,7 @@ class FarmRepository implements FarmRepositoryInterface
      */
     public function getStates(): Collection
     {
-        return State::get();
+        return State::orderBy('id')->get();
     }
 
     /**

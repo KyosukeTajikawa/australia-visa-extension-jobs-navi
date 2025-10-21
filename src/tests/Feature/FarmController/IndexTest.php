@@ -15,11 +15,9 @@ class IndexTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * モックから返されたダミーデータが、ちゃんと Inertia 経由でフロント(props)に渡っているか
-     * モックにてFarmRepositoryInterfaceを利用して事前にダミーデータを作成
-     * $this->get('/home')によりイベント発火(web.phpを通り、FarController/indexに渡ってFarmRepositoryInterfaceからダミーデータを作成)
-     * inertiaPropsのレスポンスで返された値を確認してHomeにprops（ダミーデータ）が渡っているかをテストすることができる。
-     * fn(Assert $page) => $pageと毎回記述する理由は、inertiaが返したpropsの一部をテストが受け取っているから。
+     * indexメソッドの確認
+     * ファームがHomeに送られているか
+     * 画像も一緒に送られ、かつ、1枚しか送られてないか
      */
     public function testIndexFarmsWithImage(): void
     {

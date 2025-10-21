@@ -48,7 +48,7 @@ class FarmRepositoryTest extends TestCase
         $farm->images()->create(['url' => 'test2.jpeg']);
 
         $result = $this->repository->getAllFarmsWithImageIfExist([
-            'images' => function($query) {
+            'images' => function ($query) {
                 $query->orderBy('id')->limit(1);
             },
         ]);
@@ -99,5 +99,14 @@ class FarmRepositoryTest extends TestCase
     {
         $this->expectException(ModelNotFoundException::class);
         $this->repository->getDetailById(999999);
+    }
+
+    public function testGetStates(): void
+    {
+        $states = State::factory()->sequence(['id' => 1], ['id' => 2])->count(2)->create();
+
+        $result = $this->repository->getStates();
+
+        $this->assertSame($states->modelKeys(), $result->modelKeys());
     }
 }

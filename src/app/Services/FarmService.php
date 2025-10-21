@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Farm;
 use App\Repositories\FarmRepositoryInterface;
 use App\Services\FarmImagesServiceInterface;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -31,9 +32,13 @@ class FarmService implements FarmServiceInterface
 
         try {
 
-            $farm = $this->farmRepository->registerFarm($validated);
+            $farmData = Arr::except($validated, ['crop_ids']);
+
+            $farm = $this->farmRepository->registerFarm($farmData);
 
             $this->farmImagesService->imagesStore($farm, $files);
+
+            $farm->crops()->sync($validated['crop_ids']);
 
             DB::commit();
             return $farm;

@@ -2,6 +2,8 @@ import React from "react";
 import MainLayout from "@/Layouts/MainLayout";
 import { Box, Heading, Text, FormControl, FormLabel, FormErrorMessage, Input, Select, Textarea, Button, HStack, Checkbox, CheckboxGroup, Stack } from "@chakra-ui/react";
 import { useForm } from "@inertiajs/react";
+import ReactSelect from "react-select";
+import makeAnimated from "react-select/animated";
 
 type FormData = {
     name: string;
@@ -44,6 +46,8 @@ const Create = ({ states, crops }: CreateProps) => {
         files: [],
         crop_ids: [],
     });
+
+    const cropOptions = crops.map(c => ({ value: c.id, label: c.name}));
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -90,26 +94,20 @@ const Create = ({ states, crops }: CreateProps) => {
 
                 {/* 作物 */}
                 <FormControl mb={2} isRequired isInvalid={!!serverErrors.crop_ids}>
-                    <FormLabel htmlFor="crop_ids">作物（複数選択か）</FormLabel>
-                    <Select
-                        id="crop_ids"
-                        name="crop_ids"
-                        multiple
-                        value={data.crop_ids.map(String)} // valueはstring配列
-                        onChange={(e) => {
-                            // 複数選択されたoptionを配列化
-                            const selected = Array.from(e.target.selectedOptions).map((o) => Number(o.value));
-                            setData("crop_ids", selected);
+                    <FormLabel htmlFor="crop_ids">作物（複数選択可）</FormLabel>
+                    <ReactSelect
+                        inputId="crop_ids"
+                        isMulti
+                        options={cropOptions}
+                        value={cropOptions.filter(o => data.crop_ids.includes(o.value))}
+                        onChange={(vals) => {
+                            const arr = Array.isArray(vals) ? vals.map(v => v.value) : [];
+                            setData("crop_ids", arr);
                         }}
-                        size={Math.min(10, crops.length)}   // 表示行数(見やすく)
-                        style={{ width: "50%", padding: 8, border: "1px solid #CBD5E0", borderRadius: 6 }}
-                    >
-
-                            {crops.map((crop) => (
-                                <option key={crop.id} value={String(crop.id)}>{crop.name}</option>
-                            ))}
-                    </Select>
-
+                        closeMenuOnSelect={false}
+                        placeholder="作物を選択してください"
+                    />
+                    <FormErrorMessage>{serverErrors.crop_ids}</FormErrorMessage>
                 </FormControl>
 
                 {/* 電話番号 */}

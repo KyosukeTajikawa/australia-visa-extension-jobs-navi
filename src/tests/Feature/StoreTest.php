@@ -103,7 +103,7 @@ class StoreTest extends TestCase
      */
     public function testStoreValidateSuccess(): void
     {
-        $State = State::factory()->create();
+        $state = State::factory()->create();
         $user = User::factory()->create();
 
         //ユーザー登録のと同じ形を再現
@@ -113,7 +113,7 @@ class StoreTest extends TestCase
             'email' => 'test@gmail.com',
             'street_address' => '2-4-5',
             'suburb' => 'PlainLand',
-            'state_id' => $State->id,
+            'state_id' => $state->id,
             'postcode' => '4000',
             'description' => 'such a good farm',
             'created_user_id' => $user->id,

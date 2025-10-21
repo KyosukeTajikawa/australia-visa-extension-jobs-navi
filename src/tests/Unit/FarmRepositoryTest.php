@@ -5,6 +5,7 @@ namespace Tests\Unit\Repositories;
 use App\Models\Farm;
 use App\Models\Review;
 use App\Models\State;
+use App\Models\User;
 use App\Repositories\FarmRepositoryInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -101,6 +102,10 @@ class FarmRepositoryTest extends TestCase
         $this->repository->getDetailById(999999);
     }
 
+    /**
+     * getStatesU()メソッドのテスト
+     * getStates()が全ての州情報を取得できているか
+     */
     public function testGetStates(): void
     {
         $states = State::factory()->sequence(['id' => 1], ['id' => 2])->count(2)->create();
@@ -108,5 +113,37 @@ class FarmRepositoryTest extends TestCase
         $result = $this->repository->getStates();
 
         $this->assertSame($states->modelKeys(), $result->modelKeys());
+    }
+
+    /**
+     * registerFarm()メソッドのテスト
+     * registerFarm()で登録できるているか
+     */
+    public function testRegisterFarm(): void
+    {
+        $state = State::factory()->create();
+        $user = User::factory()->create();
+
+        $validated = [
+            'name' => 'A_farm',
+            'phone_number' => '0492845949',
+            'email' => 'test@gmail.com',
+            'street_address' => '2-4-5',
+            'suburb' => 'PlainLand',
+            'state_id' => $state->id,
+            'postcode' => '4000',
+            'description' => 'such a good farm',
+            'created_user_id' => $user->id,
+        ];
+
+        $farm = $this->repository->registerFarm($validated);
+
+        $this->assertDatabaseHas('farms', [
+            'id'              => $farm->id,
+            'name'            => 'A_farm',
+            'state_id'        => $state->id,
+            'postcode'        => '4000',
+            'created_user_id' => $user->id,
+        ]);
     }
 }

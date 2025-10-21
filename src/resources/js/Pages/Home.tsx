@@ -9,7 +9,7 @@ type Farm = {
 };
 
 type HomeProps = {
-    farms: Farm[]
+    farms: Farm[];
 };
 
 const Home = ({ farms }: HomeProps) => {
@@ -35,5 +35,5 @@ const Home = ({ farms }: HomeProps) => {
     );
 };
 
-Home.layout = (page: React.ReactNode) => <MainLayout children={page} title="ファーム情報サイト" />
+Home.layout = (page: React.ReactNode) => (<MainLayout title="ファーム情報サイト">{page}</MainLayout>);
 export default Home;

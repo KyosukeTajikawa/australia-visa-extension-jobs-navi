@@ -1,14 +1,19 @@
-import React from "react";
+import React, {ReactNode} from "react";
 import {
-    Box, Heading, VStack, HStack, Image, Text, Link, Input, Button, Menu, MenuButton, MenuList, MenuItem, IconButton, Drawer, rightIcon, DrawerHeader,
+    Box, Heading, Text, Button, Menu, MenuButton, MenuList, MenuItem, IconButton, Drawer, DrawerHeader,
     DrawerBody, DrawerOverlay, DrawerContent, DrawerCloseButton, useDisclosure
 } from "@chakra-ui/react";
 import { HamburgerIcon, ChevronDownIcon } from '@chakra-ui/icons';
-import { Link as InertiaLink, usePage } from "@inertiajs/react"
+import { Link, usePage } from "@inertiajs/react";
 
-type AuthUser = { id: number; name: string } | null;
+// type AuthUser = { id: number; nickname: string } | null;
 
-const MainLayout = ({ children, title }) => {
+type MainLayoutProps = {
+    children: ReactNode;
+    title?: string;
+}
+
+const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLayoutProps) => {
     const { auth } = usePage().props;
     const { isOpen, onOpen, onClose } = useDisclosure()
     return (
@@ -52,7 +57,7 @@ const MainLayout = ({ children, title }) => {
                             <DrawerContent>
                                 <DrawerCloseButton />
                                 <DrawerHeader>{auth.user.nickname}</DrawerHeader>
-                                <DrawerBody mt={"60px"} align={"center"} w={"100%"}>
+                                <DrawerBody mt={"60px"} textAlign={"center"} w={"100%"}>
                                     <Box mb={1} _hover={{ opacity: 0.7, bg: "gray.100" }}>
                                         <Link _hover={{ color: "none" }}>
                                             <Text>ファーム登録</Text>
@@ -81,7 +86,7 @@ const MainLayout = ({ children, title }) => {
                             <DrawerOverlay />
                             <DrawerContent>
                                 <DrawerCloseButton />
-                                <DrawerBody mt={"60px"} align={"center"} w={"100%"}>
+                                <DrawerBody mt={"60px"} textAlign={"center"} w={"100%"}>
                                     <Box mb={1} _hover={{ opacity: 0.7, bg: "gray.100" }}>
                                         <Link _hover={{ color: "none" }}>
                                             <Text>ログイン</Text>

@@ -34,6 +34,12 @@ interface FarmRepositoryInterface
     public function getStates(): Collection;
 
     /**
+     * すべての州情報を取得する
+     * @return Collection<Crop>
+     */
+    public function getCrops(): Collection;
+
+    /**
      * ファームを登録
      * @param $validatedバリデーションをされた配列
      * @return Farm 登録後のモデルインスタンス

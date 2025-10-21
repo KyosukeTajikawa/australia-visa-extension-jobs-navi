@@ -1,6 +1,6 @@
-import React, {useState} from "react";
+import React from "react";
 import MainLayout from "@/Layouts/MainLayout";
-import { Box, Heading, Text, FormControl, FormLabel, FormErrorMessage, Input, Select, Textarea, Button, HStack } from "@chakra-ui/react";
+import { Box, Heading, Text, FormControl, FormLabel, FormErrorMessage, Input, Select, Textarea, Button, HStack, Checkbox, CheckboxGroup, Stack } from "@chakra-ui/react";
 import { useForm } from "@inertiajs/react";
 
 type FormData = {
@@ -13,16 +13,25 @@ type FormData = {
     state_id: string;
     description: string;
     files: File[];
+    crop_ids: number[];
 }
 
 type State = {
     id: number;
     name: string;
+}
+
+type Crop = {
+    id: number;
+    name: string;
+}
+
+type CreateProps = {
+    states: State[];
+    crops: Crop[];
 };
 
-type CreateProps = { states: State[] };
-
-const Create = ({ states }: CreateProps) => {
+const Create = ({ states, crops }: CreateProps) => {
     const { data, setData, post, processing, errors: serverErrors, reset } = useForm<FormData>({
         name: "",
         phone_number: "",
@@ -33,6 +42,7 @@ const Create = ({ states }: CreateProps) => {
         state_id: "",
         description: "",
         files: [],
+        crop_ids: [],
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -76,6 +86,30 @@ const Create = ({ states }: CreateProps) => {
                         onChange={handleChange} placeholder="Rugby Farm" maxLength={50}
                     />
                     <FormErrorMessage>{serverErrors.name}</FormErrorMessage>
+                </FormControl>
+
+                {/* 作物 */}
+                <FormControl mb={2} isRequired isInvalid={!!serverErrors.crop_ids}>
+                    <FormLabel htmlFor="crop_ids">作物（複数選択か）</FormLabel>
+                    <Select
+                        id="crop_ids"
+                        name="crop_ids"
+                        multiple
+                        value={data.crop_ids.map(String)} // valueはstring配列
+                        onChange={(e) => {
+                            // 複数選択されたoptionを配列化
+                            const selected = Array.from(e.target.selectedOptions).map((o) => Number(o.value));
+                            setData("crop_ids", selected);
+                        }}
+                        size={Math.min(10, crops.length)}   // 表示行数(見やすく)
+                        style={{ width: "50%", padding: 8, border: "1px solid #CBD5E0", borderRadius: 6 }}
+                    >
+
+                            {crops.map((crop) => (
+                                <option key={crop.id} value={String(crop.id)}>{crop.name}</option>
+                            ))}
+                    </Select>
+
                 </FormControl>
 
                 {/* 電話番号 */}

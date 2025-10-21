@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Crop;
 use App\Models\Farm;
 use App\Models\FarmImages;
 use App\Models\State;
@@ -42,6 +43,15 @@ class FarmRepository implements FarmRepositoryInterface
     public function getStates(): Collection
     {
         return State::orderBy('id')->get();
+    }
+
+    /**
+     * すべての州情報を取得する
+     * @return Collection<Crop>
+     */
+    public function getCrops(): Collection
+    {
+        return Crop::orderBy('id')->get();
     }
 
     /**

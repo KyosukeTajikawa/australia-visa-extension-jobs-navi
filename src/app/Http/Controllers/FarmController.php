@@ -61,9 +61,11 @@ class FarmController extends Controller
     public function create(): Response
     {
         $states = $this->farmRepository->getStates();
+        $crops = $this->farmRepository->getCrops();
 
         return Inertia::render('Farm/Create', [
             'states' => $states,
+            'crops'  => $crops,
         ]);
     }
 

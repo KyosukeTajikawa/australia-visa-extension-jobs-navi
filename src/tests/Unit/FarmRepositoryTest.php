@@ -23,23 +23,37 @@ class FarmRepositoryTest extends TestCase
     }
 
     /**
-     * getAllFarms() メソッドのテスト
-     * getAllFarms() が全てのファームを正しく取得できるかを確認する。
+     * testGetAllFarmsWithImageIfExist() メソッドのテスト
+     * testGetAllFarmsWithImageIfExist() が全てのファームを正しく取得できるか、画像がない時、イーガーロードしていないか確認
      */
-    public function testGetAllFarms(): void
+    public function testGetAllFarmsWithImageIfExist(): void
     {
 
-        $farms = Farm::Factory()->sequence(
-            ['id' => 50],
-            ['id' => 51],
-            ['id' => 52],
-        )->count(3)->create();
+        $farms = Farm::Factory()->sequence(['id' => 1], ['id' => 2])->count(2)->create();
 
-        $result = $this->repository->getAllFarms();
+        $result = $this->repository->getAllFarmsWithImageIfExist();
 
-        $this->assertCount(3, $result);
-        $this->assertSame([50,51,52], $result->modelKeys());
-        $this->assertInstanceOf(Farm::class, $result->first());
+        $this->assertSame($farms->modelKeys(), $result->modelKeys());
+        $this->assertCount(2, $result);
+
+        foreach ($result as $farm) {
+            $this->assertFalse($farm->relationLoaded('images'));
+        }
+    }
+
+    public function testGetAllFarmsWithImageIfNotExist(): void
+    {
+        $farm = Farm::factory()->create();
+        $farm->images()->create(['url' => 'test1.jpeg']);
+        $farm->images()->create(['url' => 'test2.jpeg']);
+
+        $result = $this->repository->getAllFarmsWithImageIfExist([
+            'images' => function($query) {
+                $query->orderBy('id')->limit(1);
+            },
+        ]);
+
+        $this->assertSame('test1.jpeg', $result->first()->images->first()->url);
     }
 
     /**

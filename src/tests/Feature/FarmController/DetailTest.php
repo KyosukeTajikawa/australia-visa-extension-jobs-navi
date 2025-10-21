@@ -32,7 +32,7 @@ class DetailTest extends TestCase
             ->for($state, 'state')
             ->create();
 
-        $response = $this->get(route('farm.detail', ['id' => $farm->id]));
+        $response = $this->actingAs($user)->get(route('farm.detail', ['id' => $farm->id]));
 
         $response->assertOk()
             ->assertInertia(
@@ -60,7 +60,7 @@ class DetailTest extends TestCase
     /**
      * フロント(Detail)の確認
      * hasにてhasManyとしてFarmのリレーションとする
-     * state,reviews[0],[1]全てをテスト
+     * state,reviews[0],[1],$farm->images()全てをテスト
      */
     public function testDetailReceiveFarmComeWithReviewsAndState(): void
     {
@@ -73,7 +73,10 @@ class DetailTest extends TestCase
             ->has(Review::factory()->count(2), 'reviews')
             ->create();
 
-        $response = $this->get(route('farm.detail', ['id' => $farm->id]));
+        $farm->images()->create(['url' => 'test1.jpeg']);
+        $farm->images()->create(['url' => 'test2.jpeg']);
+
+        $response = $this->actingAs($user)->get(route('farm.detail', ['id' => $farm->id]));
 
         $response->assertOk()
             ->assertInertia(
@@ -106,6 +109,19 @@ class DetailTest extends TestCase
                                     ->where('work_position', $farm->reviews[1]->work_position)
                                     ->etc()
                             )
+                            ->has('images', 2)
+                            ->has(
+                                'images.0',
+                                fn(Assert $i) => $i
+                                    ->where('url', 'test1.jpeg')
+                                    ->etc()
+                            )
+                            ->has(
+                                'images.1',
+                                fn(Assert $i) => $i
+                                    ->where('url', 'test2.jpeg')
+                                    ->etc()
+                            )
                             ->etc()
                     )
             );
@@ -117,7 +133,9 @@ class DetailTest extends TestCase
      */
     public function testDetailThrowsModelNotFoundException(): void
     {
-        $this->get(route('farm.detail', ['id' => 999999]))
+        $user  = User::factory()->create();
+
+        $this->actingAs($user)->get(route('farm.detail', ['id' => 999999]))
             ->assertNotFound();
 
         $this->withoutExceptionHandling();
@@ -125,5 +143,24 @@ class DetailTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         $this->get(route('farm.detail', ['id' => 999999]));
+    }
+
+    /**
+     * 未ログイン者をloginにredirectするか
+     */
+    public function testGuestTryAccessDetailButFail(): void
+    {
+        $user = User::factory()->create();
+        $state = State::factory()->create();
+
+        $farm = Farm::factory()
+            ->for($user, 'user')
+            ->for($state, 'state')
+            ->create();
+
+        $response = $this->get(route('farm.detail', ['id' => $farm->id]));
+
+        $response->assertStatus(302);
+        $response->assertRedirect(route('login'));
     }
 }

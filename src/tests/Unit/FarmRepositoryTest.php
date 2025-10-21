@@ -24,10 +24,10 @@ class FarmRepositoryTest extends TestCase
     }
 
     /**
-     * testGetAllFarmsWithImageIfExist() メソッドのテスト
-     * testGetAllFarmsWithImageIfExist() が全てのファームを正しく取得できるか、画像がない時、イーガーロードしていないか確認
+     * testGetAllFarmsWithImageIfNotExist() メソッドのテスト
+     * testGetAllFarmsWithImageIfNotExist() が全てのファームを正しく取得できるか、画像がない時、イーガーロードしていないか確認
      */
-    public function testGetAllFarmsWithImageIfExist(): void
+    public function testGetAllFarmsWithImageIfNotExist(): void
     {
 
         $farms = Farm::Factory()->sequence(['id' => 1], ['id' => 2])->count(2)->create();
@@ -42,7 +42,11 @@ class FarmRepositoryTest extends TestCase
         }
     }
 
-    public function testGetAllFarmsWithImageIfNotExist(): void
+    /**
+     * testGetAllFarmsWithImageIfExist() メソッドのテスト
+     * testGetAllFarmsWithImageIfExist() が一緒に画像をイーガーロードしているか
+     */
+    public function testGetAllFarmsWithImageIfExist(): void
     {
         $farm = Farm::factory()->create();
         $farm->images()->create(['url' => 'test1.jpeg']);

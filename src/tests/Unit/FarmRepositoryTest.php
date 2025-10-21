@@ -146,4 +146,49 @@ class FarmRepositoryTest extends TestCase
             'created_user_id' => $user->id,
         ]);
     }
+
+    /**
+     * registerFarmImage()メソッドのテスト
+     * registerFarmImage()が複数の画像を登録できるか
+     */
+    public function testRegisterFarmImage(): void
+    {
+        $farm = Farm::factory()->create();
+
+        $filesStock = [
+            [
+                'url'        => 'test1.Jpeg',
+                'farm_id'    => $farm->id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'url'        => 'test2.Jpeg',
+                'farm_id'    => $farm->id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        ];
+
+        $result = $this->repository->registerFarmImage($filesStock);
+
+        $this->assertDatabaseHas(
+            'farm_images',
+            [
+                'url'        => 'test1.Jpeg',
+                'farm_id'    => $farm->id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
+        $this->assertDatabaseHas(
+            'farm_images',
+            [
+                'url'        => 'test2.Jpeg',
+                'farm_id'    => $farm->id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
+    }
 }

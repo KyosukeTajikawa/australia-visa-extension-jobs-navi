@@ -170,7 +170,7 @@ class FarmRepositoryTest extends TestCase
             ]
         ];
 
-        $result = $this->repository->registerFarmImage($filesStock);
+        $this->repository->registerFarmImage($filesStock);
 
         $this->assertDatabaseHas(
             'farm_images',

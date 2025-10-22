@@ -6,6 +6,7 @@ use App\Http\Requests\Farms\FarmStoreRequest;
 use App\Repositories\FarmRepositoryInterface;
 use App\Services\FarmServiceInterface;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Arr;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -78,7 +79,11 @@ class FarmController extends Controller
     {
         $validated = $request->validated();
 
-        $farm = $this->farmService->store($validated, $request->file('files'));
+        $farmData = Arr::except($validated, ['crop_ids']);
+        $cropData = array_map('intval', $validated['crop_ids']);
+        $files    = $request->file('files');
+
+        $farm = $this->farmService->store($farmData, $cropData, $files);
 
         return redirect()->route('farm.detail', [
             'id' => $farm->id,

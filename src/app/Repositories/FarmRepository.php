@@ -46,7 +46,7 @@ class FarmRepository implements FarmRepositoryInterface
     }
 
     /**
-     * すべての州情報を取得する
+     * すべての作物情報を取得する
      * @return Collection<Crop>
      */
     public function getCrops(): Collection

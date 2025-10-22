@@ -121,6 +121,19 @@ class FarmRepositoryTest extends TestCase
     }
 
     /**
+     * getStatesU()メソッドのテスト
+     * getStates()が全ての作物情報を取得できているか
+     */
+    public function testGetCrops(): void
+    {
+        $states = Crop::factory()->sequence(['id' => 1], ['id' => 2])->count(2)->create();
+
+        $result = $this->repository->getCrops();
+
+        $this->assertSame($states->modelKeys(), $result->modelKeys());
+    }
+
+    /**
      * registerFarm()メソッドのテスト
      * registerFarm()で登録できるているか
      */

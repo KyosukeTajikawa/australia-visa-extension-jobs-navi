@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Crop;
 use App\Models\Farm;
 use App\Models\Review;
 use App\Models\State;
@@ -22,7 +23,7 @@ class DetailTest extends TestCase
      * Httpリクエスト(200)が返り、リレーションがない場合の確認
      * assertInertiaとしてdetailのreturn Inertia::renderと同じ動きをし１つずつ届いているか確認
      */
-    public function testDetailFarmNotComeWithReviews(): void
+    public function testDetailFarmNotComeWithRelation(): void
     {
         $user = User::factory()->create();
         $state = State::factory()->create();
@@ -59,13 +60,13 @@ class DetailTest extends TestCase
 
     /**
      * フロント(Detail)の確認
-     * hasにてhasManyとしてFarmのリレーションとする
-     * state,reviews[0],[1],$farm->images()全てをテスト
+     * 登録したstate,reviews,images,crops全てが期待した値かをInertiaのJsonResponseを用いてテスト
      */
-    public function testDetailReceiveFarmComeWithReviewsAndState(): void
+    public function testDetailReceiveFarmComeWithRelation(): void
     {
         $user  = User::factory()->create();
         $state = State::factory()->create();
+        $crops = Crop::factory()->count(3)->create();
 
         $farm = Farm::factory()
             ->for($user, 'user')
@@ -73,8 +74,10 @@ class DetailTest extends TestCase
             ->has(Review::factory()->count(2), 'reviews')
             ->create();
 
-        $farm->images()->create(['url' => 'test1.jpeg']);
-        $farm->images()->create(['url' => 'test2.jpeg']);
+            $farm->images()->create(['url' => 'test1.jpeg']);
+            $farm->images()->create(['url' => 'test2.jpeg']);
+
+            $farm->crops()->sync($crops->pluck('id')->toArray());
 
         $response = $this->actingAs($user)->get(route('farm.detail', ['id' => $farm->id]));
 
@@ -122,6 +125,10 @@ class DetailTest extends TestCase
                                     ->where('url', 'test2.jpeg')
                                     ->etc()
                             )
+                            ->has('crops', 3)
+                            ->where('crops.0.id', $crops[0]->id)
+                            ->where('crops.1.id', $crops[1]->id)
+                            ->where('crops.2.id', $crops[2]->id)
                             ->etc()
                     )
             );

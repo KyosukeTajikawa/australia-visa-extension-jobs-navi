@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Http\Requests\Farms\FarmStoreRequest;
+use App\Models\Crop;
 use App\Models\Farm;
 use App\Models\FarmImages;
 use App\Models\State;
@@ -34,6 +35,7 @@ class StoreTest extends TestCase
         //fakeデータの作成
         $user = User::factory()->create();
         $State = State::factory()->create();
+        $crops = Crop::factory()->count(3)->create();
 
         //fakeストレージ作成
         Storage::fake('s3');
@@ -52,7 +54,8 @@ class StoreTest extends TestCase
             'state_id'       => $State->id,
             'postcode'       => '4000',
             'description'    => 'such a good farm',
-            'files' => [UploadedFile::fake()->image('avatar.jpg')]
+            'files'          => [UploadedFile::fake()->image('avatar.jpg')],
+            'crop_ids'       => $crops->pluck('id')->toArray(),
         ];
 
         //ユーザーが$postをしたことを再現
@@ -105,18 +108,20 @@ class StoreTest extends TestCase
     {
         $state = State::factory()->create();
         $user = User::factory()->create();
+        $crops = Crop::factory()->count(3)->create();
 
         //ユーザー登録のと同じ形を再現
         $data = [
-            'name' => 'A_farm',
-            'phone_number' => '0492845949',
-            'email' => 'test@gmail.com',
-            'street_address' => '2-4-5',
-            'suburb' => 'PlainLand',
-            'state_id' => $state->id,
-            'postcode' => '4000',
-            'description' => 'such a good farm',
+            'name'            => 'A_farm',
+            'phone_number'    => '0492845949',
+            'email'           => 'test@gmail.com',
+            'street_address'  => '2-4-5',
+            'suburb'          => 'PlainLand',
+            'state_id'        => $state->id,
+            'postcode'        => '4000',
+            'description'     => 'such a good farm',
             'created_user_id' => $user->id,
+            'crop_ids'        => $crops->pluck('id')->toArray(),
         ];
 
         $rules = (new FarmStoreRequest())->rules();
@@ -137,14 +142,14 @@ class StoreTest extends TestCase
 
         //ユーザー登録のと同じ形を再現
         $data = [
-            'name' => '',
-            'phone_number' => '0492845949',
-            'email' => 'test@gmail.com',
-            'street_address' => '2-4-5',
-            'suburb' => 'PlainLand',
-            'state_id' => $State->id,
-            'postcode' => '40004',
-            'description' => 'such a good farm',
+            'name'            => '',
+            'phone_number'    => '0492845949',
+            'email'           => 'test@gmail.com',
+            'street_address'  => '2-4-5',
+            'suburb'          => 'PlainLand',
+            'state_id'        => $State->id,
+            'postcode'        => '40004',
+            'description'     => 'such a good farm',
             'created_user_id' => $user->id,
         ];
 

@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Repositories;
 
+use App\Models\Crop;
 use App\Models\Farm;
 use App\Models\Review;
 use App\Models\State;
@@ -194,5 +195,27 @@ class FarmRepositoryTest extends TestCase
                 'updated_at' => now(),
             ]
         );
+    }
+
+    /**
+     * registerFarmCrops()メソッドのテスト
+     * registerFarmCrops()が作物を中間テーブル(farm_crops)に登録できるか
+     */
+    public function testRegisterFarmCrops(): void
+    {
+        $farm = Farm::factory()->create();
+        $crops = Crop::factory()->count(3)->create();
+
+        //syncは[1,2,3]のような形を好むためpluckでその形にする。
+        $cropIds = $crops->pluck('id')->toArray();
+
+        $this->repository->registerFarmCrops($farm, $cropIds);
+
+        foreach ($crops as $crop) {
+            $this->assertDatabaseHas('farm_crops', [
+                'farm_id' => $farm->id,
+                'crop_id' => $crop->id
+            ]);
+        }
     }
 }

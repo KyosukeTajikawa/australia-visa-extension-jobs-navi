@@ -3,7 +3,7 @@ import MainLayout from "@/Layouts/MainLayout";
 import { Box, Heading, Text, FormControl, FormLabel, FormErrorMessage, Input, Select, Textarea, Button, HStack, Checkbox, CheckboxGroup, Stack } from "@chakra-ui/react";
 import { useForm } from "@inertiajs/react";
 import ReactSelect from "react-select";
-import makeAnimated from "react-select/animated";
+import { MultiValue } from "react-select";
 
 type FormData = {
     name: string;
@@ -47,11 +47,16 @@ const Create = ({ states, crops }: CreateProps) => {
         crop_ids: [],
     });
 
-    const cropOptions = crops.map(c => ({ value: c.id, label: c.name}));
+    const cropOptions = crops.map(crop => ({ value: crop.id, label: crop.name}));
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setData(name as keyof typeof data, value);
+    };
+
+    const handleOptionChange = (selectedOptions: MultiValue<Option>) => {
+        const selectedIds = selectedOptions.map((option) => option.value);
+        setData("crop_ids", selectedIds);
     };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -99,11 +104,8 @@ const Create = ({ states, crops }: CreateProps) => {
                         inputId="crop_ids"
                         isMulti
                         options={cropOptions}
-                        value={cropOptions.filter(o => data.crop_ids.includes(o.value))}
-                        onChange={(vals) => {
-                            const arr = Array.isArray(vals) ? vals.map(v => v.value) : [];
-                            setData("crop_ids", arr);
-                        }}
+                        value={cropOptions.filter(cropOption => data.crop_ids.includes(cropOption.value))}
+                        onChange={handleOptionChange}
                         closeMenuOnSelect={false}
                         placeholder="作物を選択してください"
                     />

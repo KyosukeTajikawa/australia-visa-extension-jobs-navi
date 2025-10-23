@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\FarmController;
+use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -18,6 +19,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/farm/create', [FarmController::class, 'create'])->name('farm.create');
     Route::post('/farm/store', [FarmController::class, 'store'])->name('farm.store');
     Route::get('/farm/{id}', [FarmController::class, 'detail'])->name('farm.detail');
+
+    //レビュー
+    Route::get('/review/create', [ReviewController::class, 'create'])->name('review.create');
 });
 
 require __DIR__ . '/auth.php';

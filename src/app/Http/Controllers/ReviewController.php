@@ -18,12 +18,21 @@ class ReviewController extends Controller
         private readonly FarmRepositoryInterface $farmRepository,
     ){}
 
-    public function create(int $id)
+    /**
+     * ファーム新規作成のページを表示
+     * @return Response
+     */
+    public function create(int $id): Response
     {
         $farm = Farm::select('id', 'name')->findOrFail($id);
 
         return Inertia::render('Review/Create',[
             'farm' => $farm,
         ]);
+    }
+
+    public function store()
+    {
+
     }
 }

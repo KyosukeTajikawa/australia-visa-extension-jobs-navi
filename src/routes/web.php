@@ -21,7 +21,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/farm/{id}', [FarmController::class, 'detail'])->name('farm.detail');
 
     //レビュー
-    Route::get('/review/create', [ReviewController::class, 'create'])->name('review.create');
+    Route::get('/farm/{id}/review/create', [ReviewController::class, 'create'])->name('review.create');
 });
 
 require __DIR__ . '/auth.php';

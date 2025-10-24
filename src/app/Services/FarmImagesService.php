@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\Farm;
-use App\Repositories\FarmRepositoryInterface;
+use App\Repositories\Farms\FarmRepositoryInterface;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 

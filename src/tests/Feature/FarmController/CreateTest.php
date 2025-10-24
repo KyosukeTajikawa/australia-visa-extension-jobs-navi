@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\FarmController;
 
 use App\Models\Crop;
 use App\Models\State;

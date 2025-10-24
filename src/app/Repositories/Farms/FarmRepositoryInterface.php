@@ -1,16 +1,12 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Farms;
 
-use App\Models\Crop;
 use App\Models\Farm;
-use App\Models\FarmImages;
-use App\Models\State;
-use App\Repositories\FarmRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class FarmRepository implements FarmRepositoryInterface
+interface FarmRepositoryInterface
 {
     /**
      * すべてのファーム情報を取得する
@@ -18,10 +14,7 @@ class FarmRepository implements FarmRepositoryInterface
      * @param array $relation
      * @return Collection<Farm>
      */
-    public function getAllFarmsWithImageIfExist(array $relation = []): Collection
-    {
-        return Farm::with($relation)->get();
-    }
+    public function getAllFarmsWithImageIfExist(): Collection;
 
     /**
      * 指定したIDのファーム詳細を取得する
@@ -31,56 +24,37 @@ class FarmRepository implements FarmRepositoryInterface
      * @return Farm ファームID,state,あればreviews
      * @throws ModelNotFoundException 例外時404が表示される
      */
-    public function getDetailById(int $id, array $relations = []): Farm
-    {
-        return Farm::with($relations)->findOrFail($id);
-    }
+    public function getDetailById(int $id, array $relations = []): Farm;
 
     /**
      * すべての州情報を取得する
      * @return Collection<State>
      */
-    public function getStates(): Collection
-    {
-        return State::orderBy('id')->get();
-    }
+    public function getStates(): Collection;
 
     /**
-     * すべての作物情報を取得する
+     * すべての州情報を取得する
      * @return Collection<Crop>
      */
-    public function getCrops(): Collection
-    {
-        return Crop::orderBy('id')->get();
-    }
+    public function getCrops(): Collection;
 
     /**
      * ファームを登録
      * @param $validatedバリデーションをされた配列
      * @return Farm 登録後のモデルインスタンス
      */
-    public function registerFarm($validated): Farm
-    {
-        return Farm::create($validated);
-    }
+    public function registerFarm($validated): Farm;
 
     /**
      * 画像登録
      * @param array $fileStock 画像が３つまで配列である
      */
-    public function registerFarmImage(array $filesStock): void
-    {
-        FarmImages::insert($filesStock);
-    }
+    public function registerFarmImage(array $filesStock): void;
 
     /**
      * 作物登録
      * @param Farm $farm
      * @param array $cropData
      */
-    public function registerFarmCrops(Farm $farm, array $cropData): void
-    {
-        $farm->crops()->sync($cropData);
-    }
-
+    public function registerFarmCrops(Farm $farm, array $cropData): void;
 }

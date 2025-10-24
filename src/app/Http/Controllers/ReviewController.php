@@ -47,4 +47,9 @@ class ReviewController extends Controller
             'id' => $review->farm_id,
         ]);
     }
+
+    public function favorites()
+    {
+        return Inertia::render('Review/FavoriteReview');
+    }
 }

@@ -23,6 +23,7 @@ Route::middleware(['auth'])->group(function () {
     //レビュー
     Route::get('/farm/{id}/review/create', [ReviewController::class, 'create'])->name('review.create');
     Route::post('/farm/{id}/review', [ReviewController::class, 'store'])->name('review.store');
+    Route::get('/review/favorites', [ReviewController::class, 'favorites'])->name('review.favorites');
 });
 
 require __DIR__ . '/auth.php';

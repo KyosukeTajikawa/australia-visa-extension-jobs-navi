@@ -12,8 +12,8 @@ type Farm = {
 type FormData = {
     work_position: string;
     hourly_wage: string;
-    pay_type: number | null;
-    is_car_required: number | null;
+    pay_type: number;
+    is_car_required: number;
     start_date: string;
     end_date: string;
     work_rating: number;
@@ -56,7 +56,7 @@ const Create = ({ farm }: CreateProps) => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(route("review.store"), {
+        post(route("review.store", {'id': farm.id}), {
             preserveScroll: true,
         });
     }
@@ -83,9 +83,9 @@ const Create = ({ farm }: CreateProps) => {
                 </FormControl>
 
                 {/* 支払種別 */}
-                <FormControl mb={2} isRequired isInvalid={!!serverErrors.pay_type}>
-                    <FormLabel htmlFor="pay_type">支払種別</FormLabel>
-                    <RadioGroup id="pay_type" value={String(data.pay_type)}
+                <FormControl as="fieldset" mb={2} isRequired isInvalid={!!serverErrors.pay_type}>
+                    <FormLabel as="legend" id="pay_type_label">支払種別</FormLabel>
+                    <RadioGroup value={String(data.pay_type)} aria-labelledby="pay_type_label"
                         onChange={(val: string) => setData("pay_type", Number(val))}
                     >
                         <HStack spacing={6}>
@@ -97,9 +97,9 @@ const Create = ({ farm }: CreateProps) => {
                 </FormControl>
 
                 {/* 車の有無 */}
-                <FormControl mb={2} isRequired isInvalid={!!serverErrors.is_car_required}>
-                    <FormLabel htmlFor="is_car_required">車の有無</FormLabel>
-                    <RadioGroup id="is_car_required" value={String(data.is_car_required)}
+                <FormControl as="fieldset" mb={2} isRequired isInvalid={!!serverErrors.is_car_required}>
+                    <FormLabel as="legend" id="is_car_required_label">車の有無</FormLabel>
+                    <RadioGroup aria-labelledby="is_car_required_label" value={String(data.is_car_required)}
                         onChange={(val: string) => setData("is_car_required", Number(val))}
                     >
                         <HStack spacing={6}>

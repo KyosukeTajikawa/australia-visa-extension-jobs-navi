@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Farms\FarmStoreRequest;
-use App\Repositories\FarmRepositoryInterface;
+use App\Repositories\Farms\FarmRepositoryInterface;
 use App\Repositories\StateRepositoryInterface;
 use App\Services\FarmServiceInterface;
 use Illuminate\Http\RedirectResponse;
@@ -64,7 +64,7 @@ class FarmController extends Controller
     public function create(): Response
     {
         $crops = $this->farmRepository->getCrops();
-      
+
         $states = $this->stateRepository->getAll();
 
         return Inertia::render('Farm/Create', [

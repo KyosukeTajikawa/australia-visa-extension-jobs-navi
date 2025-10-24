@@ -3,9 +3,9 @@
 namespace App\Services;
 
 use App\Models\Farm;
+
 use App\Repositories\FarmImageRepositoryInterface;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class FarmImagesService implements FarmImagesServiceInterface
 {

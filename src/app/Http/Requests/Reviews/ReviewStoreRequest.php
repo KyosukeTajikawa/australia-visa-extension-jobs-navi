@@ -24,8 +24,8 @@ class ReviewStoreRequest extends FormRequest
         return [
             'work_position'   => ['required', 'string', 'max:50'],
             'hourly_wage'     => ['nullable', 'required_if:pay_type,1', 'regex:/^\d{1,2}(\.\d)?$/'],
-            'pay_type'        => ['required', 'integer', 'in1,2'],
-            'is_car_required' => ['required', 'integer', 'in1,2'],
+            'pay_type'        => ['required', 'integer', 'in:1,2'],
+            'is_car_required' => ['required', 'integer', 'in:1,2'],
             'start_date'      => ['required', 'date_format:Y-m-d'],
             'end_date'        => ['nullable', 'date_format:Y-m-d', 'after_or_equal:start_date'],
             'work_rating'     => ['required', 'integer', 'between:1,5'],
@@ -34,6 +34,8 @@ class ReviewStoreRequest extends FormRequest
             'relation_rating' => ['required', 'integer', 'between:1,5'],
             'overall_rating'  => ['required', 'integer', 'between:1,5'],
             'comment'         => ['required', 'string', 'max:1000'],
+            'farm_id'         => ['required', 'integer', 'exists:farms,id'],
+            'user_id'         => ['required', 'integer', 'exists:users,id'],
         ];
     }
 
@@ -58,8 +60,26 @@ class ReviewStoreRequest extends FormRequest
 
     public function prepareForValidation(): void
     {
+
+        // 空文字を null に統一
+        $hourly = $this->input('hourly_wage');
+        $hourly = ($hourly === '' || $hourly === null) ? null : str_replace(',', '.', $hourly);
+
+        $end = $this->input('end_date');
+        $end  = ($end === '' ? null : $end);
+
+        // 歩合(=2)なら時給は常に null
+        $payType = $this->input('pay_type');
+        if ($payType !== 1) {
+            $hourly = null;
+        }
+
         $this->merge([
-            'user_id' => auth()->id(),
+            'farm_id'         => (int)$this->route('id'),
+            'user_id'         => auth()->id(),
+            'pay_type'        => $payType,
+            'hourly_wage'     => $hourly,
+            'end_date'        => $end,
         ]);
     }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
-use App\Repositories\FarmRepository;
-use App\Repositories\FarmRepositoryInterface;
+use App\Repositories\Farms\FarmRepository;
+use App\Repositories\Farms\FarmRepositoryInterface;
+use App\Repositories\Reviews\ReviewRepository;
+use App\Repositories\Reviews\ReviewRepositoryInterface;
 use App\Services\FarmImagesService;
 use App\Services\FarmImagesServiceInterface;
 use App\Services\FarmService;
@@ -20,6 +22,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(FarmRepositoryInterface::class, FarmRepository::class);
         $this->app->bind(FarmServiceInterface::class, FarmService::class);
         $this->app->bind(FarmImagesServiceInterface::class, FarmImagesService::class);
+        $this->app->bind(ReviewRepositoryInterface::class, ReviewRepository::class);
     }
 
     /**

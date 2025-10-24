@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Farms\FarmStoreRequest;
-use App\Repositories\FarmRepositoryInterface;
+use App\Repositories\Farms\FarmRepositoryInterface;
 use App\Services\FarmServiceInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;

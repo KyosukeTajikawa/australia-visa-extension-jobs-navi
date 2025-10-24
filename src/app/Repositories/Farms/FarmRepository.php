@@ -1,13 +1,16 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Farms;
 
+use App\Models\Crop;
 use App\Models\Farm;
 use App\Models\FarmImages;
+use App\Models\State;
+use App\Repositories\Farms\FarmRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-interface FarmRepositoryInterface
+class FarmRepository implements FarmRepositoryInterface
 {
     /**
      * すべてのファーム情報を取得する
@@ -15,7 +18,10 @@ interface FarmRepositoryInterface
      * @param array $relation
      * @return Collection<Farm>
      */
-    public function getAllFarmsWithImageIfExist(): Collection;
+    public function getAllFarmsWithImageIfExist(array $relation = []): Collection
+    {
+        return Farm::with($relation)->get();
+    }
 
     /**
      * 指定したIDのファーム詳細を取得する
@@ -25,37 +31,56 @@ interface FarmRepositoryInterface
      * @return Farm ファームID,state,あればreviews
      * @throws ModelNotFoundException 例外時404が表示される
      */
-    public function getDetailById(int $id, array $relations = []): Farm;
+    public function getDetailById(int $id, array $relations = []): Farm
+    {
+        return Farm::with($relations)->findOrFail($id);
+    }
 
     /**
      * すべての州情報を取得する
      * @return Collection<State>
      */
-    public function getStates(): Collection;
+    public function getStates(): Collection
+    {
+        return State::orderBy('id')->get();
+    }
 
     /**
-     * すべての州情報を取得する
+     * すべての作物情報を取得する
      * @return Collection<Crop>
      */
-    public function getCrops(): Collection;
+    public function getCrops(): Collection
+    {
+        return Crop::orderBy('id')->get();
+    }
 
     /**
      * ファームを登録
      * @param $validatedバリデーションをされた配列
      * @return Farm 登録後のモデルインスタンス
      */
-    public function registerFarm($validated): Farm;
+    public function registerFarm($validated): Farm
+    {
+        return Farm::create($validated);
+    }
 
     /**
      * 画像登録
      * @param array $fileStock 画像が３つまで配列である
      */
-    public function registerFarmImage(array $filesStock): void;
+    public function registerFarmImage(array $filesStock): void
+    {
+        FarmImages::insert($filesStock);
+    }
 
     /**
      * 作物登録
      * @param Farm $farm
      * @param array $cropData
      */
-    public function registerFarmCrops(Farm $farm, array $cropData): void;
+    public function registerFarmCrops(Farm $farm, array $cropData): void
+    {
+        $farm->crops()->sync($cropData);
+    }
+
 }

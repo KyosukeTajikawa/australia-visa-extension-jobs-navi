@@ -76,7 +76,7 @@ const Create = ({ farm }: CreateProps) => {
 
                 {/* 時給 */}
                 <FormControl mb={2} isInvalid={!!serverErrors.hourly_wage}>
-                    <FormLabel htmlFor="hourly_wage">時給</FormLabel>
+                    <FormLabel htmlFor="hourly_wage" >時給<Text as="span" color="gray.500" fontSize="sm" pl={2}>*時給の方のみご入力ください。</Text></FormLabel>
                     <Input id="hourly_wage" type="text" name="hourly_wage" value={data.hourly_wage} placeholder="30.7" inputMode="decimal"
                         onChange={handleChange} />
                     <FormErrorMessage>{serverErrors.hourly_wage}</FormErrorMessage>

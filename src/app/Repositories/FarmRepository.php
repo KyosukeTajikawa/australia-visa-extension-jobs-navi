@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Farm;
-use App\Models\State;
 use App\Repositories\FarmRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -12,11 +11,12 @@ class FarmRepository implements FarmRepositoryInterface
 {
     /**
      * すべてのファーム情報を取得する
+     * @param array $relation
      * @return Collection<Farm>
      */
-    public function getAllFarms(): Collection
+    public function getAllFarmsWithImageIfExist(array $relation = []): Collection
     {
-        return Farm::orderBy('id', 'asc')->get();
+        return Farm::with($relation)->orderBy('id')->get();
     }
 
     /**
@@ -33,11 +33,12 @@ class FarmRepository implements FarmRepositoryInterface
     }
 
     /**
-     * すべての州情報を取得する
-     * @return Collection<State>
+     * ファームを登録
+     * @param $validatedバリデーションをされた配列
+     * @return Farm 登録後のモデルインスタンス
      */
-    public function getStates(): Collection
+    public function registerFarm($validated): Farm
     {
-        return State::get();
+        return Farm::create($validated);
     }
 }

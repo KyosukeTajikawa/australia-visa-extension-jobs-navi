@@ -1,6 +1,6 @@
 import React from "react";
 import MainLayout from "@/Layouts/MainLayout";
-import { Box, HStack, Text} from "@chakra-ui/react";
+import { Box, Heading, HStack, Text} from "@chakra-ui/react";
 import { StarIcon } from '@chakra-ui/icons';
 
 type Review = {
@@ -26,6 +26,7 @@ type FavoriteReviewProps = {
 const FavoriteReview = ({ reviews }: FavoriteReviewProps) => {
     return (
         <Box>
+            <Heading as={"h1"}>お気に入りレビュー一覧</Heading>
             {reviews?.map((review) => (
                 <Box key={review.id} border={"1px"} borderRadius={"md"} borderColor={"gray.300"} boxShadow={"md"}>
                     <Text mb={1}>仕事のポジション：{review.work_position}</Text>

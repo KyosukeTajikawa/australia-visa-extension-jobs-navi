@@ -9,7 +9,7 @@ class FarmImageRepository implements FarmImageRepositoryInterface
 {
     /**
      * 画像登録
-     * @param array $fileStock 画像が３つまで配列である
+     * @param array $insertValues 画像が３つまで配列である
      */
     public function bulkInsert(array $insertValues): void
     {

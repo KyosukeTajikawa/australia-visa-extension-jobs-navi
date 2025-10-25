@@ -23,4 +23,10 @@ interface FarmRepositoryInterface
      * @throws ModelNotFoundException 例外時404が表示される
      */
     public function getDetailById(int $id, array $relations = []): Farm;
+
+    /**
+     * すべての州情報を取得する
+     * @return Collection<State>
+     */
+    public function getStates(): Collection;
 }

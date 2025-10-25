@@ -6,8 +6,6 @@ import {
 import { HamburgerIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import { Link, router, usePage, } from "@inertiajs/react";
 
-// type AuthUser = { id: number; nickname: string } | null;
-
 type MainLayoutProps = {
     children: ReactNode;
     title?: string;
@@ -31,7 +29,7 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                                 {auth.user.nickname}
                             </MenuButton>
                             <MenuList>
-                                <MenuItem>ファーム登録</MenuItem>
+                                <MenuItem onClick={() => router.get("/farm/create")}>ファーム登録</MenuItem>
                                 <MenuItem>お気に入りレビュー</MenuItem>
                                 <MenuItem onClick={() => router.post(route("logout"))}>ログアウト</MenuItem>
                             </MenuList>
@@ -62,7 +60,7 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                                 <DrawerHeader>{auth.user.nickname}</DrawerHeader>
                                 <DrawerBody mt={"60px"} textAlign={"center"} w={"100%"}>
                                     <Box mb={1} _hover={{ opacity: 0.7, bg: "gray.100" }}>
-                                        <Link _hover={{ color: "none" }}>
+                                        <Link _hover={{ color: "none" }} href={route("farm.create")}>
                                             <Text>ファーム登録</Text>
                                         </Link>
                                     </Box>
@@ -111,7 +109,7 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                     </Box>
                 }
             </Box>
-            <Box as="main" flex={1} display={"flex"}>{children}</Box>
+            <Box as="main">{children}</Box>
             {/* Footer */}
             <Box>
                 <Box bg="green.500" color={"white"} fontWeight={"bold"} textAlign={"center"} py={{ base: 2, md: 3 }}>

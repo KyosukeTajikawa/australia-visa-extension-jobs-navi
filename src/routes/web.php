@@ -13,8 +13,12 @@ Route::get('/login-test', function () {
 // ホーム画面
 Route::get('/home', [FarmController::class, 'index'])->name('home');
 
-//ファーム
-Route::get('/farm/{id}', [FarmController::class, 'detail'])->name('farm.detail');
+Route::middleware(['auth'])->group(function () {
+    //ファーム
+    Route::get('/farm/create', [FarmController::class, 'create'])->name('farm.create');
+    Route::post('/farm/store', [FarmController::class, 'store'])->name('farm.store');
+    Route::get('/farm/{id}', [FarmController::class, 'detail'])->name('farm.detail');
+});
 
 //ログイン
     Route::get('/login',  [AuthenticatedSessionController::class, 'create'])->name('login');

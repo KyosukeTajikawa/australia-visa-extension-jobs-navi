@@ -31,9 +31,7 @@ class FarmImagesService implements FarmImagesServiceInterface
             $insertValues = [];
 
             foreach ($files as $file) {
-                $extension = $file->guessExtension() ?: $file->getClientOriginalExtension() ?: 'bin';
-
-                $name = Str::uuid()->toString() . '.' . $extension;
+                $name = $file->getClientOriginalName();
 
                 $path = Storage::disk('s3')->putFileAs("farms/{$farm->id}", $file, $name);
 

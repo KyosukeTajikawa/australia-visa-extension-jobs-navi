@@ -39,8 +39,7 @@ class FarmService implements FarmServiceInterface
             DB::commit();
             return $farm;
         } catch (\Exception $e) {
-            $message = $e->getMessage();
-            Log::error($message);
+            Log::error(__METHOD__ . 'ファームの登録処理でエラーが発生しました。' . $e->getMessage());
             DB::rollBack();
             throw $e;
         }

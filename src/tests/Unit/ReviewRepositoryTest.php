@@ -6,11 +6,8 @@ use App\Models\Farm;
 use App\Models\Review;
 use App\Models\User;
 use App\Repositories\Reviews\ReviewRepositoryInterface;
-use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-
-use function PHPUnit\Framework\assertSame;
 
 class ReviewRepositoryTest extends TestCase
 {
@@ -23,7 +20,6 @@ class ReviewRepositoryTest extends TestCase
         parent::setUp();
         $this->repository = app(ReviewRepositoryInterface::class);
     }
-
 
     /**
      * getCreateById()のテスト

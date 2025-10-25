@@ -12,7 +12,7 @@ class StateRepository implements StateRepositoryInterface
      * すべての州情報を取得する
      * @return Collection<State>
      */
-    public function getStates(): Collection
+    public function getAll(): Collection
     {
         return State::orderBy('id')->get();
     }

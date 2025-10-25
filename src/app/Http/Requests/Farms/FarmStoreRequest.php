@@ -51,9 +51,9 @@ class FarmStoreRequest extends FormRequest
             'postcode.required'       => '郵便番号は必須です。',
             'postcode.digits'         => '郵便番号は4桁の数字で入力してください。',
             'state_id.required'       => '州を選択してください。',
-            'files.*.image'            => '画像ファイルを選択してください。',
-            'files.*.mimes'            => 'jpg/jpeg/png のいずれかを選択してください。',
-            'files.*.max'              => '画像サイズは5MB以下にしてください。',
+            'files.*.image'           => '画像ファイルを選択してください。',
+            'files.*.mimes'           => 'jpg/jpeg/png のいずれかを選択してください。',
+            'files.*.max'             => '画像サイズは5MB以下にしてください。',
         ];
     }
 

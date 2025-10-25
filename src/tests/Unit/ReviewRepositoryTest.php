@@ -4,9 +4,13 @@ namespace Tests\Unit;
 
 use App\Models\Farm;
 use App\Models\Review;
+use App\Models\User;
 use App\Repositories\Reviews\ReviewRepositoryInterface;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+
+use function PHPUnit\Framework\assertSame;
 
 class ReviewRepositoryTest extends TestCase
 {
@@ -65,5 +69,37 @@ class ReviewRepositoryTest extends TestCase
         $this->repository->registerReview($review);
 
         $this->assertDatabaseHas('reviews', $review);
+    }
+
+    public function testGetFavoriteReviews(): void
+    {
+        $user = User::factory()->create();
+
+            $reviews = Review::factory()->sequence(['id' => 10], ['id' => 15], ['id' => 20])->count(3)->create();
+
+            $user->reviews()->attach($reviews->modelKeys());
+
+            $result = $this->actingAs($user)->repository->getFavoriteReviews();
+
+        $this->assertSame($reviews->modelKeys(), $result->modelKeys());
+    }
+
+    public function testRegisterFavoriteReview(): void
+    {
+        $user = User::factory()->create();
+        $reviews = Review::factory()->sequence(['id' => 10], ['id' => 15], ['id' => 20])->count(3)->create();
+
+        $this->actingAs($user);
+
+        foreach ($reviews as $review) {
+            $this->repository->registerFavoriteReview($review);
+        };
+
+        foreach ($reviews as $review) {
+            $this->assertDatabaseHas('review_favorites',[
+                'user_id' => $user->id,
+                'review_id' => $review->id,
+            ]);
+        }
     }
 }

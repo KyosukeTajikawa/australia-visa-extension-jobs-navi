@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('review_id')->constrained()->onDelete('cascade')->comment('レビューID');
             // 複合主キー
             $table->primary(['user_id', 'review_id']);
-            $table->timestamps()->useCurrent();
+            $table->timestamps();
         });
     }
 

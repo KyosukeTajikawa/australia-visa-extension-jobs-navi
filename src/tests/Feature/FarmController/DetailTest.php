@@ -122,7 +122,6 @@ class DetailTest extends TestCase
                                     ->where('url', 'test2.jpeg')
                                     ->etc()
                             )
-                            ->etc()
                     )
             );
     }

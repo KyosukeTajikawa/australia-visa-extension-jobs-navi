@@ -22,23 +22,21 @@ class FarmImagesService implements FarmImagesServiceInterface
      */
     public function imagesStore(Farm $farm, ?array $files = null): void
     {
-        if ($files) {
-
-            $filesStock = [];
+        if (!$files) {
+            return;
+        }
+            $insertValues = [];
 
             foreach ($files as $file) {
                 $extension = $file->guessExtension() ?: $file->getClientOriginalExtension() ?: 'bin';
 
                 $name = Str::uuid()->toString() . '.' . $extension;
-                $dir = "farms/{$farm->id}";
 
-                $path = Storage::disk('s3')->putFileAs($dir, $file, $name);
+                $path = Storage::disk('s3')->putFileAs("farms/{$farm->id}", $file, $name);
 
-                /** @var \Illuminate\Filesystem\FilesystemAdapter $s3 */
-                $s3 = Storage::disk('s3');
-                $url = $s3->url($path);
+                $url = Storage::disk('s3')->url($path);
 
-                $filesStock[] = [
+                $insertValues[] = [
                     'farm_id'    => $farm->id,
                     'url'        => $url,
                     'created_at' => now(),
@@ -46,7 +44,6 @@ class FarmImagesService implements FarmImagesServiceInterface
                 ];
             }
 
-            $this->farmImageRepository->registerFarmImage($filesStock);
-        }
+            $this->farmImageRepository->registerFarmImage($insertValues);
     }
 }

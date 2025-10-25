@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Farm;
-use App\Models\FarmImages;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 

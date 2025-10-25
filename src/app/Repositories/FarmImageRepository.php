@@ -11,7 +11,7 @@ class FarmImageRepository implements FarmImageRepositoryInterface
      * 画像登録
      * @param array $fileStock 画像が３つまで配列である
      */
-    public function registerFarmImage(array $insertValues): void
+    public function bulkInsert(array $insertValues): void
     {
         FarmImages::insert($insertValues);
     }

@@ -45,6 +45,6 @@ class FarmImagesService implements FarmImagesServiceInterface
                 ];
             }
 
-            $this->farmImageRepository->registerFarmImage($insertValues);
+            $this->farmImageRepository->bulkInsert($insertValues);
     }
 }

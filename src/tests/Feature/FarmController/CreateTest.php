@@ -15,10 +15,10 @@ class CreateTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * フロント(Create)の確認
-     * 州情報がCreateに渡っているか確認
+     * Createの確認
+     * 州・作物情報がCreateに渡っているか確認
      */
-    public function testCreate(): void
+    public function testCreateWithStatesAndCrops(): void
     {
         $user = User::factory()->create();
 

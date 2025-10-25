@@ -15,9 +15,10 @@ class CreateTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * A basic feature test example.
+     * Createの確認
+     * ファームのid,nameのみがCreateに渡っているか確認
      */
-    public function testCreate(): void
+    public function testCreateWithFarm(): void
     {
         $user = User::factory()->create();
         $farm = Farm::factory()->sequence(['id' => 2, 'name' => 'AFarm'])->create();

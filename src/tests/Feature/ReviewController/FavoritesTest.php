@@ -13,7 +13,7 @@ class FavoritesTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * favoritesメソッドの確認
+     * favoritesの確認
      * プロップス（reviewsデータ）が送られているか
      * 各レビューの pivot（中間テーブル）の user_id / review_id が正しいこと
      */
@@ -41,7 +41,7 @@ class FavoritesTest extends TestCase
     }
 
     /**
-     * favoritesメソッドの確認
+     * favoritesの確認
      * プロップス（reviewsデータ）が空でもエラーにならないか
      */
     public function testEmptyFavoriteReviewsWhenNoneExist(): void

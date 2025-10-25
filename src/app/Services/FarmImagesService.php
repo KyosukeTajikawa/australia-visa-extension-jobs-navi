@@ -28,23 +28,23 @@ class FarmImagesService implements FarmImagesServiceInterface
         if (!$files) {
             return;
         }
-            $insertValues = [];
+        $insertValues = [];
 
-            foreach ($files as $file) {
-                $name = $file->getClientOriginalName();
+        foreach ($files as $file) {
+            $name = $file->getClientOriginalName();
 
-                $path = Storage::disk('s3')->putFileAs("farms/{$farm->id}", $file, $name);
+            $path = Storage::disk('s3')->putFileAs("farms/{$farm->id}", $file, $name);
 
-                $url = Storage::disk('s3')->url($path);
+            $url = Storage::disk('s3')->url($path);
 
-                $insertValues[] = [
-                    'farm_id'    => $farm->id,
-                    'url'        => $url,
-                    'created_at' => now(),
-                    'updated_at' => now()
-                ];
-            }
+            $insertValues[] = [
+                'farm_id'    => $farm->id,
+                'url'        => $url,
+                'created_at' => now(),
+                'updated_at' => now()
+            ];
+        }
 
-            $this->farmImageRepository->bulkInsert($insertValues);
+        $this->farmImageRepository->bulkInsert($insertValues);
     }
 }

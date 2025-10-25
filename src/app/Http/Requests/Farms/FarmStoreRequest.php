@@ -64,7 +64,6 @@ class FarmStoreRequest extends FormRequest
     {
         //ユニーク制約、かつ、任意（nullable）なので空文字をnullに変換
         $this->merge([
-            'name' => $this->filled('name') ? trim((string)$this->input('name')) : null,
             'phone_number' => $this->filled('phone_number') ? $this->input('phone_number') : null,
             'email' => $this->filled('email') ? trim((string)$this->input('email')) : null,
             'created_user_id' => auth()->id(),

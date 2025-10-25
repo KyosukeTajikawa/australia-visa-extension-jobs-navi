@@ -32,11 +32,4 @@ interface FarmRepositoryInterface
      * @return Farm 登録後のモデルインスタンス
      */
     public function registerFarm($validated): Farm;
-
-    /**
-     * 画像登録
-     * @param array $fileStock 画像が３つまで配列である
-     * @return bool 登録後のモデルインスタンス
-     */
-    public function registerFarmImage(array $filesStock): bool;
 }

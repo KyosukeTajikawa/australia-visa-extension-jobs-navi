@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Farm;
+use App\Repositories\FarmImageRepositoryInterface;
 use App\Repositories\FarmRepositoryInterface;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -11,6 +12,7 @@ class FarmImagesService implements FarmImagesServiceInterface
 {
     public function __construct(
         private readonly FarmRepositoryInterface $farmRepository,
+        private readonly FarmImageRepositoryInterface $farmImageRepository,
     ) {}
 
     /**
@@ -44,7 +46,7 @@ class FarmImagesService implements FarmImagesServiceInterface
                 ];
             }
 
-            $this->farmRepository->registerFarmImage($filesStock);
+            $this->farmImageRepository->registerFarmImage($filesStock);
         }
     }
 }

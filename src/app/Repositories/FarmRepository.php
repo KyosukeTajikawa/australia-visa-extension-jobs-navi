@@ -3,8 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Farm;
-use App\Models\FarmImages;
-use App\Models\State;
 use App\Repositories\FarmRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -43,15 +41,5 @@ class FarmRepository implements FarmRepositoryInterface
     public function registerFarm($validated): Farm
     {
         return Farm::create($validated);
-    }
-
-    /**
-     * 画像登録
-     * @param array $fileStock 画像が３つまで配列である
-     * @return bool 登録後のモデルインスタンス
-     */
-    public function registerFarmImage(array $filesStock): bool
-    {
-        return FarmImages::insert($filesStock);
     }
 }

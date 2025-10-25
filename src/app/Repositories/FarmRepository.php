@@ -19,7 +19,7 @@ class FarmRepository implements FarmRepositoryInterface
      */
     public function getAllFarmsWithImageIfExist(array $relation = []): Collection
     {
-        return Farm::with($relation)->get();
+        return Farm::with($relation)->orderBy('id')->get();
     }
 
     /**

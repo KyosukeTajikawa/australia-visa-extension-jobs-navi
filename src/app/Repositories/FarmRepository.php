@@ -11,7 +11,6 @@ class FarmRepository implements FarmRepositoryInterface
 {
     /**
      * すべてのファーム情報を取得する
-     * 登録があればファーム画像(images)も一枚（最も古い）同時に取得する
      * @param array $relation
      * @return Collection<Farm>
      */

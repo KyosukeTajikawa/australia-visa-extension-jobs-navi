@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Farms\FarmStoreRequest;
 use App\Repositories\FarmRepositoryInterface;
+use App\Repositories\StateRepositoryInterface;
 use App\Services\FarmServiceInterface;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -15,10 +16,12 @@ class FarmController extends Controller
     /**
      * FarmController constructor
      * @param FarmRepositoryInterface $farmRepository ファーム情報を扱うリポジトリの実装
+     * @param StateRepositoryInterface $stateRepository ファーム情報を扱うリポジトリの実装
      * @param FarmServiceInterface $farmService ファーム情報を扱うサービスの実装
      */
     public function __construct(
         private readonly FarmRepositoryInterface $farmRepository,
+        private readonly StateRepositoryInterface $stateRepository,
         private readonly FarmServiceInterface $farmService
     ) {}
 
@@ -59,12 +62,10 @@ class FarmController extends Controller
      */
     public function create(): Response
     {
-        $states = $this->farmRepository->getStates();
-        $crops = $this->farmRepository->getCrops();
+        $states = $this->stateRepository->getStates();
 
         return Inertia::render('Farm/Create', [
             'states' => $states,
-            'crops'  => $crops,
         ]);
     }
 
@@ -77,11 +78,7 @@ class FarmController extends Controller
     {
         $validated = $request->validated();
 
-        $farmData = Arr::except($validated, ['crop_ids']);
-        $cropData = array_map('intval', $validated['crop_ids']);
-        $files    = $request->file('files');
-
-        $farm = $this->farmService->store($farmData, $cropData, $files);
+        $farm = $this->farmService->store($validated, $request->file('files'));
 
         return redirect()->route('farm.detail', [
             'id' => $farm->id,

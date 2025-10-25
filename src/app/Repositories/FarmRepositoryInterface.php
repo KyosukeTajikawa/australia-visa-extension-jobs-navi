@@ -27,12 +27,6 @@ interface FarmRepositoryInterface
     public function getDetailById(int $id, array $relations = []): Farm;
 
     /**
-     * すべての州情報を取得する
-     * @return Collection<State>
-     */
-    public function getStates(): Collection;
-
-    /**
      * ファームを登録
      * @param $validatedバリデーションをされた配列
      * @return Farm 登録後のモデルインスタンス

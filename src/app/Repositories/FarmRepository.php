@@ -36,15 +36,6 @@ class FarmRepository implements FarmRepositoryInterface
     }
 
     /**
-     * すべての州情報を取得する
-     * @return Collection<State>
-     */
-    public function getStates(): Collection
-    {
-        return State::orderBy('id')->get();
-    }
-
-    /**
      * ファームを登録
      * @param $validatedバリデーションをされた配列
      * @return Farm 登録後のモデルインスタンス

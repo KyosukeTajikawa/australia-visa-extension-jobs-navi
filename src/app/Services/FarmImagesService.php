@@ -4,14 +4,17 @@ namespace App\Services;
 
 use App\Models\Farm;
 use App\Repositories\FarmImageRepositoryInterface;
-use App\Repositories\FarmRepositoryInterface;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class FarmImagesService implements FarmImagesServiceInterface
 {
+
+    /**
+     * FarmImagesService constructor
+     * @param FarmImageRepositoryInterface $farmImagesService ファーム画像を扱うリポジトリの実装
+     */
     public function __construct(
-        private readonly FarmRepositoryInterface $farmRepository,
         private readonly FarmImageRepositoryInterface $farmImageRepository,
     ) {}
 

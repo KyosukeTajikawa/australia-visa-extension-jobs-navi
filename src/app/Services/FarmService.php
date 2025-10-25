@@ -11,8 +11,9 @@ use Illuminate\Support\Facades\Log;
 class FarmService implements FarmServiceInterface
 {
     /**
-     * FarmController constructor
+     * FarmService constructor
      * @param FarmRepositoryInterface $farmRepository ファーム情報を扱うリポジトリの実装
+     * @param FarmImagesServiceInterface $farmImagesService ファーム画像を扱うリポジトリの実装
      */
     public function __construct(
         private readonly FarmRepositoryInterface $farmRepository,

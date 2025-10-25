@@ -16,7 +16,7 @@ class FarmController extends Controller
     /**
      * FarmController constructor
      * @param FarmRepositoryInterface $farmRepository ファーム情報を扱うリポジトリの実装
-     * @param StateRepositoryInterface $stateRepository ファーム情報を扱うリポジトリの実装
+     * @param StateRepositoryInterface $stateRepository 州情報を扱うリポジトリの実装
      * @param FarmServiceInterface $farmService ファーム情報を扱うサービスの実装
      */
     public function __construct(

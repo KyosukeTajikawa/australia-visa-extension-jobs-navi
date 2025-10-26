@@ -4,7 +4,7 @@ import { Box, Heading, Text, HStack, FormControl, FormLabel, FormErrorMessage, I
 import { useForm, Link } from "@inertiajs/react";
 
 type FormData = {
-    name: string;
+    nickname: string;
     email: string;
     password: string;
     password_confirmation: string;
@@ -14,7 +14,7 @@ type FormData = {
 
 const Register = () => {
     const { data, setData, post, processing, errors, reset } = useForm<FormData>({
-        name: '',
+        nickname: '',
         email: '',
         password: '',
         password_confirmation: '',
@@ -42,19 +42,21 @@ const Register = () => {
 
             <form onSubmit={handleSubmit}>
                 {/* 名前 */}
-                <FormControl mb={2} isRequired isInvalid={!!errors.name}>
-                    <FormLabel htmlFor="name">名前</FormLabel>
+                <FormControl mb={2} isRequired isInvalid={!!errors.nickname}>
+                    <FormLabel htmlFor="nickname">名前</FormLabel>
                     <Input
-                        id="name"
-                        name="name"
-                        value={data.name}
-                        autoComplete="name"
+                        id="nickname"
+                        name="nickname"
+                        value={data.nickname}
+                        autoComplete="nickname"
                         onChange={handleChange}
+                        placeholder="太郎"
+                        maxLength={50}
                         mt={"1"}
                         display={"block"}
                         w={"full"}
                     />
-                    <FormErrorMessage>{errors.name}</FormErrorMessage>
+                    <FormErrorMessage>{errors.nickname}</FormErrorMessage>
                 </FormControl>
                 {/* メールアドレス */}
                 <FormControl mb={2} isRequired isInvalid={!!errors.email}>
@@ -62,9 +64,12 @@ const Register = () => {
                     <Input
                         id="email"
                         name="email"
+                        type="email"
                         value={data.email}
                         autoComplete="email"
                         onChange={handleChange}
+                        placeholder="test@example.com"
+                        maxLength={255}
                         mt={"1"}
                         display={"block"}
                         w={"full"}
@@ -91,9 +96,11 @@ const Register = () => {
                     <Input
                         id="birthday"
                         name="birthday"
+                        type="date"
                         value={data.birthday}
                         autoComplete="birthday"
                         onChange={handleChange}
+                        inputMode="numeric"
                         mt={"1"}
                         display={"block"}
                         w={"full"}
@@ -106,9 +113,11 @@ const Register = () => {
                     <Input
                         id="password"
                         name="password"
+                        type="password"
                         value={data.password}
-                        autoComplete="password"
+                        autoComplete="new-password"
                         onChange={handleChange}
+                        placeholder="●●●●●●"
                         mt={"1"}
                         display={"block"}
                         w={"full"}
@@ -121,10 +130,12 @@ const Register = () => {
                     <Input
                         id="password_confirmation"
                         name="password_confirmation"
+                        type="password"
                         value={data.password_confirmation}
-                        autoComplete="password_confirmation"
+                        autoComplete="new-password"
                         onChange={handleChange}
-                        c mt={"1"}
+                        placeholder="●●●●●●"
+                        mt={"1"}
                         display={"block"}
                         w={"full"}
                     />

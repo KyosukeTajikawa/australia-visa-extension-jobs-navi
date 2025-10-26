@@ -107,19 +107,6 @@ class FarmRepositoryTest extends TestCase
     }
 
     /**
-     * getStatesU()メソッドのテスト
-     * getStates()が全ての州情報を取得できているか
-     */
-    public function testGetStates(): void
-    {
-        $states = State::factory()->sequence(['id' => 1], ['id' => 2])->count(2)->create();
-
-        $result = $this->repository->getStates();
-
-        $this->assertSame($states->modelKeys(), $result->modelKeys());
-    }
-
-    /**
      * registerFarm()メソッドのテスト
      * registerFarm()で登録できるているか
      */

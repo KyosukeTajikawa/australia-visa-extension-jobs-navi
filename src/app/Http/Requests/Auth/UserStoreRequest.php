@@ -28,7 +28,7 @@ class UserStoreRequest extends FormRequest
             'nickname' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
             'gender'        => ['required', 'integer', 'in:1,2'],
-            'birthday'      => ['nullable', 'date_format:Y-m-d'],
+            'birthday'      => ['nullable', 'date', 'date_format:Y-m-d'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ];
     }

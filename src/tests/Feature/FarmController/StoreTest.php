@@ -38,10 +38,6 @@ class StoreTest extends TestCase
         //fakeストレージ作成
         Storage::fake('s3');
 
-        //固定値作成、Strを呼び出す際は$uuidを使ってねと設定
-        $uuid = Uuid::fromString('11111111-2222-3333-4444-555555555555');
-        Str::createUuidsUsing(fn() => $uuid);
-
         //ユーザー登録のと同じ形を再現
         $post = [
             'name'           => 'A_farm',
@@ -73,7 +69,7 @@ class StoreTest extends TestCase
 
         //本番と同じディレクトリにする。
         //そこにいファイルを保存(postしているため、storeにてputFileAs)がされている
-        $path = "farms/{$farm->id}/{$uuid}.jpg";
+        $path = "farms/{$farm->id}/avatar.jpg";
 
         //以下にファイルがある事を確認
         Storage::disk('s3')->assertExists($path);

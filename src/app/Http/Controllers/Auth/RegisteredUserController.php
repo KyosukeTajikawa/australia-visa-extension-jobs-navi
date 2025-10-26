@@ -3,18 +3,20 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-// use Illuminate\Auth\Events\Registered;
+use App\Http\Requests\Auth\UserStoreRequest;
+use App\Repositories\Auth\UserRepositoryInterface;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class RegisteredUserController extends Controller
 {
+
+    public function __construct(
+        private readonly UserRepositoryInterface $userRepository,
+    ) {}
+
     /**
      * ログインページの表示
      * @return Response
@@ -26,29 +28,14 @@ class RegisteredUserController extends Controller
 
     /**
      * ユーザーの新規登録
-     * @param Request $request
+     * @param UserStoreRequest $request
      * @return RedirectResponse
-     * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(UserStoreRequest $request): RedirectResponse
     {
-        $request->validate([
-            'nickname' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
-            'gender'        => ['required', 'integer', 'in:1,2'],
-            'birthday'      => ['nullable', 'date_format:Y-m-d'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+        $validated = $request->validated();
 
-        $user = User::create([
-            'nickname' => $request->nickname,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'gender' => $request->gender,
-            'birthday' => $request->birthday,
-        ]);
-
-        // event(new Registered($user));
+        $user = $this->userRepository->registerUser($validated);
 
         Auth::login($user);
 

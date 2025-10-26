@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\Auth\UserRepository;
+use App\Repositories\Auth\UserRepositoryInterface;
 use App\Repositories\Farms\FarmRepository;
 use App\Repositories\Farms\FarmRepositoryInterface;
 use App\Repositories\Reviews\ReviewRepository;
@@ -19,10 +21,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(FarmRepositoryInterface::class, FarmRepository::class);
-        $this->app->bind(FarmServiceInterface::class, FarmService::class);
-        $this->app->bind(FarmImagesServiceInterface::class, FarmImagesService::class);
         $this->app->bind(ReviewRepositoryInterface::class, ReviewRepository::class);
+        $this->app->bind(FarmImagesServiceInterface::class, FarmImagesService::class);
+        $this->app->bind(FarmServiceInterface::class, FarmService::class);
     }
 
     /**

@@ -25,8 +25,8 @@ class UserStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nickname' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
+            'nickname' => ['required','string','max:255'],
+            'email' => ['required', 'string','lowercase','email','max:255','unique:' . User::class],
             'gender'        => ['required', 'integer', 'in:1,2'],
             'birthday'      => ['nullable', 'date', 'date_format:Y-m-d'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
@@ -40,8 +40,9 @@ class UserStoreRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'email' => '有効なメールアドレス形式で入力してください。',
-            'date_format' => '生年月日はformatの形式と一致していません。',
+            'email.email' => '有効なメールアドレス形式で入力してください。',
+            'birthday.date_format' => '生年月日はformatの形式と一致していません。',
+            'birthday.date' => '生年月日はYYYY/MM/DDで入力してください。',
             'password' => 'パスワードの確認が一致しません。',
         ];
     }

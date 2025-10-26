@@ -145,25 +145,21 @@ const Register = () => {
                 <Box mt="4"
                     display={"flex"}
                     alignItems={"center"}
-                    justifyContent={"flex-end"}>
-                    <Link
+                    justifyContent={"flex-end"}
+                    >
+
+                    <Text
+                        as={Link}
                         href={route('login')}
-                        size="sm"
-                        color="gray.600"
-                        textDecoration="underline"
-                        borderRadius="md"
+                        size={"sm"}
+                        color={"gray.700"}
+                        borderRadius={"md"}
                         _hover={{
                             color: "gray.900",
                         }}
-                        _focus={{
-                            outline: "none",
-                            ring: 2,
-                            ringColor: "indigo.500",
-                            ringOffset: 2,
-                        }}
                     >
                         Already registered?
-                    </Link>
+                    </Text>
 
                     <Button type="submit" ml="4" colorScheme={"green"} isLoading={processing}>
                         Register

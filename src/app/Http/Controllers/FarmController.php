@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Farms\FarmStoreRequest;
+use App\Models\Farm;
+use App\Models\State;
 use App\Repositories\Farms\FarmRepositoryInterface;
 use App\Services\FarmServiceInterface;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -28,17 +31,49 @@ class FarmController extends Controller
      * 農場の一覧ページを表示
      * @return Response
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $farms = $this->farmRepository->getAllFarmsWithImageIfExist([
-            'images' => function ($query) {
-                $query->orderBy('id')->limit(1);
-            },
-        ]);
+        $keyword = $request->input('keyword');
+        $stateName = $request->input('stateName');
+
+        $query = Farm::with(['images' => function($q) {
+            $q->orderBy('id')->limit(1);
+        }, 'state']);
+
+        if ($keyword) {
+            $query->where(function ($q) use ($keyword) {
+                $q->where('name', 'LIKE', "%{$keyword}%");
+            });
+        }
+
+        if (!empty($stateName)) {
+            $stateId = State::where('name', $stateName)->value('id');
+        }
+        if(!empty($stateId)) {
+            $query->where('state_id', $stateId);
+        }
+
+        $farms = $query->orderBy('id')->get();
+
+        $states = State::orderBy('id')->get();
 
         return Inertia::render('Home', [
-            'farms'     => $farms,
+            'farms' => $farms,
+            'states' => $states,
+            'keyword' => $keyword,
+            'stateName' => $stateName,
         ]);
+
+
+        // $farms = $this->farmRepository->getAllFarmsWithImageIfExist([
+        //     'images' => function ($query) {
+        //         $query->orderBy('id')->limit(1);
+        //     },
+        // ]);
+
+        // return Inertia::render('Home', [
+        //     'farms'     => $farms,
+        // ]);
     }
 
     /**

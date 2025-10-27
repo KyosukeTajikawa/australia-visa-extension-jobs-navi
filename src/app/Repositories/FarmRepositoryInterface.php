@@ -10,9 +10,10 @@ interface FarmRepositoryInterface
 {
     /**
      * すべてのファーム情報を取得する
+     * @param array $relation
      * @return Collection<Farm>
      */
-    public function getAllFarms(): Collection;
+    public function getAllFarmsWithImageIfExist(): Collection;
 
     /**
      * 指定したIDのファーム詳細を取得する
@@ -25,8 +26,9 @@ interface FarmRepositoryInterface
     public function getDetailById(int $id, array $relations = []): Farm;
 
     /**
-     * すべての州情報を取得する
-     * @return Collection<State>
+     * ファームを登録
+     * @param $validatedバリデーションをされた配列
+     * @return Farm 登録後のモデルインスタンス
      */
-    public function getStates(): Collection;
+    public function registerFarm($validated): Farm;
 }

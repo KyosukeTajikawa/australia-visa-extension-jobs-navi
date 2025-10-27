@@ -5,6 +5,7 @@ namespace Tests\Unit\Repositories;
 use App\Models\Farm;
 use App\Models\Review;
 use App\Models\State;
+use App\Models\User;
 use App\Repositories\FarmRepositoryInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -23,23 +24,41 @@ class FarmRepositoryTest extends TestCase
     }
 
     /**
-     * getAllFarms() メソッドのテスト
-     * getAllFarms() が全てのファームを正しく取得できるかを確認する。
+     * testGetAllFarmsWithImageIfNotExist() メソッドのテスト
+     * testGetAllFarmsWithImageIfNotExist() が全てのファームを正しく取得できるか、画像がない時、イーガーロードしていないか確認
      */
-    public function testGetAllFarms(): void
+    public function testGetAllFarmsWithImageIfNotExist(): void
     {
 
-        $farms = Farm::Factory()->sequence(
-            ['id' => 50],
-            ['id' => 51],
-            ['id' => 52],
-        )->count(3)->create();
+        $farms = Farm::Factory()->sequence(['id' => 1], ['id' => 2])->count(2)->create();
 
-        $result = $this->repository->getAllFarms();
+        $result = $this->repository->getAllFarmsWithImageIfExist();
 
-        $this->assertCount(3, $result);
-        $this->assertSame([50,51,52], $result->modelKeys());
-        $this->assertInstanceOf(Farm::class, $result->first());
+        $this->assertSame($farms->modelKeys(), $result->modelKeys());
+        $this->assertCount(2, $result);
+
+        foreach ($result as $farm) {
+            $this->assertFalse($farm->relationLoaded('images'));
+        }
+    }
+
+    /**
+     * testGetAllFarmsWithImageIfExist() メソッドのテスト
+     * testGetAllFarmsWithImageIfExist() が一緒に画像をイーガーロードしているか
+     */
+    public function testGetAllFarmsWithImageIfExist(): void
+    {
+        $farm = Farm::factory()->create();
+        $farm->images()->create(['url' => 'test1.jpeg']);
+        $farm->images()->create(['url' => 'test2.jpeg']);
+
+        $result = $this->repository->getAllFarmsWithImageIfExist([
+            'images' => function ($query) {
+                $query->orderBy('id')->limit(1);
+            },
+        ]);
+
+        $this->assertSame('test1.jpeg', $result->first()->images->first()->url);
     }
 
     /**
@@ -86,4 +105,37 @@ class FarmRepositoryTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
         $this->repository->getDetailById(999999);
     }
+
+    /**
+     * registerFarm()メソッドのテスト
+     * registerFarm()で登録できるているか
+     */
+    public function testRegisterFarm(): void
+    {
+        $state = State::factory()->create();
+        $user = User::factory()->create();
+
+        $validated = [
+            'name' => 'A_farm',
+            'phone_number' => '0492845949',
+            'email' => 'test@gmail.com',
+            'street_address' => '2-4-5',
+            'suburb' => 'PlainLand',
+            'state_id' => $state->id,
+            'postcode' => '4000',
+            'description' => 'such a good farm',
+            'created_user_id' => $user->id,
+        ];
+
+        $farm = $this->repository->registerFarm($validated);
+
+        $this->assertDatabaseHas('farms', [
+            'id'              => $farm->id,
+            'name'            => 'A_farm',
+            'state_id'        => $state->id,
+            'postcode'        => '4000',
+            'created_user_id' => $user->id,
+        ]);
+    }
+
 }

@@ -77,6 +77,7 @@ class FarmController extends Controller
     public function store(FarmStoreRequest $request): RedirectResponse
     {
         $validated = $request->validated();
+        $validated['created_user_id'] = auth()->id();
 
         $farm = $this->farmService->store($validated, $request->file('files'));
 

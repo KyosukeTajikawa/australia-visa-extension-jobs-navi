@@ -31,12 +31,12 @@ class FarmService implements FarmServiceInterface
         DB::beginTransaction();
 
         try {
-
             $farm = $this->farmRepository->registerFarm($validated);
 
             $this->farmImagesService->imagesStore($farm, $files);
 
             DB::commit();
+
             return $farm;
         } catch (\Exception $e) {
             Log::error(__METHOD__ . 'ファームの登録処理でエラーが発生しました。' . $e->getMessage());

@@ -14,13 +14,37 @@ class FarmRepository implements FarmRepositoryInterface
 {
     /**
      * すべてのファーム情報を取得する
-     * 登録があればファーム画像(images)も一枚（最も古い）同時に取得する
-     * @param array $relation
+     * 検索キーワードによるデータ取得
+     * @param array $keyword
+     * @param array $stateName
      * @return Collection<Farm>
      */
-    public function getAllFarmsWithImageIfExist(array $relation = []): Collection
+    public function getAllFarmsWithImageAndSearch(?string $keyword, ?string $stateName): array
     {
-        return Farm::with($relation)->get();
+        $farmQuery = Farm::with(['images' => function ($q) {
+            $q->orderBy('id')->limit(1);
+        }, 'state']);
+
+        if (!empty($keyword)) {
+            $farmQuery->where(function ($q) use ($keyword) {
+                $q->where('name', 'LIKE', "%{$keyword}%");
+            });
+        }
+
+        if (!empty($stateName)) {
+            $stateId = State::where('name', $stateName)->value('id');
+        }
+        if (!empty($stateId)) {
+            $farmQuery->where('state_id', $stateId);
+        }
+
+        $farms = $farmQuery->orderBy('id')->get();
+
+        return [
+            'farms' => $farms,
+            'keyword' => $keyword,
+            'stateName' => $stateName
+        ];
     }
 
     /**

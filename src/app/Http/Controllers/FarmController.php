@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Farms\FarmStoreRequest;
-use App\Models\Farm;
 use App\Models\State;
 use App\Repositories\Farms\FarmRepositoryInterface;
 use App\Services\FarmServiceInterface;
@@ -29,31 +28,19 @@ class FarmController extends Controller
 
     /**
      * 農場の一覧ページを表示
+     * @param Request $request
      * @return Response
      */
     public function index(Request $request): Response
     {
-        $keyword = $request->input('keyword');
-        $stateName = $request->input('stateName');
+        $keyword = $request->input('keyword' ?? '');
+        $stateName = $request->input('stateName' ?? '');
 
-        $query = Farm::with(['images' => function($q) {
-            $q->orderBy('id')->limit(1);
-        }, 'state']);
+        $data = $this->farmRepository->getAllFarmsWithImageAndSearch($keyword, $stateName);
 
-        if ($keyword) {
-            $query->where(function ($q) use ($keyword) {
-                $q->where('name', 'LIKE', "%{$keyword}%");
-            });
-        }
-
-        if (!empty($stateName)) {
-            $stateId = State::where('name', $stateName)->value('id');
-        }
-        if(!empty($stateId)) {
-            $query->where('state_id', $stateId);
-        }
-
-        $farms = $query->orderBy('id')->get();
+        $farms = $data['farms'];
+        $keyword = $data['keyword'];
+        $stateName = $data['stateName'];
 
         $states = State::orderBy('id')->get();
 
@@ -63,17 +50,6 @@ class FarmController extends Controller
             'keyword' => $keyword,
             'stateName' => $stateName,
         ]);
-
-
-        // $farms = $this->farmRepository->getAllFarmsWithImageIfExist([
-        //     'images' => function ($query) {
-        //         $query->orderBy('id')->limit(1);
-        //     },
-        // ]);
-
-        // return Inertia::render('Home', [
-        //     'farms'     => $farms,
-        // ]);
     }
 
     /**

@@ -19,7 +19,6 @@ type Farm = {
     name: string;
     description: string;
     images: FarmImage[];
-    state: []
 };
 
 type HomeProps = {
@@ -57,7 +56,7 @@ const Home = ({ farms, states, keyword, stateName }: HomeProps) => {
                     focusBorderColor="green.500"
                     size="md"
                 >
-                    <option value="">州を選択（任意）</option>
+                    <option>州を選択（任意）</option>
                     {states.map((state) => (
                         <option key={state.id} value={state.name}>
                             {state.name}

@@ -4,6 +4,10 @@ namespace App\Providers;
 
 use App\Repositories\FarmRepository;
 use App\Repositories\FarmRepositoryInterface;
+use App\Repositories\FarmImageRepository;
+use App\Repositories\FarmImageRepositoryInterface;
+use App\Repositories\StateRepository;
+use App\Repositories\StateRepositoryInterface;
 use App\Services\FarmImagesService;
 use App\Services\FarmImagesServiceInterface;
 use App\Services\FarmService;
@@ -18,6 +22,8 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(FarmRepositoryInterface::class, FarmRepository::class);
+        $this->app->bind(FarmImageRepositoryInterface::class, FarmImageRepository::class);
+        $this->app->bind(StateRepositoryInterface::class, StateRepository::class);
         $this->app->bind(FarmServiceInterface::class, FarmService::class);
         $this->app->bind(FarmImagesServiceInterface::class, FarmImagesService::class);
     }

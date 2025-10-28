@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\Farm;
 use App\Repositories\FarmRepositoryInterface;
 use App\Services\FarmImagesServiceInterface;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 

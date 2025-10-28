@@ -2,7 +2,16 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Vite;
+use App\Repositories\FarmRepository;
+use App\Repositories\FarmRepositoryInterface;
+use App\Repositories\FarmImageRepository;
+use App\Repositories\FarmImageRepositoryInterface;
+use App\Repositories\StateRepository;
+use App\Repositories\StateRepositoryInterface;
+use App\Services\FarmImagesService;
+use App\Services\FarmImagesServiceInterface;
+use App\Services\FarmService;
+use App\Services\FarmServiceInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -12,7 +21,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(FarmRepositoryInterface::class, FarmRepository::class);
+        $this->app->bind(FarmImageRepositoryInterface::class, FarmImageRepository::class);
+        $this->app->bind(StateRepositoryInterface::class, StateRepository::class);
+        $this->app->bind(FarmServiceInterface::class, FarmService::class);
+        $this->app->bind(FarmImagesServiceInterface::class, FarmImagesService::class);
     }
 
     /**
@@ -20,6 +33,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Vite::prefetch(concurrency: 3);
+        //
     }
 }

@@ -11,11 +11,12 @@ class FarmRepository implements FarmRepositoryInterface
 {
     /**
      * すべてのファーム情報を取得する
+     * @param array $relation
      * @return Collection<Farm>
      */
-    public function getAllFarms(): Collection
+    public function getAllFarmsWithImageIfExist(array $relation = []): Collection
     {
-        return Farm::get();
+        return Farm::with($relation)->orderBy('id')->get();
     }
 
     /**
@@ -29,5 +30,15 @@ class FarmRepository implements FarmRepositoryInterface
     public function getDetailById(int $id, array $relations = []): Farm
     {
         return Farm::with($relations)->findOrFail($id);
+    }
+
+    /**
+     * ファームを登録
+     * @param $validatedバリデーションをされた配列
+     * @return Farm 登録後のモデルインスタンス
+     */
+    public function registerFarm($validated): Farm
+    {
+        return Farm::create($validated);
     }
 }

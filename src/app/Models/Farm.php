@@ -30,11 +30,11 @@ class Farm extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'created_user_id');
     }
 
     /**
-     * ファームの住所（州）を取得
+     * ファームの州を取得
      * @return BelongsTo
      */
     public function state(): BelongsTo
@@ -58,5 +58,14 @@ class Farm extends Model
     public function crops(): BelongsToMany
     {
         return $this->belongsToMany(Crop::class, 'farm_crops', 'farm_id', 'crop_id')->withTimestamps();
+    }
+
+    /**
+     * ファームの画像を取得
+     * @return HasMany
+     */
+    public function images(): HasMany
+    {
+        return $this->hasMany(FarmImages::class);
     }
 }

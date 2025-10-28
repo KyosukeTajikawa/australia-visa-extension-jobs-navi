@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Farms\FarmStoreRequest;
 use App\Repositories\FarmRepositoryInterface;
+use App\Repositories\StateRepositoryInterface;
+use App\Services\FarmServiceInterface;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -12,9 +16,13 @@ class FarmController extends Controller
     /**
      * FarmController constructor
      * @param FarmRepositoryInterface $farmRepository ファーム情報を扱うリポジトリの実装
+     * @param StateRepositoryInterface $stateRepository 州情報を扱うリポジトリの実装
+     * @param FarmServiceInterface $farmService ファーム情報を扱うサービスの実装
      */
     public function __construct(
-        private readonly FarmRepositoryInterface $farmRepository
+        private readonly FarmRepositoryInterface $farmRepository,
+        private readonly StateRepositoryInterface $stateRepository,
+        private readonly FarmServiceInterface $farmService
     ) {}
 
     /**
@@ -23,10 +31,14 @@ class FarmController extends Controller
      */
     public function index(): Response
     {
-        $farms = $this->farmRepository->getAllFarms();
+        $farms = $this->farmRepository->getAllFarmsWithImageIfExist([
+            'images' => function ($query) {
+                $query->orderBy('id')->limit(1);
+            },
+        ]);
 
         return Inertia::render('Home', [
-            'farms' => $farms,
+            'farms'     => $farms,
         ]);
     }
 
@@ -37,10 +49,40 @@ class FarmController extends Controller
      */
     public function detail(int $id): Response
     {
-        $farm = $this->farmRepository->getDetailById($id, ['reviews', 'state']);
+        $farm = $this->farmRepository->getDetailById($id, ['reviews', 'state', 'images', 'crops']);
 
         return Inertia::render('Farm/Detail', [
             'farm' => $farm,
+        ]);
+    }
+
+    /**
+     * ファーム新規作成のページを表示
+     * @return Response
+     */
+    public function create(): Response
+    {
+        $states = $this->stateRepository->getAll();
+
+        return Inertia::render('Farm/Create', [
+            'states' => $states,
+        ]);
+    }
+
+    /**
+     * ファームの新規登録
+     * @param FarmStoreRequest $request
+     * @return RedirectResponse
+     */
+    public function store(FarmStoreRequest $request): RedirectResponse
+    {
+        $validated = $request->validated();
+        $validated['created_user_id'] = auth()->id();
+
+        $farm = $this->farmService->store($validated, $request->file('files'));
+
+        return redirect()->route('farm.detail', [
+            'id' => $farm->id,
         ]);
     }
 }

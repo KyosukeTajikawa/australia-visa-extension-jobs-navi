@@ -10,9 +10,10 @@ interface FarmRepositoryInterface
 {
     /**
      * すべてのファーム情報を取得する
+     * @param array $relation
      * @return Collection<Farm>
      */
-    public function getAllFarms(): Collection;
+    public function getAllFarmsWithImageIfExist(): Collection;
 
     /**
      * 指定したIDのファーム詳細を取得する
@@ -23,4 +24,11 @@ interface FarmRepositoryInterface
      * @throws ModelNotFoundException 例外時404が表示される
      */
     public function getDetailById(int $id, array $relations = []): Farm;
+
+    /**
+     * ファームを登録
+     * @param $validatedバリデーションをされた配列
+     * @return Farm 登録後のモデルインスタンス
+     */
+    public function registerFarm($validated): Farm;
 }

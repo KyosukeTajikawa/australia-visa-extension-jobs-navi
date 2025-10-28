@@ -11,8 +11,9 @@ use Illuminate\Support\Facades\Log;
 class FarmService implements FarmServiceInterface
 {
     /**
-     * FarmController constructor
+     * FarmService constructor
      * @param FarmRepositoryInterface $farmRepository ファーム情報を扱うリポジトリの実装
+     * @param FarmImagesServiceInterface $farmImagesService ファーム画像を扱うリポジトリの実装
      */
     public function __construct(
         private readonly FarmRepositoryInterface $farmRepository,
@@ -37,10 +38,10 @@ class FarmService implements FarmServiceInterface
             $this->farmRepository->registerFarmCrops($farm, $cropData);
 
             DB::commit();
+
             return $farm;
         } catch (\Exception $e) {
-            $message = $e->getMessage();
-            Log::error($message);
+            Log::error(__METHOD__ . 'ファームの登録処理でエラーが発生しました。' . $e->getMessage());
             DB::rollBack();
             throw $e;
         }

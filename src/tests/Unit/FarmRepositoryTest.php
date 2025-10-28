@@ -108,21 +108,8 @@ class FarmRepositoryTest extends TestCase
     }
 
     /**
-     * getStatesU()メソッドのテスト
-     * getStates()が全ての州情報を取得できているか
-     */
-    public function testGetStates(): void
-    {
-        $states = State::factory()->sequence(['id' => 1], ['id' => 2])->count(2)->create();
-
-        $result = $this->repository->getStates();
-
-        $this->assertSame($states->modelKeys(), $result->modelKeys());
-    }
-
-    /**
-     * getStatesU()メソッドのテスト
-     * getStates()が全ての作物情報を取得できているか
+     * getCrops()メソッドのテスト
+     * getCrops()が全ての作物情報を取得できているか
      */
     public function testGetCrops(): void
     {
@@ -163,51 +150,6 @@ class FarmRepositoryTest extends TestCase
             'postcode'        => '4000',
             'created_user_id' => $user->id,
         ]);
-    }
-
-    /**
-     * registerFarmImage()メソッドのテスト
-     * registerFarmImage()が複数の画像を登録できるか
-     */
-    public function testRegisterFarmImage(): void
-    {
-        $farm = Farm::factory()->create();
-
-        $filesStock = [
-            [
-                'url'        => 'test1.Jpeg',
-                'farm_id'    => $farm->id,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'url'        => 'test2.Jpeg',
-                'farm_id'    => $farm->id,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]
-        ];
-
-        $this->repository->registerFarmImage($filesStock);
-
-        $this->assertDatabaseHas(
-            'farm_images',
-            [
-                'url'        => 'test1.Jpeg',
-                'farm_id'    => $farm->id,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]
-        );
-        $this->assertDatabaseHas(
-            'farm_images',
-            [
-                'url'        => 'test2.Jpeg',
-                'farm_id'    => $farm->id,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]
-        );
     }
 
     /**

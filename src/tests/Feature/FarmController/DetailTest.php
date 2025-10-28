@@ -18,7 +18,7 @@ class DetailTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * フロント(Detail)の確認
+     * Detailの確認
      * factoryにてUserとStateを作成。それをforでFarmのbelongsToとする
      * Httpリクエスト(200)が返り、リレーションがない場合の確認
      * assertInertiaとしてdetailのreturn Inertia::renderと同じ動きをし１つずつ届いているか確認
@@ -56,7 +56,7 @@ class DetailTest extends TestCase
     }
 
     /**
-     * フロント(Detail)の確認
+     * Detailの確認
      * 登録したstate,reviews,images,crops全てが期待した値かをInertiaのJsonResponseを用いてテスト
      */
     public function testDetailReceiveFarmComeWithRelation(): void
@@ -109,7 +109,7 @@ class DetailTest extends TestCase
     }
 
     /**
-     * フロント(Detail)の確認
+     * Detailの確認
      * Httpリクエスト(404)が返るかの確認
      */
     public function testDetailThrowsModelNotFoundException(): void

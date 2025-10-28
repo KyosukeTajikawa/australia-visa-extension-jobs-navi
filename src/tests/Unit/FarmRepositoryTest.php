@@ -7,7 +7,7 @@ use App\Models\Farm;
 use App\Models\Review;
 use App\Models\State;
 use App\Models\User;
-use App\Repositories\FarmRepositoryInterface;
+use App\Repositories\Farms\FarmRepositoryInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

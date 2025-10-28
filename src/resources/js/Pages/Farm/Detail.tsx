@@ -6,13 +6,13 @@ import { StarIcon, EditIcon } from '@chakra-ui/icons';
 type State = {
     id: number;
     name: string;
-};
+}
 
 type FarmImages = {
     id: number;
     farm_id: number;
     url: string;
-};
+}
 
 type Crops = {
     id: number;
@@ -33,7 +33,7 @@ type Review = {
     relation_rating: number;
     overall_rating: number;
     comment: string;
-};
+}
 
 type Farm = {
     id: number;
@@ -48,7 +48,7 @@ type Farm = {
     reviews?: Review[];
     images?: FarmImages[];
     crops: Crops[];
-};
+}
 
 type DetailProps = { farm: Farm };
 

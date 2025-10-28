@@ -31,7 +31,7 @@ type Crop = {
 type CreateProps = {
     states: State[];
     crops: Crop[];
-};
+}
 
 const Create = ({ states, crops }: CreateProps) => {
     const { data, setData, post, processing, errors: serverErrors, reset } = useForm<FormData>({
@@ -47,7 +47,7 @@ const Create = ({ states, crops }: CreateProps) => {
         crop_ids: [],
     });
 
-    const cropOptions = crops.map(crop => ({ value: crop.id, label: crop.name}));
+    const cropOptions = crops.map(crop => ({ value: crop.id, label: crop.name }));
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -64,7 +64,7 @@ const Create = ({ states, crops }: CreateProps) => {
         const newFiles = [...data.files, ...images];
 
         if (newFiles.length > 3) {
-            const initialize = newFiles.slice(0,0);
+            const initialize = newFiles.slice(0, 0);
             setData("files", initialize);
             e.target.value = "";
 

@@ -81,6 +81,7 @@ class FarmController extends Controller
     public function store(FarmStoreRequest $request): RedirectResponse
     {
         $validated = $request->validated();
+        $validated['created_user_id'] = auth()->id();
 
         $farmData = Arr::except($validated, ['crop_ids']);
         $cropData = array_map('intval', $validated['crop_ids']);

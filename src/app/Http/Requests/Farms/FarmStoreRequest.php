@@ -32,7 +32,6 @@ class FarmStoreRequest extends FormRequest
             'description'     => ['nullable', 'string', 'max:1000'],
             'files'           => ['nullable', 'array', 'max:3'],
             'files.*'         => ['image', 'mimes:jpg,jpeg,png', 'max:5120'],
-            'created_user_id' => ['required', 'integer', 'exists:users,id'],
             'crop_ids'        => ['required','array', 'min:1'],
             'crop_ids.*'      => ['integer', 'exists:crops,id', 'distinct'],
         ];
@@ -68,7 +67,6 @@ class FarmStoreRequest extends FormRequest
         $this->merge([
             'phone_number' => $this->filled('phone_number') ? $this->input('phone_number') : null,
             'email' => $this->filled('email') ? trim((string)$this->input('email')) : null,
-            'created_user_id' => auth()->id(),
         ]);
     }
 }

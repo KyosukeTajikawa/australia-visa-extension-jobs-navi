@@ -29,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ReviewRepositoryInterface::class, ReviewRepository::class);
         $this->app->bind(FarmImagesServiceInterface::class, FarmImagesService::class);
         $this->app->bind(FarmServiceInterface::class, FarmService::class);
+        $this->app->bind(ReviewRepositoryInterface::class, ReviewRepository::class);
     }
 
     /**

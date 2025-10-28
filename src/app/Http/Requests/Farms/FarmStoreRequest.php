@@ -32,7 +32,6 @@ class FarmStoreRequest extends FormRequest
             'description'     => ['nullable', 'string', 'max:1000'],
             'files'           => ['nullable', 'array', 'max:3'],
             'files.*'         => ['image', 'mimes:jpg,jpeg,png', 'max:5120'],
-            'created_user_id' => ['required', 'integer', 'exists:users,id'],
             'crop_ids'        => ['required','array', 'min:1'],
             'crop_ids.*'      => ['integer', 'exists:crops,id', 'distinct'],
         ];
@@ -53,9 +52,9 @@ class FarmStoreRequest extends FormRequest
             'postcode.required'       => '郵便番号は必須です。',
             'postcode.digits'         => '郵便番号は4桁の数字で入力してください。',
             'state_id.required'       => '州を選択してください。',
-            'files.*.image'            => '画像ファイルを選択してください。',
-            'files.*.mimes'            => 'jpg/jpeg/png のいずれかを選択してください。',
-            'files.*.max'              => '画像サイズは5MB以下にしてください。',
+            'files.*.image'           => '画像ファイルを選択してください。',
+            'files.*.mimes'           => 'jpg/jpeg/png のいずれかを選択してください。',
+            'files.*.max'             => '画像サイズは5MB以下にしてください。',
         ];
     }
 
@@ -66,10 +65,8 @@ class FarmStoreRequest extends FormRequest
     {
         //ユニーク制約、かつ、任意（nullable）なので空文字をnullに変換
         $this->merge([
-            'name' => $this->filled('name') ? trim((string)$this->input('name')) : null,
             'phone_number' => $this->filled('phone_number') ? $this->input('phone_number') : null,
             'email' => $this->filled('email') ? trim((string)$this->input('email')) : null,
-            'created_user_id' => auth()->id(),
         ]);
     }
 }

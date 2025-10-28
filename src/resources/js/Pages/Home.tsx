@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Heading, VStack, HStack, Image, Text, Link, } from "@chakra-ui/react";
+import {Box, Heading, VStack, HStack, Image, Text, Link,} from "@chakra-ui/react";
 import MainLayout from "@/Layouts/MainLayout";
 
 type FarmImage = {

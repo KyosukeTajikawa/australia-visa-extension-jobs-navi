@@ -1,7 +1,9 @@
-import React, {useState} from "react";
+import React from "react";
 import MainLayout from "@/Layouts/MainLayout";
-import { Box, Heading, Text, FormControl, FormLabel, FormErrorMessage, Input, Select, Textarea, Button, HStack } from "@chakra-ui/react";
+import { Box, Heading, Text, FormControl, FormLabel, FormErrorMessage, Input, Select, Textarea, Button, HStack, Checkbox, CheckboxGroup, Stack } from "@chakra-ui/react";
 import { useForm } from "@inertiajs/react";
+import ReactSelect from "react-select";
+import { MultiValue } from "react-select";
 
 type FormData = {
     name: string;
@@ -13,16 +15,25 @@ type FormData = {
     state_id: string;
     description: string;
     files: File[];
+    crop_ids: number[];
 }
 
 type State = {
     id: number;
     name: string;
+}
+
+type Crop = {
+    id: number;
+    name: string;
+}
+
+type CreateProps = {
+    states: State[];
+    crops: Crop[];
 };
 
-type CreateProps = { states: State[] };
-
-const Create = ({ states }: CreateProps) => {
+const Create = ({ states, crops }: CreateProps) => {
     const { data, setData, post, processing, errors: serverErrors, reset } = useForm<FormData>({
         name: "",
         phone_number: "",
@@ -33,11 +44,19 @@ const Create = ({ states }: CreateProps) => {
         state_id: "",
         description: "",
         files: [],
+        crop_ids: [],
     });
+
+    const cropOptions = crops.map(crop => ({ value: crop.id, label: crop.name}));
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setData(name as keyof typeof data, value);
+    };
+
+    const handleOptionChange = (selectedOptions: MultiValue<Option>) => {
+        const selectedIds = selectedOptions.map((option) => option.value);
+        setData("crop_ids", selectedIds);
     };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,6 +95,21 @@ const Create = ({ states }: CreateProps) => {
                         onChange={handleChange} placeholder="Rugby Farm" maxLength={50}
                     />
                     <FormErrorMessage>{serverErrors.name}</FormErrorMessage>
+                </FormControl>
+
+                {/* 作物 */}
+                <FormControl mb={2} isRequired isInvalid={!!serverErrors.crop_ids}>
+                    <FormLabel htmlFor="crop_ids">作物（複数選択可）</FormLabel>
+                    <ReactSelect
+                        inputId="crop_ids"
+                        isMulti
+                        options={cropOptions}
+                        value={cropOptions.filter(cropOption => data.crop_ids.includes(cropOption.value))}
+                        onChange={handleOptionChange}
+                        closeMenuOnSelect={false}
+                        placeholder="作物を選択してください"
+                    />
+                    <FormErrorMessage>{serverErrors.crop_ids}</FormErrorMessage>
                 </FormControl>
 
                 {/* 電話番号 */}

@@ -26,9 +26,22 @@ interface FarmRepositoryInterface
     public function getDetailById(int $id, array $relations = []): Farm;
 
     /**
+     * すべての作物情報を取得する
+     * @return Collection<Crop>
+     */
+    public function getCrops(): Collection;
+
+    /**
      * ファームを登録
      * @param $validatedバリデーションをされた配列
      * @return Farm 登録後のモデルインスタンス
      */
     public function registerFarm($validated): Farm;
+
+    /**
+     * 作物登録
+     * @param Farm $farm
+     * @param array $cropData
+     */
+    public function registerFarmCrops(Farm $farm, array $cropData): void;
 }

@@ -7,6 +7,7 @@ use App\Repositories\FarmRepositoryInterface;
 use App\Repositories\StateRepositoryInterface;
 use App\Services\FarmServiceInterface;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Arr;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -62,10 +63,13 @@ class FarmController extends Controller
      */
     public function create(): Response
     {
+        $crops = $this->farmRepository->getCrops();
+      
         $states = $this->stateRepository->getAll();
 
         return Inertia::render('Farm/Create', [
             'states' => $states,
+            'crops'  => $crops,
         ]);
     }
 
@@ -79,7 +83,11 @@ class FarmController extends Controller
         $validated = $request->validated();
         $validated['created_user_id'] = auth()->id();
 
-        $farm = $this->farmService->store($validated, $request->file('files'));
+        $farmData = Arr::except($validated, ['crop_ids']);
+        $cropData = array_map('intval', $validated['crop_ids']);
+        $files    = $request->file('files');
+
+        $farm = $this->farmService->store($farmData, $cropData, $files);
 
         return redirect()->route('farm.detail', [
             'id' => $farm->id,

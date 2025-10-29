@@ -16,4 +16,14 @@ class StateRepository implements StateRepositoryInterface
     {
         return State::orderBy('id')->get();
     }
+
+    /**
+     * 州情報を取得する
+     * @param string $stateName
+     * @return int
+     */
+    public function homeById(string $stateName): int
+    {
+        return (int) State::where('name', $stateName)->value('id');
+    }
 }

@@ -5,11 +5,21 @@ namespace App\Repositories\Farms;
 use App\Models\Crop;
 use App\Models\Farm;
 use App\Repositories\Farms\FarmRepositoryInterface;
+use App\Repositories\StateRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class FarmRepository implements FarmRepositoryInterface
 {
+
+    /**
+     * FarmRepository constructor
+     * @param StateRepositoryInterface $stateRepository 州情報を扱うリポジトリの実装
+     */
+    public function __construct(
+        private readonly StateRepositoryInterface $stateRepository,
+    ) {}
+
     /**
      * すべてのファーム情報を取得する
      * 検索キーワードによるデータ取得
@@ -30,7 +40,8 @@ class FarmRepository implements FarmRepositoryInterface
         }
 
         if (!empty($stateName)) {
-            $stateId = State::where('name', $stateName)->value('id');
+            // $stateId = State::where('name', $stateName)->value('id');
+            $stateId = $this->stateRepository->homeById($stateName);
         }
         if (!empty($stateId)) {
             $farmQuery->where('state_id', $stateId);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Farms\FarmStoreRequest;
 use App\Models\State;
 use App\Repositories\Farms\FarmRepositoryInterface;
+use App\Repositories\StateRepositoryInterface;
 use App\Services\FarmServiceInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -12,17 +13,18 @@ use Illuminate\Support\Arr;
 use Inertia\Inertia;
 use Inertia\Response;
 
-
 class FarmController extends Controller
 {
 
     /**
      * FarmController constructor
      * @param FarmRepositoryInterface $farmRepository ファーム情報を扱うリポジトリの実装
-     * @param FarmServiceInterface $farmService ファーム情報を扱うリポジトリの実装
+     * @param StateRepositoryInterface $stateRepository 州情報を扱うリポジトリの実装
+     * @param FarmServiceInterface $farmService ファーム情報を扱うサービスの実装
      */
     public function __construct(
         private readonly FarmRepositoryInterface $farmRepository,
+        private readonly StateRepositoryInterface $stateRepository,
         private readonly FarmServiceInterface $farmService
     ) {}
 
@@ -72,8 +74,9 @@ class FarmController extends Controller
      */
     public function create(): Response
     {
-        $states = $this->farmRepository->getStates();
         $crops = $this->farmRepository->getCrops();
+
+        $states = $this->stateRepository->getAll();
 
         return Inertia::render('Farm/Create', [
             'states' => $states,
@@ -89,6 +92,7 @@ class FarmController extends Controller
     public function store(FarmStoreRequest $request): RedirectResponse
     {
         $validated = $request->validated();
+        $validated['created_user_id'] = auth()->id();
 
         $farmData = Arr::except($validated, ['crop_ids']);
         $cropData = array_map('intval', $validated['crop_ids']);

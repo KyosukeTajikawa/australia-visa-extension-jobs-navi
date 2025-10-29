@@ -4,8 +4,6 @@ namespace App\Repositories\Farms;
 
 use App\Models\Crop;
 use App\Models\Farm;
-use App\Models\FarmImages;
-use App\Models\State;
 use App\Repositories\Farms\FarmRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -61,15 +59,6 @@ class FarmRepository implements FarmRepositoryInterface
     }
 
     /**
-     * すべての州情報を取得する
-     * @return Collection<State>
-     */
-    public function getStates(): Collection
-    {
-        return State::orderBy('id')->get();
-    }
-
-    /**
      * すべての作物情報を取得する
      * @return Collection<Crop>
      */
@@ -89,15 +78,6 @@ class FarmRepository implements FarmRepositoryInterface
     }
 
     /**
-     * 画像登録
-     * @param array $fileStock 画像が３つまで配列である
-     */
-    public function registerFarmImage(array $filesStock): void
-    {
-        FarmImages::insert($filesStock);
-    }
-
-    /**
      * 作物登録
      * @param Farm $farm
      * @param array $cropData
@@ -106,5 +86,4 @@ class FarmRepository implements FarmRepositoryInterface
     {
         $farm->crops()->sync($cropData);
     }
-
 }

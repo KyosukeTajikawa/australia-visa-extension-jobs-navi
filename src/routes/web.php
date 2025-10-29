@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\FarmController;
 use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;

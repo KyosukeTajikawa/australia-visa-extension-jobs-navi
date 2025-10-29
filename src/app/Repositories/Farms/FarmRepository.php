@@ -23,9 +23,9 @@ class FarmRepository implements FarmRepositoryInterface
     /**
      * すべてのファーム情報を取得する
      * 検索キーワードによるデータ取得
-     * @param array $keyword
-     * @param array $stateName
-     * @return Collection<Farm>
+     * @param string $keyword
+     * @param string $stateName
+     * @return array
      */
     public function getAllFarmsWithImageAndSearch(?string $keyword, ?string $stateName): array
     {

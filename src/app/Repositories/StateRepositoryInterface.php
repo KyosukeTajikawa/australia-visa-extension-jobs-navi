@@ -14,7 +14,7 @@ interface StateRepositoryInterface
     public function getAll(): Collection;
 
         /**
-     * 州情報を取得する
+     * ユーザーが選択した州情報を取得する
      * @param string $stateName
      * @return int
      */

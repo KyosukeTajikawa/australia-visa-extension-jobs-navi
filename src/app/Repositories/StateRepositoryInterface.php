@@ -18,5 +18,5 @@ interface StateRepositoryInterface
      * @param string $stateName
      * @return int
      */
-    public function homeById(string $stateName): int;
+    public function homeById(string $stateName): ?int;
 }

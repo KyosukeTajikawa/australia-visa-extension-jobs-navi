@@ -55,6 +55,39 @@ class IndexTest extends TestCase
 
     /**
      * indexの確認
+     * ファームがHomeに送られているか
+     * フィルターできているか
+     */
+    public function testIndexFarmsWithSearch(): void
+    {
+        $user = User::factory()->create();
+        $state =  State::factory()->sequence(['id' => 10, 'name' => 'QLD'], ['id' => 50, 'name' => 'TAS'])->count(2)->create();
+
+        $farms = Farm::factory()
+            ->sequence(
+                ['id' => 5, 'name' => '松田', 'state_id' => 10],
+                ['id' => 125, 'name' => 'sunRipe', 'state_id' => 50]
+            )
+            ->count(2)
+            ->for($user, 'user')
+            ->create();
+
+        $response = $this->get('/home', [
+            'keyword' => 'sunRipe',
+            'stateName' => 'TAS'
+        ]);
+
+        $response->assertInertia(
+            fn(Assert $page) => $page
+                ->component('Home')
+                ->has('farms', 2)
+                ->where('farms.0.id', 5)
+                ->where('farms.1.id', 125)
+        );
+    }
+
+    /**
+     * indexの確認
      * プロップス（farmデータ）が空でもエラーにならないか
      */
     public function testEmptyFarmsWhenNoneExist(): void

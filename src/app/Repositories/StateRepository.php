@@ -22,7 +22,7 @@ class StateRepository implements StateRepositoryInterface
      * @param string $stateName
      * @return int
      */
-    public function homeById(string $stateName): int
+    public function homeById(string $stateName): ?int
     {
         return (int) State::where('name', $stateName)->value('id');
     }

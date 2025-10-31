@@ -31,7 +31,7 @@ class FarmRepository implements FarmRepositoryInterface
     {
         $farmQuery = Farm::with(['images' => function ($q) {
             $q->orderBy('id')->limit(1);
-        }, 'state']);
+        }, 'state', 'crops']);
 
         if (!empty($keyword)) {
             $farmQuery->where(function ($q) use ($keyword) {

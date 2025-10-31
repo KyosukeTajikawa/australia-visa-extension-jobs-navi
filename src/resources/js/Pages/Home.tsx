@@ -53,14 +53,14 @@ const Home = ({ farms, states, keyword, stateName }: HomeProps) => {
                     px={15}
                     py={30}
                     mb={5}
-                    w={"900px"}
+                    w={{base:"80%", xl:"1150px"}}
                     mx={"auto"}
                 >
                     <Heading
                         as={"h1"}
                         color={"green.800"}
                         letterSpacing={4}
-                        fontSize={"50px"}
+                        fontSize={{base:"28px",md:"50px"}}
                         mb={1}
                     >
                         オーストラリアの<br />ファームを探そう
@@ -128,27 +128,29 @@ const Home = ({ farms, states, keyword, stateName }: HomeProps) => {
                             </Button>
                         </HStack>
                     </VStack>
-
                 </Box>
             </Box>
+
             {/* ファーム一覧 */}
             <Flex
                 wrap={"wrap"}
                 justifyContent={"space-between"}
-                w={"900px"}
-                mx={"auto"}>
+                w={{base:"80%", xl:"1280px"}}
+                mx={"auto"}
+                >
                 {farms.map((farm) => (
                     <Box
                         key={farm.id}
                         p={4}
-                        w={"48%"}
+                        w={{base:"90%", md:"48%", xl:"45%"}}
                         mb={5}
+                        mx={"auto"}
                     >
                         <Image
                             src={farm.images?.[0]?.url ?? "https://placehold.co/100x100"}
                             alt={farm.name}
-                            w={"full"}
-                            h={"200px"}
+                            w={{ base:"full"}}
+                            h={{base:"200px", sm:"300px",md:"200px", xl:"300px"}}
                             objectFit={"cover"}
                         />
                         <Box

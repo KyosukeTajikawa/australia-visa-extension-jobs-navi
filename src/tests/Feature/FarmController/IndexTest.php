@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\FarmController;
 
 use App\Models\Farm;
 use App\Models\State;
@@ -15,7 +15,7 @@ class IndexTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * indexメソッドの確認
+     * indexの確認
      * ファームがHomeに送られているか
      * 画像も一緒に送られ、かつ、1枚しか送られてないか
      */
@@ -47,19 +47,47 @@ class IndexTest extends TestCase
                         ->hasAll(['id', 'name'])
                         //imagesが1枚しかない。2枚目以降存在する場合はエラーになる。
                         ->has('images', 1)
-                        ->has(
-                            'images.0',
-                            fn(Assert $i) => $i
-                                ->where('url', 'test1.jpeg')
-                                ->etc()
-                        )
+                        ->where('images.0.url', 'test1.jpeg')
                         ->etc()
                 )
         );
     }
 
     /**
-     * indexメソッドの確認
+     * indexの確認
+     * ファームがHomeに送られているか
+     * フィルターできているか
+     */
+    public function testIndexFarmsWithSearch(): void
+    {
+        $user = User::factory()->create();
+        $state =  State::factory()->sequence(['id' => 10, 'name' => 'QLD'], ['id' => 50, 'name' => 'TAS'])->count(2)->create();
+
+        $farms = Farm::factory()
+            ->sequence(
+                ['id' => 5, 'name' => '松田', 'state_id' => 10],
+                ['id' => 125, 'name' => 'sunRipe', 'state_id' => 50]
+            )
+            ->count(2)
+            ->for($user, 'user')
+            ->create();
+
+        $response = $this->get('/home', [
+            'keyword' => 'sunRipe',
+            'stateName' => 'TAS'
+        ]);
+
+        $response->assertInertia(
+            fn(Assert $page) => $page
+                ->component('Home')
+                ->has('farms', 2)
+                ->where('farms.0.id', 5)
+                ->where('farms.1.id', 125)
+        );
+    }
+
+    /**
+     * indexの確認
      * プロップス（farmデータ）が空でもエラーにならないか
      */
     public function testEmptyFarmsWhenNoneExist(): void

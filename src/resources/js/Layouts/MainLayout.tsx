@@ -15,9 +15,9 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
     const { auth } = usePage().props;
     const { isOpen, onOpen, onClose } = useDisclosure()
     return (
-        <Box m={2} minH={"98vh"} display={"flex"} flexDirection={"column"}>
+        <Box minH={"98vh"} display={"flex"} flexDirection={"column"}>
             {/* ヘッダー */}
-            <Box bg={"green.500"} p={"4px"} mb={2} display={"flex"} justifyContent={"space-between"} alignItems={"center"}>
+            <Box bg={"green.500"} p={"4px"} display={"flex"} justifyContent={"space-between"} alignItems={"center"}>
                 <Link href={route("home")}>
                 <Heading as={"h1"} color={"white"} fontSize={{ base: "24px", md: "30px", lg: "40px" }} >ファーム一覧</Heading>
                 </Link>
@@ -30,7 +30,7 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                             </MenuButton>
                             <MenuList>
                                 <MenuItem onClick={() => router.get("/farm/create")}>ファーム登録</MenuItem>
-                                <MenuItem>お気に入りレビュー</MenuItem>
+                                <MenuItem onClick={() => router.get("/review/favorites")}>お気に入りレビュー</MenuItem>
                                 <MenuItem onClick={() => router.post(route("logout"))}>ログアウト</MenuItem>
                             </MenuList>
                         </Menu>
@@ -41,7 +41,7 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                             <MenuButton as={IconButton} aria-label="Options" icon={<HamburgerIcon color={"white"} />} variant={"ghost"} _hover={{ bg: "green.300" }} _active={{ bg: "green.300" }} />
                             <MenuList>
                                 <MenuItem onClick={() => router.visit(route("login"))}>ログイン</MenuItem>
-                                <MenuItem>新規登録</MenuItem>
+                                <MenuItem onClick={() => router.visit(route("register"))}>新規登録</MenuItem>
                                 <MenuItem onClick={() => router.visit(route("home"))}>ファーム一覧</MenuItem>
                             </MenuList>
                         </Menu>
@@ -65,7 +65,7 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                                         </Link>
                                     </Box>
                                     <Box mb={1} _hover={{ opacity: 0.7, bg: "gray.100" }}>
-                                        <Link _hover={{ color: "none" }}>
+                                        <Link _hover={{ color: "none" }} href={route("review.favorites")}>
                                             <Text>お気に入りレビュー</Text>
                                         </Link>
                                     </Box>
@@ -94,7 +94,7 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                                         </Link>
                                     </Box>
                                     <Box mb={1} _hover={{ opacity: 0.7, bg: "gray.100" }}>
-                                        <Link _hover={{ color: "none" }}>
+                                        <Link _hover={{ color: "none" }} href={route("register")}>
                                             <Text>新規登録</Text>
                                         </Link>
                                     </Box>

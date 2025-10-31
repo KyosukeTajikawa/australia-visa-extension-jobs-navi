@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\Farm;
-use App\Repositories\FarmRepositoryInterface;
+use App\Repositories\Farms\FarmRepositoryInterface;
 use App\Services\FarmImagesServiceInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -22,18 +22,20 @@ class FarmService implements FarmServiceInterface
 
     /**
      * ファームの登録処理
-     * @param array $validated
+     * @param array $farmData 作物以外のtextデータ
+     * @param array $cropData 作物のみのtextデータ
      * @param array $files 画像ファイル | null
      * @return Farm
      */
-    public function store(array $validated, ?array $files = null): Farm
+    public function store(array $farmData, array $cropData, ?array $files = null): Farm
     {
         DB::beginTransaction();
-
         try {
-            $farm = $this->farmRepository->registerFarm($validated);
+            $farm = $this->farmRepository->registerFarm($farmData);
 
             $this->farmImagesService->imagesStore($farm, $files);
+
+            $this->farmRepository->registerFarmCrops($farm, $cropData);
 
             DB::commit();
 

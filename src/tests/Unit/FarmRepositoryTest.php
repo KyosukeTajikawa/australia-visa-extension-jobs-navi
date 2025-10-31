@@ -2,11 +2,12 @@
 
 namespace Tests\Unit\Repositories;
 
+use App\Models\Crop;
 use App\Models\Farm;
 use App\Models\Review;
 use App\Models\State;
 use App\Models\User;
-use App\Repositories\FarmRepositoryInterface;
+use App\Repositories\Farms\FarmRepositoryInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -27,38 +28,47 @@ class FarmRepositoryTest extends TestCase
      * testGetAllFarmsWithImageIfNotExist() メソッドのテスト
      * testGetAllFarmsWithImageIfNotExist() が全てのファームを正しく取得できるか、画像がない時、イーガーロードしていないか確認
      */
-    public function testGetAllFarmsWithImageIfNotExist(): void
+    public function testGetAllFarmsNoImageAndSearch(): void
     {
-
         $farms = Farm::Factory()->sequence(['id' => 1], ['id' => 2])->count(2)->create();
 
-        $result = $this->repository->getAllFarmsWithImageIfExist();
+        $keyword = '';
+        $stateName = '';
+
+        $data = $this->repository->getAllFarmsWithImageAndSearch($keyword, $stateName);
+
+        $result = $data['farms'];
 
         $this->assertSame($farms->modelKeys(), $result->modelKeys());
         $this->assertCount(2, $result);
-
-        foreach ($result as $farm) {
-            $this->assertFalse($farm->relationLoaded('images'));
-        }
     }
 
     /**
-     * testGetAllFarmsWithImageIfExist() メソッドのテスト
-     * testGetAllFarmsWithImageIfExist() が一緒に画像をイーガーロードしているか
+     * getAllFarmsWithImageAndSearch() メソッドのテスト
+     * getAllFarmsWithImageAndSearch() が一緒に画像をイーガーロードしているか
      */
-    public function testGetAllFarmsWithImageIfExist(): void
+    public function testGetAllFarmsWithImageAndSearch(): void
     {
-        $farm = Farm::factory()->create();
-        $farm->images()->create(['url' => 'test1.jpeg']);
-        $farm->images()->create(['url' => 'test2.jpeg']);
+        State::factory()->sequence(['id' => 10, 'name' => 'QLD'])->create();
+        $farm = Farm::factory()->sequence(['id' => 5, 'name' => '松田', 'state_id' => 10])->create();
 
-        $result = $this->repository->getAllFarmsWithImageIfExist([
-            'images' => function ($query) {
-                $query->orderBy('id')->limit(1);
-            },
-        ]);
+        $farmImage = $farm->images()->create(['farm_id' => 5, 'url' => 'test1.jpeg']);
 
-        $this->assertSame('test1.jpeg', $result->first()->images->first()->url);
+
+        $keyword = '松田';
+        $stateName = 'QLD';
+
+        $data = $this->repository->getAllFarmsWithImageAndSearch($keyword, $stateName);
+
+        $result =$data['farms'];
+
+
+        $this->assertCount(1, $result);
+        $this->assertSame($farm->id, $result->first()->id);
+        $this->assertSame($farm->name, $result->first()->name);
+        $this->assertSame($farm->state_id, $result->first()->state_id);
+        //getはコレクションを返す。1つ目を選択する
+        $this->assertSame($farmImage->url, $result->first()->images->first()->url);
     }
 
     /**
@@ -107,6 +117,19 @@ class FarmRepositoryTest extends TestCase
     }
 
     /**
+     * getCrops()メソッドのテスト
+     * getCrops()が全ての作物情報を取得できているか
+     */
+    public function testGetCrops(): void
+    {
+        $states = Crop::factory()->sequence(['id' => 1], ['id' => 2])->count(2)->create();
+
+        $result = $this->repository->getCrops();
+
+        $this->assertSame($states->modelKeys(), $result->modelKeys());
+    }
+
+    /**
      * registerFarm()メソッドのテスト
      * registerFarm()で登録できるているか
      */
@@ -138,4 +161,25 @@ class FarmRepositoryTest extends TestCase
         ]);
     }
 
+    /**
+     * registerFarmCrops()メソッドのテスト
+     * registerFarmCrops()が作物を中間テーブル(farm_crops)に登録できるか
+     */
+    public function testRegisterFarmCrops(): void
+    {
+        $farm = Farm::factory()->create();
+        $crops = Crop::factory()->count(3)->create();
+
+        //syncは[1,2,3]のような形を好むためpluckでその形にする。
+        $cropIds = $crops->pluck('id')->toArray();
+
+        $this->repository->registerFarmCrops($farm, $cropIds);
+
+        foreach ($crops as $crop) {
+            $this->assertDatabaseHas('farm_crops', [
+                'farm_id' => $farm->id,
+                'crop_id' => $crop->id
+            ]);
+        }
+    }
 }

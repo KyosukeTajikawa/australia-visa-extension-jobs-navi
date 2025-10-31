@@ -31,4 +31,19 @@ class StateRepositoryTest extends TestCase
 
         $this->assertSame($states->modelKeys(), $result->modelKeys());
     }
+
+    /**
+     * homeById()メソッドのテスト
+     * homeById()が選択された州情報を取得できているか
+     */
+    public function testHomeById(): void
+    {
+        $state = State::factory()->sequence(['id' => 5,'name' => 'SA'])->create();
+
+        $stateName = 'SA';
+
+        $result = $this->repository->homeById($stateName);
+
+        $this->assertSame($state->id, $result);
+    }
 }

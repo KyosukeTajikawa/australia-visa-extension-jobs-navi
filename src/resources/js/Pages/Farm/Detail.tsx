@@ -1,7 +1,8 @@
 import React from "react";
 import MainLayout from "@/Layouts/MainLayout";
-import { Box, Heading, Link, HStack, Image, Text, } from "@chakra-ui/react";
+import { Box, Heading, Link, HStack, Image, Text, Button, } from "@chakra-ui/react";
 import { StarIcon, EditIcon } from '@chakra-ui/icons';
+import { router } from "@inertiajs/react";
 
 type State = {
     id: number;
@@ -14,9 +15,13 @@ type FarmImages = {
     url: string;
 };
 
+type Crops = {
+    id: number;
+    name: string;
+}
+
 type Review = {
     id: number;
-    type2: string;
     start_date: string;
     end_date: string;
     work_position: string;
@@ -43,6 +48,7 @@ type Farm = {
     state: State;
     reviews?: Review[];
     images?: FarmImages[];
+    crops: Crops[];
 };
 
 type DetailProps = { farm: Farm };
@@ -56,27 +62,37 @@ const Detail = ({ farm }: DetailProps) => {
             </Box>
             <Box mb={4}>
                 {/* SP */}
-                <Box display={{base:"block", md:"none"}}>
-                {
-                    farm.images?.map((image) => (
-                        <Box key={image.id} mb={4} >
-                        <Image src={image?.url ?? "https://placehold.co/300x300"} alt={farm.name} h={"300px"} w={"300px"} objectFit={"contain"} onError={(e) => {(e.currentTarget as HTMLImageElement).src = "https://placehold.co/300x300";
-                        }} />
-                        </Box>
-                    ))
-                }
+                <Box display={{ base: "block", md: "none" }}>
+                    {
+                        farm.images?.map((image) => (
+                            <Box key={image.id} mb={4} >
+                                <Image src={image?.url ?? "https://placehold.co/300x300"} alt={farm.name} h={"300px"} w={"300px"} objectFit={"contain"} onError={(e) => {
+                                    (e.currentTarget as HTMLImageElement).src = "https://placehold.co/300x300";
+                                }} />
+                            </Box>
+                        ))
+                    }
                 </Box>
                 {/* PC */}
-                <Box display={{base: "none", md:"flex"}} justifyContent={"space-around"}>
-                {
-                    farm.images?.map((image) => (
-                        <Box key={image.id} >
-                        <Image src={image?.url ?? "https://placehold.co/300x300"} alt={farm.name} h={"300px"} w={"300px"} objectFit={"contain"} onError={(e) => {(e.currentTarget as HTMLImageElement).src = "https://placehold.co/300x300";
-                        }} />
-                        </Box>
-                    ))
-                }
+                <Box display={{ base: "none", md: "flex" }} justifyContent={"space-around"}>
+                    {
+                        farm.images?.map((image) => (
+                            <Box key={image.id} >
+                                <Image src={image?.url ?? "https://placehold.co/300x300"} alt={farm.name} h={"300px"} w={"300px"} objectFit={"contain"} onError={(e) => {
+                                    (e.currentTarget as HTMLImageElement).src = "https://placehold.co/300x300";
+                                }} />
+                            </Box>
+                        ))
+                    }
                 </Box>
+            </Box>
+            <Box display={"flex"} flexWrap={"wrap"}>取扱作物
+                {farm.crops.map((crop) => (
+                    <Box key={crop.id} px={2} py={1}>
+                        <Text>{crop.name}</Text>
+                    </Box>
+                ))
+                }
             </Box>
             <Text mb={1}>電話番号:{farm.phone_number ? farm.phone_number : "登録なし"}</Text>
             <Text mb={1}>メールアドレス:{farm.email ? farm.email : "登録なし"}</Text>
@@ -89,15 +105,13 @@ const Detail = ({ farm }: DetailProps) => {
             <Box>
                 <Text>{farm.description}</Text>
             </Box>
-
-
             {/* レビュー */}
             <Box>
                 <Heading mt={8} as={"h2"} fontSize={{ base: "24px", md: "30px", lg: "40px" }}>レビュー</Heading>
             </Box>
             <Box display={"flex"} justifyContent={"space-between"}>
-            {farm.reviews?.length === 0 ? "レビューの登録なし" : `${farm.reviews?.length}件`}
-                <Link href="#" display="inline-flex" alignItems="center" _hover={{color: "gray.500"}}><EditIcon mr={1} boxSize={4} />レビューを投稿する</Link>
+                {farm.reviews?.length === 0 ? "レビューの登録なし" : `${farm.reviews?.length}件`}
+                <Link href={route("review.create", {id: farm.id})} display="inline-flex" alignItems="center" _hover={{ color: "gray.500" }}><EditIcon mr={1} boxSize={4} />レビューを投稿する</Link>
             </Box>
             {farm.reviews?.map((review) => (
                 <Box key={review.id} border={"1px"} borderRadius={"md"} borderColor={"gray.300"} boxShadow={"md"}>
@@ -150,8 +164,9 @@ const Detail = ({ farm }: DetailProps) => {
                             ))}
                         </HStack>
                     </HStack>
-                        <Text>コメント</Text>
-                        <Text>{review.comment}</Text>
+                    <Text>コメント</Text>
+                    <Text>{review.comment}</Text>
+                    <Button colorScheme="green" onClick={() => router.post(`/review/${review.id}/favorites`)}>お気に入り</Button>
                 </Box>
             ))}
         </Box>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Farms;
 
 use App\Models\Farm;
 use Illuminate\Database\Eloquent\Collection;
@@ -10,10 +10,12 @@ interface FarmRepositoryInterface
 {
     /**
      * すべてのファーム情報を取得する
-     * @param array $relation
-     * @return Collection<Farm>
+     * 検索キーワードによるデータ取得
+     * @param string $keyword
+     * @param string $stateName
+     * @return array
      */
-    public function getAllFarmsWithImageIfExist(): Collection;
+    public function getAllFarmsWithImageAndSearch(?string $keyword, ?string $stateName): array;
 
     /**
      * 指定したIDのファーム詳細を取得する
@@ -26,9 +28,22 @@ interface FarmRepositoryInterface
     public function getDetailById(int $id, array $relations = []): Farm;
 
     /**
+     * すべての作物情報を取得する
+     * @return Collection<Crop>
+     */
+    public function getCrops(): Collection;
+
+    /**
      * ファームを登録
      * @param $validatedバリデーションをされた配列
      * @return Farm 登録後のモデルインスタンス
      */
     public function registerFarm($validated): Farm;
+
+    /**
+     * 作物登録
+     * @param Farm $farm
+     * @param array $cropData
+     */
+    public function registerFarmCrops(Farm $farm, array $cropData): void;
 }

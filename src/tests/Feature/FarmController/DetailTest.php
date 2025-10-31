@@ -1,7 +1,8 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\FarmController;
 
+use App\Models\Crop;
 use App\Models\Farm;
 use App\Models\Review;
 use App\Models\State;
@@ -17,12 +18,12 @@ class DetailTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * フロント(Detail)の確認
+     * Detailの確認
      * factoryにてUserとStateを作成。それをforでFarmのbelongsToとする
      * Httpリクエスト(200)が返り、リレーションがない場合の確認
      * assertInertiaとしてdetailのreturn Inertia::renderと同じ動きをし１つずつ届いているか確認
      */
-    public function testDetailFarmNotComeWithReviews(): void
+    public function testDetailFarmNotComeWithRelation(): void
     {
         $user = User::factory()->create();
         $state = State::factory()->create();
@@ -44,13 +45,10 @@ class DetailTest extends TestCase
                         fn(Assert $f) => $f
                             ->where('id', $farm->id)
                             ->where('name', $farm->name)
-                            ->has(
-                                'state',
-                                fn(Assert $s) => $s
-                                    ->where('id', $farm->state->id)
-                                    ->where('name', $farm->state->name)
-                                    ->etc()
-                            )
+                            ->has('state')
+                            ->where('state.id', $farm->state->id)
+                            ->where('state.name', $farm->state->name)
+                            ->etc()
                             ->has('reviews', 0)
                             ->etc()
                     )
@@ -58,14 +56,14 @@ class DetailTest extends TestCase
     }
 
     /**
-     * フロント(Detail)の確認
-     * hasにてhasManyとしてFarmのリレーションとする
-     * state,reviews[0],[1],$farm->images()全てをテスト
+     * Detailの確認
+     * 登録したstate,reviews,images,crops全てが期待した値かをInertiaのJsonResponseを用いてテスト
      */
-    public function testDetailReceiveFarmComeWithReviewsAndState(): void
+    public function testDetailReceiveFarmComeWithRelation(): void
     {
         $user  = User::factory()->create();
         $state = State::factory()->create();
+        $crops = Crop::factory()->count(3)->create();
 
         $farm = Farm::factory()
             ->for($user, 'user')
@@ -75,6 +73,8 @@ class DetailTest extends TestCase
 
         $farm->images()->create(['url' => 'test1.jpeg']);
         $farm->images()->create(['url' => 'test2.jpeg']);
+
+        $farm->crops()->sync($crops->pluck('id')->toArray());
 
         $response = $this->actingAs($user)->get(route('farm.detail', ['id' => $farm->id]));
 
@@ -87,48 +87,29 @@ class DetailTest extends TestCase
                         'farm',
                         fn(Assert $f) => $f
                             ->where('id', $farm->id)
-                            ->has(
-                                'state',
-                                fn(Assert $s) => $s
-                                    ->where('id', $farm->state->id)
-                                    ->where('name', $farm->state->name)
-                                    ->etc()
-                            )
+                            ->where('state.id', $farm->state->id)
+                            ->where('state.name', $farm->state->name)
+                            ->etc()
                             ->has('reviews', 2)
-                            ->has(
-                                'reviews.0',
-                                fn(Assert $r) => $r
-                                    ->where('id', $farm->reviews[0]->id)
-                                    ->where('work_position', $farm->reviews[0]->work_position)
-                                    ->etc()
-                            )
-                            ->has(
-                                'reviews.1',
-                                fn(Assert $r) => $r
-                                    ->where('id', $farm->reviews[1]->id)
-                                    ->where('work_position', $farm->reviews[1]->work_position)
-                                    ->etc()
-                            )
+                            ->where('reviews.0.id', $farm->reviews[0]->id)
+                            ->where('reviews.0.work_position', $farm->reviews[0]->work_position)
+                            ->where('reviews.1.id', $farm->reviews[1]->id)
+                            ->where('reviews.1.work_position', $farm->reviews[1]->work_position)
+                            ->etc()
                             ->has('images', 2)
-                            ->has(
-                                'images.0',
-                                fn(Assert $i) => $i
-                                    ->where('url', 'test1.jpeg')
-                                    ->etc()
-                            )
-                            ->has(
-                                'images.1',
-                                fn(Assert $i) => $i
-                                    ->where('url', 'test2.jpeg')
-                                    ->etc()
-                            )
-                    ->etc()
+                            ->where('images.0.url', 'test1.jpeg')
+                            ->where('images.1.url', 'test2.jpeg')
+                            ->has('crops', 3)
+                            ->where('crops.0.id', $crops[0]->id)
+                            ->where('crops.1.id', $crops[1]->id)
+                            ->where('crops.2.id', $crops[2]->id)
+                            ->etc()
                     )
             );
     }
 
     /**
-     * フロント(Detail)の確認
+     * Detailの確認
      * Httpリクエスト(404)が返るかの確認
      */
     public function testDetailThrowsModelNotFoundException(): void

@@ -38,13 +38,13 @@ class FarmController extends Controller
         $keyword = $request->input('keyword' ?? '');
         $stateName = $request->input('stateName' ?? '');
 
+        $states = $this->stateRepository->getAll();
+
         $data = $this->farmRepository->getAllFarmsWithImageAndSearch($keyword, $stateName);
 
         $farms = $data['farms'];
         $keyword = $data['keyword'];
         $stateName = $data['stateName'];
-
-        $states = State::orderBy('id')->get();
 
         return Inertia::render('Home', [
             'farms' => $farms,

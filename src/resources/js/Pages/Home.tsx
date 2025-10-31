@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Heading, VStack, HStack, Image, Text, Link, Input, Button, Select, SimpleGrid, Flex } from "@chakra-ui/react";
+import { Box, Heading, VStack, HStack, Image, Text, Link, Input, Button, Select, Flex } from "@chakra-ui/react";
 import MainLayout from "@/Layouts/MainLayout";
 import { router } from "@inertiajs/react";
 
@@ -39,6 +39,80 @@ const Home = ({ farms, states, keyword, stateName }: HomeProps) => {
     const [searchKeyword, setSearchKeyword] = useState(keyword ?? "");
     const [searchStateName, setSearchStateName] = useState(stateName ?? "");
 
+    const farmItems = farms.map((farm) => (
+        <Box
+            key={farm.id}
+            p={4}
+            w={{ base: "90%", md: "48%", xl: "45%" }}
+            mb={5}
+            mx={"auto"}
+        >
+            <Image
+                src={farm.images?.[0]?.url ?? "https://placehold.co/100x100"}
+                alt={farm.name}
+                w={{ base: "full" }}
+                h={{ base: "200px", sm: "300px", md: "200px", xl: "300px" }}
+                objectFit={"cover"}
+            />
+            <Box
+                mt={3}
+            >
+                <Heading
+                    as={"h3"}
+                    color={"green.800"}
+                >
+                    {farm.name}
+                </Heading>
+                <Text
+                    color={"green.800"}
+                    fontSize={"20px"}
+                    mb={1}
+                >
+                    {farm.state.name}
+                </Text>
+                {farm.crops.map((crop) => (
+                    <Text
+                        key={crop.id}
+                        display={"inline-block"}
+                        bg="green.50"
+                        color="green.800"
+                        borderColor="green.200"
+                        borderRadius="md"
+                        p={1}
+                        fontSize={"20px"}
+                        mr={2}
+                    >
+                        {crop.name}</Text>
+                ))}
+            </Box>
+            <Button
+                as={Link}
+                href={`/farm/${farm.id}`}
+                mt={2}
+                fontWeight={"normal"}
+                bg="green.800"
+                _hover={{ bg: "green.700", textDecoration: "none" }}
+                color="white"
+            >
+                詳しく見る
+            </Button>
+        </Box>
+    ))
+
+    if (farmItems.length % 2 !== 0) {
+        farmItems.push(
+            <Box
+                key={"dummy"}
+                p={4}
+                w={{ base: "none", md: "48%", xl: "45%" }}
+                mb={5}
+                mx={"auto"}
+                visibility={"hidden"}
+                pointerEvents={"none"}
+            ></Box>
+        );
+    }
+
     const handleSearch = () => {
         router.get(route("home"), {
             keyword: searchKeyword,
@@ -53,14 +127,14 @@ const Home = ({ farms, states, keyword, stateName }: HomeProps) => {
                     px={15}
                     py={30}
                     mb={5}
-                    w={{base:"80%", xl:"1150px"}}
+                    w={{ base: "80%", xl: "1150px" }}
                     mx={"auto"}
                 >
                     <Heading
                         as={"h1"}
                         color={"green.800"}
                         letterSpacing={4}
-                        fontSize={{base:"28px",md:"50px"}}
+                        fontSize={{ base: "28px", md: "50px" }}
                         mb={1}
                     >
                         オーストラリアの<br />ファームを探そう
@@ -134,69 +208,10 @@ const Home = ({ farms, states, keyword, stateName }: HomeProps) => {
             {/* ファーム一覧 */}
             <Flex
                 wrap={"wrap"}
-                justifyContent={"space-between"}
-                w={{base:"80%", xl:"1280px"}}
+                w={{ base: "80%", xl: "1280px" }}
                 mx={"auto"}
-                >
-                {farms.map((farm) => (
-                    <Box
-                        key={farm.id}
-                        p={4}
-                        w={{base:"90%", md:"48%", xl:"45%"}}
-                        mb={5}
-                        mx={"auto"}
-                    >
-                        <Image
-                            src={farm.images?.[0]?.url ?? "https://placehold.co/100x100"}
-                            alt={farm.name}
-                            w={{ base:"full"}}
-                            h={{base:"200px", sm:"300px",md:"200px", xl:"300px"}}
-                            objectFit={"cover"}
-                        />
-                        <Box
-                            mt={3}
-                        >
-                            <Heading
-                                as={"h3"}
-                                color={"green.800"}
-                            >
-                                {farm.name}
-                            </Heading>
-                            <Text
-                                color={"green.800"}
-                                fontSize={"20px"}
-                                mb={1}
-                            >
-                                {farm.state.name}
-                            </Text>
-                            {farm.crops.map((crop) => (
-                                <Text
-                                    key={crop.id}
-                                    display={"inline-block"}
-                                    bg="green.50"
-                                    color="green.800"
-                                    borderColor="green.200"
-                                    borderRadius="md"
-                                    p={1}
-                                    fontSize={"20px"}
-                                    mr={2}
-                                >
-                                    {crop.name}</Text>
-                            ))}
-                        </Box>
-                        <Button
-                            as={Link}
-                            href={`/farm/${farm.id}`}
-                            mt={2}
-                            fontWeight={"normal"}
-                            bg="green.800"
-                            _hover={{ bg: "green.700", textDecoration: "none" }}
-                            color="white"
-                        >
-                            詳しく見る
-                        </Button>
-                    </Box>
-                ))}
+            >
+                {farmItems}
             </Flex>
         </Box >
     );

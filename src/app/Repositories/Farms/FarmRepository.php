@@ -40,7 +40,6 @@ class FarmRepository implements FarmRepositoryInterface
         }
 
         if (!empty($stateName)) {
-            // $stateId = State::where('name', $stateName)->value('id');
             $stateId = $this->stateRepository->homeById($stateName);
         }
         if (!empty($stateId)) {

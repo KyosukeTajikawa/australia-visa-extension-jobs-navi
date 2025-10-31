@@ -46,7 +46,7 @@ class FarmRepository implements FarmRepositoryInterface
             $farmQuery->where('state_id', $stateId);
         }
 
-        $farms = $farmQuery->orderBy('id')->get();
+        $farms = $farmQuery->orderBy('id')->paginate(10);
 
         return [
             'farms' => $farms,

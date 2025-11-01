@@ -63,13 +63,13 @@ const Create = ({ farm }: CreateProps) => {
 
 
     return (
-        <Box m={2} w={"90%"}>
+        <Box my={2} w={{ base: "80%", xl: "1280px" }} mx={"auto"}>
             <Heading as={"h1"}>{farm.name}のレビュー登録</Heading>
             <form onSubmit={handleSubmit}>
                 {/* 仕事のポジション */}
                 <FormControl mb={2} isRequired isInvalid={!!serverErrors.work_position}>
                     <FormLabel htmlFor="work_position">仕事のポジション</FormLabel>
-                    <Input id="work_position" type="text" name="work_position" value={data.work_position} placeholder="ピッキング・パッキング..." maxLength={50}
+                    <Input id="work_position" type="text" name="work_position" autoComplete="work_position" value={data.work_position} placeholder="ピッキング・パッキング..." maxLength={50}
                         onChange={handleChange} />
                     <FormErrorMessage>{serverErrors.work_position}</FormErrorMessage>
                 </FormControl>
@@ -77,7 +77,7 @@ const Create = ({ farm }: CreateProps) => {
                 {/* 時給 */}
                 <FormControl mb={2} isInvalid={!!serverErrors.hourly_wage}>
                     <FormLabel htmlFor="hourly_wage" >時給<Text as="span" color="gray.500" fontSize="sm" pl={2}>*時給の方のみご入力ください。</Text></FormLabel>
-                    <Input id="hourly_wage" type="text" name="hourly_wage" value={data.hourly_wage} placeholder="30.7" inputMode="decimal"
+                    <Input id="hourly_wage" type="text" autoComplete="text" name="hourly_wage" value={data.hourly_wage} placeholder="30.7" inputMode="decimal"
                         onChange={handleChange} />
                     <FormErrorMessage>{serverErrors.hourly_wage}</FormErrorMessage>
                 </FormControl>
@@ -113,7 +113,7 @@ const Create = ({ farm }: CreateProps) => {
                 {/* 開始日 */}
                 <FormControl mb={2} isRequired isInvalid={!!serverErrors.start_date}>
                     <FormLabel htmlFor="start_date">開始日</FormLabel>
-                    <Input id="start_date" type="text" name="start_date" value={data.start_date} placeholder="yyyy-mm-dd" inputMode="numeric"
+                    <Input id="start_date" type="date" name="start_date" value={data.start_date} placeholder="yyyy-mm-dd" inputMode="numeric"
                         onChange={handleChange} />
                     <FormErrorMessage>{serverErrors.start_date}</FormErrorMessage>
                 </FormControl>
@@ -121,7 +121,7 @@ const Create = ({ farm }: CreateProps) => {
                 {/* 終了日 */}
                 <FormControl mb={2} isInvalid={!!serverErrors.end_date}>
                     <FormLabel htmlFor="end_date">終了日</FormLabel>
-                    <Input id="end_date" type="text" name="end_date" value={data.end_date} placeholder="yyyy-mm-dd" inputMode="numeric"
+                    <Input id="end_date" type="date" name="end_date" value={data.end_date} placeholder="yyyy-mm-dd" inputMode="numeric"
                         onChange={handleChange} />
                     <FormErrorMessage>{serverErrors.end_date}</FormErrorMessage>
                 </FormControl>
@@ -190,7 +190,7 @@ const Create = ({ farm }: CreateProps) => {
                 </FormControl>
 
                 {/* ボタン */}
-                <Button type="submit" colorScheme="green" isLoading={processing}>投稿</Button>
+                <Button type="submit" bg={"green.800"} _hover={{ bg: "green.700" }} color={"white"} isLoading={processing}>投稿</Button>
             </form>
         </Box>
     );

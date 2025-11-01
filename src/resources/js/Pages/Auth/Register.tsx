@@ -47,6 +47,7 @@ const Register = () => {
                     <Input
                         id="nickname"
                         name="nickname"
+                        type="text"
                         value={data.nickname}
                         autoComplete="nickname"
                         onChange={handleChange}
@@ -81,7 +82,7 @@ const Register = () => {
                     <FormLabel as="legend" id="gender">性別</FormLabel>
                     <RadioGroup aria-labelledby="gender"
                         value={String(data.gender ?? "")}
-                        onChange={(val:string) => setData('gender', val === "" ? null : Number(val))}
+                        onChange={(val: string) => setData('gender', val === "" ? null : Number(val))}
                     >
                         <HStack spacing={6}>
                             <Radio value="1">男性</Radio>
@@ -117,7 +118,7 @@ const Register = () => {
                         value={data.password}
                         autoComplete="new-password"
                         onChange={handleChange}
-                        placeholder="●●●●●●"
+                        placeholder="パスワード"
                         mt={"1"}
                         display={"block"}
                         w={"full"}
@@ -134,7 +135,7 @@ const Register = () => {
                         value={data.password_confirmation}
                         autoComplete="new-password"
                         onChange={handleChange}
-                        placeholder="●●●●●●"
+                        placeholder="パスワード"
                         mt={"1"}
                         display={"block"}
                         w={"full"}
@@ -146,7 +147,7 @@ const Register = () => {
                     display={"flex"}
                     alignItems={"center"}
                     justifyContent={"flex-end"}
-                    >
+                >
 
                     <Text
                         as={Link}
@@ -160,8 +161,14 @@ const Register = () => {
                     >
                         Already registered?
                     </Text>
-
-                    <Button type="submit" ml="4" colorScheme={"green"} isLoading={processing}>
+                    <Button
+                        type="submit"
+                        ml="4"
+                        bg={"green.800"}
+                        color={"white"}
+                        _hover={{ bg: "green.700" }}
+                        isLoading={processing}
+                    >
                         Register
                     </Button>
                 </Box>

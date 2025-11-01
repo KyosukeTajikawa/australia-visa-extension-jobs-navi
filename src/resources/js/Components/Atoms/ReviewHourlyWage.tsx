@@ -7,7 +7,7 @@ type ReviewHourlyWageProps = {
 
 const ReviewHourlyWage = ({ hourly_wage }: ReviewHourlyWageProps) => {
     return (
-        <Text mb={1}>仕事のポジション：{hourly_wage}</Text>
+        <Text mb={1}>時給(豪ドル)：{hourly_wage}</Text>
     );
 };
 

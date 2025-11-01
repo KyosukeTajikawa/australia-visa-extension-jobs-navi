@@ -9,7 +9,15 @@ type MainLayoutProps = {
 }
 
 const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLayoutProps) => {
-    const { auth } = usePage().props;
+    const page = usePage();
+    const { auth } = page.props;
+    const component = page.component;
+
+    const isFarmDetail = component === "Farm/Detail";
+    const isFavoriteReview = component === "Review/FavoriteReview";
+
+    const hasCustomBg = isFarmDetail || isFavoriteReview;
+
     return (
         <Box
             minH={"98vh"}
@@ -173,6 +181,7 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
             <Box
                 as="main"
                 flexGrow={1}
+                bg={{ base: hasCustomBg ? "#FAF7F0" : "transparent" }}
             >
                 {children}
             </Box>

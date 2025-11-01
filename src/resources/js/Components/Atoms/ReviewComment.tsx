@@ -7,7 +7,7 @@ type ReviewCommentProps = {
 
 const ReviewComment = ({ comment }: ReviewCommentProps) => {
     return (
-        <Text mb={2}>{comment}</Text>
+        <Text mb={4}>{comment}</Text>
     );
 };
 

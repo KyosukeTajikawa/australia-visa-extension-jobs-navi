@@ -9,7 +9,7 @@ type ReviewFavoriteButtonProps = {
 const ReviewFavoriteButton = ({ id }: ReviewFavoriteButtonProps) => {
     return (
         <Button
-            mb={3}
+            mb={10}
             bg={"green.800"}
             _hover={{ bg: "green.700" }}
             color={"white"}

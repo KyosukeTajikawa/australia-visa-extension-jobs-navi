@@ -2,6 +2,7 @@ import React from "react";
 import MainLayout from "@/Layouts/MainLayout";
 import { Box, Heading, HStack, Text} from "@chakra-ui/react";
 import { StarIcon } from '@chakra-ui/icons';
+import ReviewList from "@/Components/Organisms/ReviewList";
 
 type Review = {
     id: number;
@@ -25,9 +26,12 @@ type FavoriteReviewProps = {
 
 const FavoriteReview = ({ reviews }: FavoriteReviewProps) => {
     return (
-        <Box>
+        <Box bg={"#FAF7F0"}>
             <Heading as={"h1"}>お気に入りレビュー一覧</Heading>
-            {reviews?.map((review) => (
+
+            <ReviewList reviews={reviews}/>
+
+            {/* {reviews?.map((review) => (
                 <Box key={review.id} border={"1px"} borderRadius={"md"} borderColor={"gray.300"} boxShadow={"md"}>
                     <Text mb={1}>仕事のポジション：{review.work_position}</Text>
                     <Text mb={1}>支払種別：{review.pay_type === 1 ? "Hourly-Rate" : "Piece-Rate"}</Text>
@@ -81,7 +85,7 @@ const FavoriteReview = ({ reviews }: FavoriteReviewProps) => {
                     <Text>コメント</Text>
                     <Text>{review.comment}</Text>
                 </Box>
-            ))}
+            ))} */}
         </Box>
     )
 }

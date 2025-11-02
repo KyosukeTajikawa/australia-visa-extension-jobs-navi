@@ -1,8 +1,13 @@
 import React from "react";
 import MainLayout from "@/Layouts/MainLayout";
-import { Box, Heading, HStack, Text} from "@chakra-ui/react";
+import { Box, Heading, HStack, Text, Link } from "@chakra-ui/react";
 import { StarIcon } from '@chakra-ui/icons';
 import ReviewList from "@/Components/Organisms/ReviewList";
+
+type Farm = {
+    id: number;
+    name: string;
+}
 
 type Review = {
     id: number;
@@ -18,6 +23,7 @@ type Review = {
     relation_rating: number;
     overall_rating: number;
     comment: string;
+    farm: Farm;
 };
 
 type FavoriteReviewProps = {
@@ -26,13 +32,17 @@ type FavoriteReviewProps = {
 
 const FavoriteReview = ({ reviews }: FavoriteReviewProps) => {
     return (
-        <Box bg={"#FAF7F0"}>
+        <Box bg={"#FAF7F0"} color={"green.800"}>
             <Heading as={"h1"}>お気に入りレビュー一覧</Heading>
 
-            <ReviewList reviews={reviews}/>
+            {/* <ReviewList reviews={reviews}/> */}
 
-            {/* {reviews?.map((review) => (
+            {reviews?.map((review) => (
                 <Box key={review.id} border={"1px"} borderRadius={"md"} borderColor={"gray.300"} boxShadow={"md"}>
+
+                    <Link href={`/farm/${review.farm.id}`} _hover={{opacity: 0.8}}>
+                    <Heading as={"h2"} fontSize={"30px"}>{review.farm.name}</Heading>
+                    </Link>
                     <Text mb={1}>仕事のポジション：{review.work_position}</Text>
                     <Text mb={1}>支払種別：{review.pay_type === 1 ? "Hourly-Rate" : "Piece-Rate"}</Text>
                     <Text mb={1}>時給：{review.hourly_wage}</Text>
@@ -85,7 +95,7 @@ const FavoriteReview = ({ reviews }: FavoriteReviewProps) => {
                     <Text>コメント</Text>
                     <Text>{review.comment}</Text>
                 </Box>
-            ))} */}
+            ))}
         </Box>
     )
 }

@@ -31,11 +31,12 @@ class ReviewRepository implements ReviewRepositoryInterface
 
     /**
      * お気に入りレビューを取得
+     * @param array $relation
      * @return collection
      */
-    public function getFavoriteReviews(): collection
+    public function getFavoriteReviews(array $relations = []): collection
     {
-        return auth()->user()->reviews()->orderBy('review_favorites.review_id')->get();
+        return auth()->user()->reviews()->with($relations)->orderBy('review_favorites.review_id')->get();
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\ReviewController;
 
+use App\Models\Farm;
 use App\Models\Review;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -20,7 +21,8 @@ class FavoritesTest extends TestCase
     public function testFavorites(): void
     {
         $user = User::factory()->create();
-        $reviews = Review::factory()->count(3)->create();
+        $farm = Farm::factory()->sequence(['name' => 'A_farm'])->create();
+        $reviews = Review::factory()->count(3)->for($farm)->create();
 
         $user->reviews()->attach($reviews->modelKeys());
 
@@ -37,6 +39,7 @@ class FavoritesTest extends TestCase
             ->where('reviews.1.pivot.user_id', $user->id)
             ->where('reviews.2.pivot.review_id', $reviews[2]->id)
             ->where('reviews.2.pivot.user_id', $user->id)
+            ->where('reviews.0.farm.name', $farm->name)
         );
     }
 

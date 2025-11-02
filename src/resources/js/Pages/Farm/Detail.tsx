@@ -84,7 +84,7 @@ const Detail = ({ farm }: DetailProps) => {
                 w={{ base: "72%", md: "78%", xl: "1220px" }}
                 mx={"auto"}
                 px={4}
-                fontSize={"20px"}
+                fontSize={{ base: "18px", md: "20px" }}
                 letterSpacing={1}
             >
                 <Heading

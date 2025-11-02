@@ -75,13 +75,23 @@ class ReviewRepositoryTest extends TestCase
     {
         $user = User::factory()->create();
 
-            $reviews = Review::factory()->sequence(['id' => 10], ['id' => 15], ['id' => 20])->count(3)->create();
+        $farm = Farm::factory()->sequence(['name' => 'A_farm'])->create();
+
+            $reviews = Review::factory()
+            ->count(3)
+            ->sequence(['id' => 10], ['id' => 15], ['id' => 20])
+            ->for($farm)
+            ->create();
 
             $user->reviews()->attach($reviews->modelKeys());
 
-            $result = $this->actingAs($user)->repository->getFavoriteReviews();
+            $result = $this->actingAs($user)->repository->getFavoriteReviews(['farm']);
 
         $this->assertSame($reviews->modelKeys(), $result->modelKeys());
+
+        foreach ($result as $review) {
+            $this->assertSame($review->farm->name, $farm->name);
+        }
     }
 
     /**

@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import MainLayout from "@/Layouts/MainLayout";
-import { Box, Heading, Text, FormControl, FormLabel, FormErrorMessage, Input, Textarea, Button, HStack, RadioGroup, Radio } from "@chakra-ui/react";
+import { Box, Heading, Text, FormControl, FormLabel, FormErrorMessage, Input, Textarea, Button, Select, HStack, RadioGroup, Radio } from "@chakra-ui/react";
 import { StarIcon } from '@chakra-ui/icons';
 import { useForm } from "@inertiajs/react";
 
 type Farm = {
+    id: number;
+    name: string;
+}
+
+type ApplicationMethod = {
     id: number;
     name: string;
 }
@@ -16,6 +21,8 @@ type FormData = {
     is_car_required: number;
     start_date: string;
     end_date: string;
+    application_method_id: string;
+    application_method_other: string;
     work_rating: number;
     salary_rating: number;
     hour_rating: number;
@@ -26,9 +33,11 @@ type FormData = {
 
 type CreateProps = {
     farm: Farm;
+    applicationMethods: ApplicationMethod[];
 }
 
-const Create = ({ farm }: CreateProps) => {
+const Create = ({ farm, applicationMethods }: CreateProps) => {
+    const [selectedApplicationMethod, setSelectedApplicationMethod] = useState("");
     const [hoverWorkRating, setHoverWorkRating] = useState(0);
     const [hoverSalaryRating, setHoverSalaryRating] = useState(0);
     const [hoverHourRating, setHoverHourRating] = useState(0);
@@ -41,6 +50,8 @@ const Create = ({ farm }: CreateProps) => {
         is_car_required: 1,
         start_date: "",
         end_date: "",
+        application_method_id: "",
+        application_method_other: "",
         work_rating: 1,
         salary_rating: 1,
         hour_rating: 1,
@@ -49,14 +60,14 @@ const Create = ({ farm }: CreateProps) => {
         comment: "",
     });
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setData(name as keyof typeof data, value);
     }
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(route("review.store", {'id': farm.id}), {
+        post(route("review.store", { 'id': farm.id }), {
             preserveScroll: true,
         });
     }
@@ -126,12 +137,44 @@ const Create = ({ farm }: CreateProps) => {
                     <FormErrorMessage>{serverErrors.end_date}</FormErrorMessage>
                 </FormControl>
 
+                {/* 応募方法 */}
+                <FormControl mb={2} isRequired isInvalid={!!serverErrors.application_method_id}>
+                    <FormLabel htmlFor="application_method_id">応募方法</FormLabel>
+                    <Select
+                        id="application_method_id" name="application_method_id" value={data.application_method_id}
+                        onChange={(e) => {
+                            handleChange(e);
+                            setSelectedApplicationMethod(e.target.value);
+                            if (e.target.value !== "99") {
+                                setData("application_method_other", "");
+                            }
+                        }}
+                        placeholder="応募方法を選択"
+                    >
+                        {applicationMethods.map((applicationMethod) => (
+                            <option key={applicationMethod.id} value={applicationMethod.id}>{applicationMethod.name}</option>
+                        ))}
+                    </Select>
+                    <FormErrorMessage>{serverErrors.application_method_id}</FormErrorMessage>
+                </FormControl>
+
+                {/* その他の応募方法 */}
+                <FormControl mb={2} isInvalid={!!serverErrors.application_method_other}>
+                    <FormLabel htmlFor="application_method_other">その他の応募方法</FormLabel>
+                    <Input id="application_method_other" type="text" name="application_method_other" autoComplete="application_method_other" value={data.application_method_other}
+                        isDisabled={selectedApplicationMethod !== "99"}
+                        opacity={selectedApplicationMethod !== "99" ? 0.5 : 1}
+                        cursor={selectedApplicationMethod !== "99" ? "not-allowed" : "text"}
+                        onChange={handleChange} />
+                    <FormErrorMessage>{serverErrors.application_method_other}</FormErrorMessage>
+                </FormControl>
+
                 {/* 仕事内容 */}
                 <Text>仕事内容</Text>
                 <HStack spacing={1} mb={4}>
                     {Array(5).fill("").map((_, i) =>
                     (
-                        <StarIcon key={i} color={i < data.work_rating || i < hoverWorkRating ? "yellow.500" : "gray.300"} cursor={"pointer"} onClick={() => setData('work_rating', i + 1 )} onMouseEnter={() => setHoverWorkRating(i + 1)}
+                        <StarIcon key={i} color={i < data.work_rating || i < hoverWorkRating ? "yellow.500" : "gray.300"} cursor={"pointer"} onClick={() => setData('work_rating', i + 1)} onMouseEnter={() => setHoverWorkRating(i + 1)}
                             onMouseLeave={() => setHoverWorkRating(0)} />
                     )
                     )}

@@ -3,6 +3,7 @@
 namespace Tests\Feature\ReviewController;
 
 use App\Http\Requests\Reviews\ReviewStoreRequest;
+use App\Models\ApplicationMethod;
 use App\Models\Farm;
 use App\Models\Review;
 use App\Models\User;
@@ -23,6 +24,7 @@ class StoreTest extends TestCase
      */
     public function testStore(): void
     {
+        $ApplicationMethod = ApplicationMethod::factory()->create();
         $user = User::factory()->create();
         $farm = Farm::factory()->create();
 
@@ -33,6 +35,8 @@ class StoreTest extends TestCase
             'is_car_required' => 2,
             'start_date' => '3999-12-31',
             'end_date' => null,
+            'application_method_id' => $ApplicationMethod->id,
+            'application_method_other' => '',
             'work_rating' => 1,
             'salary_rating' => 2,
             'hour_rating' => 3,
@@ -70,6 +74,7 @@ class StoreTest extends TestCase
      */
     public function testStoreValidateSuccess(): void
     {
+        $ApplicationMethod = ApplicationMethod::factory()->create();
         $user = User::factory()->create();
         $farm = Farm::factory()->create();
 
@@ -80,6 +85,8 @@ class StoreTest extends TestCase
             'is_car_required' => 2,
             'start_date' => '3999-12-31',
             'end_date' => null,
+            'application_method_id' => $ApplicationMethod->id,
+            'application_method_other' => '',
             'work_rating' => 1,
             'salary_rating' => 2,
             'hour_rating' => 3,
@@ -104,6 +111,7 @@ class StoreTest extends TestCase
      */
     public function testStoreValidateFail(): void
     {
+        $ApplicationMethod = ApplicationMethod::factory()->create();
         $user = User::factory()->create();
         $farm = Farm::factory()->create();
 
@@ -114,6 +122,8 @@ class StoreTest extends TestCase
             'is_car_required' => 2,
             'start_date' => '3999-12-31',
             'end_date' => null,
+            'application_method_id' => $ApplicationMethod->id,
+            'application_method_other' => '',
             'work_rating' => 1,
             'salary_rating' => 2,
             'hour_rating' => 3,

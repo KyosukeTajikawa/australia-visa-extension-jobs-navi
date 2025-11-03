@@ -28,6 +28,8 @@ class ReviewStoreRequest extends FormRequest
             'is_car_required' => ['required', 'integer', 'in:1,2'],
             'start_date'      => ['required', 'date_format:Y-m-d'],
             'end_date'        => ['nullable', 'date_format:Y-m-d', 'after_or_equal:start_date'],
+            'application_method_id' => ['required', 'integer', 'exists:application_methods,id'],
+            'application_method_other' => ['exclude_unless:application_method_id,99','required','string'],
             'work_rating'     => ['required', 'integer', 'between:1,5'],
             'salary_rating'   => ['required', 'integer', 'between:1,5'],
             'hour_rating'     => ['required', 'integer', 'between:1,5'],
@@ -35,7 +37,6 @@ class ReviewStoreRequest extends FormRequest
             'overall_rating'  => ['required', 'integer', 'between:1,5'],
             'comment'         => ['required', 'string', 'max:1000'],
             'farm_id'         => ['required', 'integer', 'exists:farms,id'],
-            'user_id'         => ['required', 'integer', 'exists:users,id'],
         ];
     }
 
@@ -54,6 +55,7 @@ class ReviewStoreRequest extends FormRequest
             'start_date.date_format' => '開始日は「YYYY-MM-DD」の形式で入力してください。',
             'end_date.date_format' => '終了日は「YYYY-MM-DD」の形式で入力してください。',
             'end_date.after_or_equal' => '終了日は開始日以降の日付を指定してください。',
+            'application_method_other' => 'その他を選択した場合は入力してください。',
             'comment.max' => 'コメントは1000文字以内で入力してください。',
         ];
     }
@@ -61,7 +63,6 @@ class ReviewStoreRequest extends FormRequest
     public function prepareForValidation(): void
     {
 
-        // 空文字を null に統一
         $hourly = $this->input('hourly_wage');
         $hourly = ($hourly === '' || $hourly === null) ? null : str_replace(',', '.', $hourly);
 
@@ -76,7 +77,6 @@ class ReviewStoreRequest extends FormRequest
 
         $this->merge([
             'farm_id'         => (int)$this->route('id'),
-            'user_id'         => auth()->id(),
             'pay_type'        => $payType,
             'hourly_wage'     => $hourly,
             'end_date'        => $end,

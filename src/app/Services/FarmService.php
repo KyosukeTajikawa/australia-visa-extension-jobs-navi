@@ -46,4 +46,34 @@ class FarmService implements FarmServiceInterface
             throw $e;
         }
     }
+
+    /**
+     * ファームの登録処理
+     * @param array $farmData 作物以外のtextデータ
+     * @param array $cropData 作物のみのtextデータ
+     * @param array $files 画像ファイル | null
+     * @param int $id
+     * @return Farm
+     */
+    public function update(array $farmData, array $cropData, ?array $files = null, int $id): Farm
+    {
+        DB::beginTransaction();
+        try {
+            $previousFarm = Farm::findOrFail($id);
+
+            $farm = $this->farmRepository->registerFarmAgain($farmData, $previousFarm);
+
+            $this->farmImagesService->imagesStore($farm, $files);
+
+            $this->farmRepository->registerFarmCrops($farm, $cropData);
+
+            DB::commit();
+
+            return $farm;
+        } catch (\Exception $e) {
+            Log::error(__METHOD__ . 'ファームの登録処理でエラーが発生しました。' . $e->getMessage());
+            DB::rollBack();
+            throw $e;
+        }
+    }
 }

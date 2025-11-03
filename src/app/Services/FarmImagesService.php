@@ -27,6 +27,7 @@ class FarmImagesService implements FarmImagesServiceInterface
         if (!$files) {
             return;
         }
+
         $insertValues = [];
 
         foreach ($files as $file) {
@@ -39,6 +40,49 @@ class FarmImagesService implements FarmImagesServiceInterface
             $insertValues[] = [
                 'farm_id'    => $farm->id,
                 'url'        => $url,
+                'path'       => $path,
+                'created_at' => now(),
+                'updated_at' => now()
+            ];
+        }
+
+        $this->farmImageRepository->bulkInsert($insertValues);
+    }
+
+    /**
+     * ファームの登録処理
+     * @param Farm $farm
+     * @param array $files 画像ファイル | null
+     */
+    public function imagesUpdate(Farm $farm, ?array $files = null): void
+    {
+        if (!$files) {
+            return;
+        }
+
+        $previousFiles = $farm->images()->get();
+
+        foreach ($previousFiles as $previousFile) {
+
+            Storage::disk('s3')->delete("farms/{$previousFile->id}/{$previousFile->path}");
+        }
+
+        $farm->images()->delete();
+
+
+        $insertValues = [];
+
+        foreach ($files as $file) {
+            $name = $file->getClientOriginalName();
+
+            $path = Storage::disk('s3')->putFileAs("farms/{$farm->id}", $file, $name);
+
+            $url = Storage::disk('s3')->url($path);
+
+            $insertValues[] = [
+                'farm_id'    => $farm->id,
+                'url'        => $url,
+                'path'       => $path,
                 'created_at' => now(),
                 'updated_at' => now()
             ];

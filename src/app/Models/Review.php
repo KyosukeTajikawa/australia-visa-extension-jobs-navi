@@ -23,6 +23,8 @@ class Review extends Model
         'is_car_required',
         'start_date',
         'end_date',
+        'application_method_id',
+        'application_method_other',
         'work_rating',
         'salary_rating',
         'hour_rating',
@@ -50,6 +52,16 @@ class Review extends Model
     {
         return $this->belongsTo(Farm::class);
     }
+
+    /**
+     * レビューが紐づく応募方法を取得
+     * @return BelongsTo
+     */
+    public function applicationMethod(): BelongsTo
+    {
+        return $this->belongsTo(ApplicationMethod::class);
+    }
+
     /**
      * レビューに紐づくレビューコメントを取得
      * @return HasMany

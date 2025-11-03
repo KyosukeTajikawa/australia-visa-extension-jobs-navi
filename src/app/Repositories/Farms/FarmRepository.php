@@ -96,4 +96,17 @@ class FarmRepository implements FarmRepositoryInterface
     {
         $farm->crops()->sync($cropData);
     }
+
+    /**
+     * ファームを登録
+     * @param array $farmData
+     * @param Farm $previousFarm
+     * @return Farm 登録後のモデルインスタンス
+     */
+    public function registerFarmAgain(array $farmData, Farm $previousFarm): Farm
+    {
+        $previousFarm->update($farmData);
+
+        return $previousFarm->refresh();
+    }
 }

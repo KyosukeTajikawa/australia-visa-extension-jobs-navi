@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Farms\FarmStoreRequest;
+use App\Models\Farm;
 use App\Models\State;
 use App\Repositories\Farms\FarmRepositoryInterface;
 use App\Repositories\StateRepositoryInterface;
@@ -102,6 +103,49 @@ class FarmController extends Controller
 
         return redirect()->route('farm.detail', [
             'id' => $farm->id,
+        ]);
+    }
+
+    /**
+     * ファーム新規作成のページを表示
+     * @param $id
+     * @return Response
+     */
+    public function edit($id): Response
+    {
+        $farm = Farm::with(['state', 'crops', 'images'])->findOrFail($id);
+
+        $crops = $this->farmRepository->getCrops();
+
+        $states = $this->stateRepository->getAll();
+
+        return Inertia::render('Farm/Edit', [
+            'farm' => $farm,
+            'states' => $states,
+            'crops'  => $crops,
+        ]);
+    }
+
+    /**
+     * ファームの新規登録
+     * @param FarmStoreRequest $request
+     * @return RedirectResponse
+     */
+    public function update(FarmStoreRequest $request, int $id): RedirectResponse
+    {
+        $validated = $request->validated();
+        $validated['created_user_id'] = auth()->id();
+
+        // $previousFarm = Farm::findOrFail($id)
+
+        $farmData = Arr::except($validated, ['crop_ids']);
+        $cropData = array_map('intval', $validated['crop_ids']);
+        $files    = $request->file('files');
+
+        $farm = $this->farmService->update($farmData, $cropData, $files, $id);
+
+        return redirect()->route('farm.detail', [
+            'id' => $id,
         ]);
     }
 }

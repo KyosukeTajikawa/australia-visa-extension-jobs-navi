@@ -19,6 +19,8 @@ return new class extends Migration
             $table->tinyInteger('is_car_required')->unsigned()->comment('車の有無(1=必要,2=不要)');
             $table->date('start_date')->comment('開始日');
             $table->date('end_date')->nullable()->comment('終了日');
+            $table->foreignId('application_method_id')->constrained()->comment('応募方法id');
+            $table->string('application_method_other')->nullable()->comment('その他の応募方法'); //その他の時のみ入力
             $table->tinyInteger('work_rating')->unsigned()->comment('仕事内容の評価'); //1~5で評価
             $table->tinyInteger('salary_rating')->unsigned()->comment('給料の評価'); //1~5で評価
             $table->tinyInteger('hour_rating')->unsigned()->comment('労働時間の評価'); //1~5で評価
@@ -39,6 +41,8 @@ return new class extends Migration
         Schema::dropIfExists('reviews', function (Blueprint $table) {
             $table->dropForeign('[user_id]');
             $table->dropColumn('user_id');
+            $table->dropForeign('[application_method_id]');
+            $table->dropColumn('application_method_id');
         });
 
         Schema::dropIfExists('reviews');

@@ -63,7 +63,7 @@ class FarmService implements FarmServiceInterface
 
             $farm = $this->farmRepository->registerFarmAgain($farmData, $previousFarm);
 
-            $this->farmImagesService->imagesStore($farm, $files);
+            $this->farmImagesService->imagesUpdate($farm, $files);
 
             $this->farmRepository->registerFarmCrops($farm, $cropData);
 

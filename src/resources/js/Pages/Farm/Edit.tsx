@@ -6,6 +6,7 @@ import ReactSelect from "react-select";
 import { MultiValue } from "react-select";
 
 type FormData = {
+    _method: string;
     name: string;
     phone_number: string | null;
     email: string | null;
@@ -55,7 +56,8 @@ type EditProps = {
 };
 
 const Edit = ({ farm, states, crops }: EditProps) => {
-    const { data, setData, put, processing, errors: serverErrors, reset } = useForm<FormData>({
+    const { data, setData, post, processing, errors: serverErrors, reset } = useForm<FormData>({
+        _method: "put",
         name: farm.name,
         phone_number: farm.phone_number ?? null,
         email: farm.email ?? null,
@@ -98,9 +100,10 @@ const Edit = ({ farm, states, crops }: EditProps) => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        put(route("farm.update", {id: farm.id}), {
+        post(route("farm.update", {id: farm.id}), {
             preserveScroll: true,
             onSuccess: () => reset("files"),
+            forceFormData: true,
         });
     };
 

@@ -50,7 +50,7 @@ class FarmImagesService implements FarmImagesServiceInterface
     }
 
     /**
-     * ファームの登録処理
+     * ファームの編集処理
      * @param Farm $farm
      * @param array $files 画像ファイル | null
      */
@@ -60,15 +60,14 @@ class FarmImagesService implements FarmImagesServiceInterface
             return;
         }
 
-        $previousFiles = $farm->images()->get();
+        $previousFiles = $this->farmImageRepository->getByFarmId($farm->id);
 
         foreach ($previousFiles as $previousFile) {
 
-            Storage::disk('s3')->delete("farms/{$previousFile->id}/{$previousFile->path}");
+            Storage::disk('s3')->delete($previousFile->path);
         }
 
-        $farm->images()->delete();
-
+        $this->farmImageRepository->deleteByFarmId($farm->id);
 
         $insertValues = [];
 

@@ -26,7 +26,7 @@ class ReviewFactory extends Factory
             'is_car_required' => fake()->numberBetween(1, 2),
             'start_date' => fake()->date(),
             'end_date' => fake()->date(),
-            'application_method_id' => fake()->numberBetween(1, 7),
+            'application_method_id' => ApplicationMethod::factory(),
             'work_rating' => fake()->numberBetween(1, 5),
             'salary_rating' => fake()->numberBetween(1, 5),
             'hour_rating' => fake()->numberBetween(1, 5),

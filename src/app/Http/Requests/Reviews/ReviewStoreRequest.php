@@ -55,7 +55,7 @@ class ReviewStoreRequest extends FormRequest
             'start_date.date_format' => '開始日は「YYYY-MM-DD」の形式で入力してください。',
             'end_date.date_format' => '終了日は「YYYY-MM-DD」の形式で入力してください。',
             'end_date.after_or_equal' => '終了日は開始日以降の日付を指定してください。',
-            'application_method_other' => 'その他を選択した場合は入力してください。',
+            'application_method_other.required' => 'その他を選択した場合は入力してください。',
             'comment.max' => 'コメントは1000文字以内で入力してください。',
         ];
     }
@@ -69,6 +69,9 @@ class ReviewStoreRequest extends FormRequest
         $end = $this->input('end_date');
         $end  = ($end === '' ? null : $end);
 
+        $appId = (int) $this->input('application_method_id');
+        $other = $appId === 99 ? $this->input('application_method_other') : null;
+
         // 歩合(=2)なら時給は常に null
         $payType = $this->input('pay_type');
         if ($payType !== 1) {
@@ -80,6 +83,8 @@ class ReviewStoreRequest extends FormRequest
             'pay_type'        => $payType,
             'hourly_wage'     => $hourly,
             'end_date'        => $end,
+            'application_method_id' => $appId,
+            'application_method_other' => $other,
         ]);
     }
 }

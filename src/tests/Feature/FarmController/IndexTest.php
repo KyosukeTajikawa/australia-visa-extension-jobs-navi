@@ -47,12 +47,7 @@ class IndexTest extends TestCase
                         ->hasAll(['id', 'name'])
                         //imagesが1枚しかない。2枚目以降存在する場合はエラーになる。
                         ->has('images', 1)
-                        ->has(
-                            'images.0',
-                            fn(Assert $i) => $i
-                                ->where('url', 'test1.jpeg')
-                                ->etc()
-                        )
+                        ->where('images.0.url', 'test1.jpeg')
                         ->etc()
                 )
         );

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Crop;
 use App\Models\State;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -23,30 +24,21 @@ class CreateTest extends TestCase
 
         State::factory()->sequence(['id' => 10], ['id' => 11], ['id' => 12])->count(3)->create();
 
+        Crop::factory()->sequence(['id' => 20], ['id' => 21], ['id' => 22])->count(3)->create();
+
         $response = $this->actingAs($user)->get('/farm/create');
 
         $response->assertInertia(
             fn(Assert $page) => $page
                 ->component('Farm/Create')
                 ->has('states', 3)
-                ->has(
-                    'states.0',
-                    fn(Assert $s) => $s
-                        ->where('id', 10)
-                        ->etc()
-                )
-                ->has(
-                    'states.1',
-                    fn(Assert $s) => $s
-                        ->where('id', 11)
-                        ->etc()
-                )
-                ->has(
-                    'states.2',
-                    fn(Assert $s) => $s
-                        ->where('id', 12)
-                        ->etc()
-                )
+                ->where('states.0.id', 10)
+                ->where('states.1.id', 11)
+                ->where('states.2.id', 12)
+                ->has('crops', 3)
+                ->where('crops.0.id', 20)
+                ->where('crops.1.id', 21)
+                ->where('crops.2.id', 22)
         );
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Crop;
 use App\Models\Farm;
 use App\Repositories\FarmRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
@@ -33,6 +34,15 @@ class FarmRepository implements FarmRepositoryInterface
     }
 
     /**
+     * すべての作物情報を取得する
+     * @return Collection<Crop>
+     */
+    public function getCrops(): Collection
+    {
+        return Crop::orderBy('id')->get();
+    }
+
+    /**
      * ファームを登録
      * @param $validatedバリデーションをされた配列
      * @return Farm 登録後のモデルインスタンス
@@ -40,5 +50,15 @@ class FarmRepository implements FarmRepositoryInterface
     public function registerFarm($validated): Farm
     {
         return Farm::create($validated);
+    }
+
+    /**
+     * 作物登録
+     * @param Farm $farm
+     * @param array $cropData
+     */
+    public function registerFarmCrops(Farm $farm, array $cropData): void
+    {
+        $farm->crops()->sync($cropData);
     }
 }

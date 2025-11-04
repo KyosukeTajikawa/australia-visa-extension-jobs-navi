@@ -50,8 +50,7 @@ const Home = ({ farms, states, keyword, stateName }: HomeProps) => {
     const farmItems = farms.data.map((farm) => (
         <Box
             key={farm.id}
-            p={4}
-            w={{ base: "90%", md: "48%", xl: "45%" }}
+            w={{ base: "100%", sm: "100%", md: "48%", xl: "45%" }}
             mb={5}
             mx={"auto"}
         >
@@ -86,7 +85,7 @@ const Home = ({ farms, states, keyword, stateName }: HomeProps) => {
                         color="green.800"
                         borderColor="green.200"
                         borderRadius="md"
-                        p={1}
+                        py={1}
                         fontSize={"20px"}
                         mr={2}
                     >
@@ -132,10 +131,9 @@ const Home = ({ farms, states, keyword, stateName }: HomeProps) => {
         <Box>
             <Box bg={"#FAF7F0"}>
                 <Box
-                    px={15}
                     py={30}
                     mb={5}
-                    w={{ base: "80%", xl: "1150px" }}
+                    w={{ base: "90%", sm: "460px", md: "750px", xl: "1000px" }}
                     mx={"auto"}
                 >
                     <Heading
@@ -173,7 +171,6 @@ const Home = ({ farms, states, keyword, stateName }: HomeProps) => {
                                 borderRadius="md"
                                 focusBorderColor="green.500"
                                 size="md"
-                                w={"80%"}
                                 mr={5}
                             >
                                 <option>
@@ -204,7 +201,7 @@ const Home = ({ farms, states, keyword, stateName }: HomeProps) => {
             {/* ファーム一覧 */}
             <Flex
                 wrap={"wrap"}
-                w={{ base: "80%", xl: "1280px" }}
+                w={{ base: "90%", sm: "460px", md: "750px", xl: "1000px" }}
                 mx={"auto"}
             >
                 {farmItems}
@@ -223,7 +220,7 @@ const Home = ({ farms, states, keyword, stateName }: HomeProps) => {
                     </Text>
                 )}
                 <Text
-                    mx={5}
+                mx={5}
                 >
                     {farms.current_page} / {farms.last_page}
                 </Text>

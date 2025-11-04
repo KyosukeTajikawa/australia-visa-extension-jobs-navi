@@ -28,13 +28,13 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): JsonResponse
+    public function store(LoginRequest $request): RedirectResponse
     {
         $request->validated();
         $request->authenticate();
         $request->session()->regenerate();
 
-        return response()->json(null, 204);
+        return redirect()->intended('/home');
     }
 
     /**

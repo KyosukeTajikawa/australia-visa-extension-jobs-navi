@@ -18,7 +18,6 @@ import MainLayout from "@/Layouts/MainLayout";
             await axios.get("/sanctum/csrf-cookie");
 
             post("/login", {
-                onSuccess: () => router.visit("/home"),
                 preserveScroll: true,
             });
         };

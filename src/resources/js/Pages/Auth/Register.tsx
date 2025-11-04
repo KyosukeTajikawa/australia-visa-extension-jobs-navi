@@ -159,7 +159,7 @@ const Register = () => {
                             color: "gray.900",
                         }}
                     >
-                        Already registered?
+                        既に登録はお済みですか？
                     </Text>
                     <Button
                         type="submit"
@@ -169,7 +169,7 @@ const Register = () => {
                         _hover={{ bg: "green.700" }}
                         isLoading={processing}
                     >
-                        Register
+                        登録
                     </Button>
                 </Box>
             </form>

@@ -29,24 +29,26 @@ const FarmImageList = ({ farm }: FarmImageListProps) => {
                     farmImage={image}
                 />
             ))
-        : (
+            : (
                 [<DummyFarmImageItem key={"dummyImage"} farm={farm} />]
-        )
-        if (farmItems?.length % 2 !== 0) {
-            farmItems?.push(
-                <Box
-                    key={"dummy"}
-                    w={{ base: "none", md: "48%", xl: "45%" }}
-                    mb={5}
-                    visibility={"hidden"}
-                    pointerEvents={"none"}
-                ></Box>
-            );
-        }
+            )
+    if (farmItems?.length % 2 !== 0) {
+        farmItems?.push(
+            <Box
+                key={"dummy"}
+                w={{ base: "none", md: "48%", xl: "45%" }}
+                mb={5}
+                visibility={"hidden"}
+                pointerEvents={"none"}
+            ></Box>
+        );
+    }
 
     return (
         <Flex
             wrap={"wrap"}
+            justifyContent={{ base: 'space-between', md: "flex-start" }}
+            gap={{md:5}}
         >
             {farmItems}
         </Flex>

@@ -79,20 +79,6 @@ const Detail = ({ farm }: DetailProps) => {
             </Box>
             <FarmImageList farm={farm} />
             <FarmList farm={farm} />
-            <Link
-                display={"inline-block"}
-                py={2}
-                px={5}
-                bg={"green.800"}
-                color={"white"}
-                fontWeight={"bold"}
-                border={"1px solid"}
-                borderRadius={"md"}
-                href={route("farm.edit", { id: farm.id })}
-                _hover={{ bg: "green.600" }}
-            >
-                編集
-            </Link>
             {/* レビュー */}
             <Box
                 w={{ base: "72%", md: "78%", xl: "1220px" }}

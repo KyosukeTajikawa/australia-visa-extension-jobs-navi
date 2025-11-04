@@ -146,4 +146,20 @@ class FarmController extends Controller
             'id' => $farm->id,
         ]);
     }
+
+    /**
+     * ログインユーザーが作成したファームのページを表示
+     * @return Response
+     */
+    public function myFarms(): Response
+    {
+        $farms = auth()->user()->farms()->with([
+                'images' => function ($q) {
+                    $q->orderBy('id')->limit(1);},'state','crops',])
+                    ->get();
+
+        return Inertia::render('Farm/MyFarms', [
+            'farms' => $farms,
+        ]);
+    }
 }

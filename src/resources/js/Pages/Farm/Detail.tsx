@@ -1,10 +1,11 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import MainLayout from "@/Layouts/MainLayout";
-import { Box, Heading, Link, HStack, Text, Button, VStack, Progress, } from "@chakra-ui/react";
+import { Box, Heading, Link, Textarea, HStack, Text, Button, VStack, Progress, Flex } from "@chakra-ui/react";
 import { StarIcon, EditIcon } from "@chakra-ui/icons";
 import { router } from "@inertiajs/react";
 import FarmImageList from "@/Components/Organisms/FarmImageList";
 import FarmList from "@/Components/Organisms/FarmList";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 
 type State = { id: number; name: string };
 type FarmImages = { id: number; farm_id: number; url: string };
@@ -98,6 +99,15 @@ const RatingSummary: React.FC<{ reviews?: Review[] }> = ({ reviews }) => {
 };
 
 const Detail = ({ farm }: DetailProps) => {
+    const [showCommentForm, setShowCommentForm] = useState(false);
+
+    const FavoriteButton = () => {
+        const [isFavorite, setIsFavorite] = useState(false);
+
+        const toggleFavorite = () => {
+            setIsFavorite((prev) => !prev);
+        };
+
     const OTHER_ID = 99;
     const OTHER_LABEL = "その他";
 
@@ -122,9 +132,9 @@ const Detail = ({ farm }: DetailProps) => {
             {/* ファーム情報 */}
             <Box mb={4}>
                 <Box
-                mx={"auto"}
-                w={{ base: "90%", sm: "100%", md: "98%", xl: "95%" }}
-                    >
+                    mx={"auto"}
+                    w={{ base: "90%", sm: "100%", md: "98%", xl: "95%" }}
+                >
                     <Heading
                         as="h2"
                         py={2}
@@ -179,22 +189,22 @@ const Detail = ({ farm }: DetailProps) => {
                         >
                             <Text mb={1}>{review.review_user?.nickname ?? "匿名ユーザー"}</Text>
                             <HStack>
-                            <HStack mb={2} align="stretch">
+                                <HStack mb={2} align="stretch">
                                     <HStack>
-                                    {Array(5)
-                                        .fill("")
-                                        .map((_, i) => (
-                                            <StarIcon
-                                                key={i}
-                                                color={i < review.farm_rating ? "green.500" : "gray.300"}
-                                                fontSize={"12px"}
-                                            />
-                                        ))}
+                                        {Array(5)
+                                            .fill("")
+                                            .map((_, i) => (
+                                                <StarIcon
+                                                    key={i}
+                                                    color={i < review.farm_rating ? "green.500" : "gray.300"}
+                                                    fontSize={"12px"}
+                                                />
+                                            ))}
+                                    </HStack>
                                 </HStack>
-                            </HStack>
-                            <Text mb={1} color="gray.500" fontSize="16px" textAlign={"center"}>
-                                {new Date(review.created_at).toLocaleDateString("ja-JP")}
-                            </Text>
+                                <Text mb={1} color="gray.500" fontSize="16px" textAlign={"center"}>
+                                    {new Date(review.created_at).toLocaleDateString("ja-JP")}
+                                </Text>
                             </HStack>
                             <Text mb={1}>仕事のポジション{review.work_position}</Text>
                             <Text mb={1}>
@@ -211,12 +221,37 @@ const Detail = ({ farm }: DetailProps) => {
                                 <Text>終了日: {review.end_date}</Text>
                             </HStack>
                             <Text>{review.comment}</Text>
+
+                            <Flex justifyContent={"flex-end"}>
+                                <Button
+                                    mr={10}
+                                    mt={2}
+                                    colorScheme="green"
+                                    onClick={() => setShowCommentForm(!showCommentForm)}
+                                >
+                                    コメントする
+                                </Button>
+
+                                <Button
+                                    mt={2}
+                                    colorScheme="green"
+                                    onClick={() => router.post(`/review/${review.id}/favorites`)}
+                                >
+                                    お気に入り
+                                </Button>
+                            </Flex>
+                            <Box>
+                                {showCommentForm && (
+                                    <Textarea mt={4} placeholder="コメントを書いてください" />
+                                )}
+                            </Box>
                             <Button
-                                mt={2}
-                                colorScheme="green"
-                                onClick={() => router.post(`/review/${review.id}/favorites`)}
+                                onClick={toggleFavorite}
+                                leftIcon={isFavorite ? <AiFillHeart /> : <AiOutlineHeart />}
+                                colorScheme={isFavorite ? "red" : "gray"}  // ❤️の時だけ赤くする
+                                variant="solid"
                             >
-                                お気に入り
+                                {isFavorite ? "お気に入り済み" : "お気に入り"}
                             </Button>
                         </Box>
                     ))

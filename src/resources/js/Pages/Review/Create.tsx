@@ -160,7 +160,7 @@ const Create = ({ farm, applicationMethods }: CreateProps) => {
 
                 {/* その他の応募方法 */}
                 <FormControl mb={2} isInvalid={!!serverErrors.application_method_other}>
-                    <FormLabel htmlFor="application_method_other">その他の応募方法</FormLabel>
+                    <FormLabel htmlFor="application_method_other">その他の応募方法<Text as="span" color="gray.500" fontSize="sm">（その他を選択場合は、必須項目となります。）</Text></FormLabel>
                     <Input id="application_method_other" type="text" name="application_method_other" autoComplete="application_method_other" value={data.application_method_other}
                         isDisabled={selectedApplicationMethod !== "99"}
                         opacity={selectedApplicationMethod !== "99" ? 0.5 : 1}

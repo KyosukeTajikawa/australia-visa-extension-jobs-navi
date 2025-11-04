@@ -219,6 +219,7 @@ const Edit = ({ farm, states, crops }: EditProps) => {
                 {/* 画像 */}
                 <FormControl mb={2} isInvalid={!!serverErrors.files}>
                     <FormLabel htmlFor="files">ファーム画像（最大5MB目安）<Text as="span" color="gray.500" fontSize="sm">（任意）</Text></FormLabel>
+                    <Text as="span" color="gray.500" fontSize="sm">※画像を選択しない場合は、前回の画像登録から変更ありません。</Text>
                     {/* プレビュー */}
                     <HStack mb={2}>
                         {

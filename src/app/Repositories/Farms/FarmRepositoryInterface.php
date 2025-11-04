@@ -54,4 +54,11 @@ interface FarmRepositoryInterface
      * @return Farm 登録後のモデルインスタンス
      */
     public function registerFarmAgain(array $farmData, Farm $previousFarm): Farm;
+
+    /**
+     * ログインユーザーのファーム一覧を取得
+     * @param int $userId
+     * @return Collection
+     */
+    public function getMyFarms(int $userId): Collection;
 }

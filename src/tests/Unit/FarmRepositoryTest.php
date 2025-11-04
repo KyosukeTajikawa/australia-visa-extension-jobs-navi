@@ -60,7 +60,7 @@ class FarmRepositoryTest extends TestCase
 
         $data = $this->repository->getAllFarmsWithImageAndSearch($keyword, $stateName);
 
-        $result =$data['farms'];
+        $result = $data['farms'];
 
 
         $this->assertCount(1, $result);
@@ -239,5 +239,30 @@ class FarmRepositoryTest extends TestCase
             'postcode'        => '5000',
             'created_user_id' => $user->id,
         ]);
+    }
+
+    /**
+     * getMyFarms()メソッドのテスト
+     * getMyFarms()がログインユーザーが作成したファームを取得できている
+     */
+    public function testGetMyFarms(): void
+    {
+        $state = State::factory()->create();
+        $user = User::factory()->create();
+
+        $farm = Farm::factory()
+            ->for($state, 'state')
+            ->for($user, 'user')
+            ->create();
+
+        $farmImage = $farm->images()->create(['farm_id' => 5, 'url' => 'test1.jpeg', 'path' => 'farm/1/test1.jpeg']);
+
+        $result = $this->repository->getMyFarms($user->id);
+
+        $this->assertCount(1, $result);
+
+        $this->assertSame($user->id, $result->first()->created_user_id);
+        $this->assertSame($state->id, $result->first()->state_id);
+        $this->assertSame($farmImage->path, $result->first()->images->first()->path);
     }
 }

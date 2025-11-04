@@ -109,4 +109,24 @@ class FarmRepository implements FarmRepositoryInterface
 
         return $previousFarm->refresh();
     }
+
+    /**
+     * ログインユーザーのファーム一覧を取得
+     * @param int $userId
+     * @return Collection
+     */
+    public function getMyFarms(int $userId): Collection
+    {
+        return Farm::query()
+            ->where('created_user_id', $userId)
+            ->with([
+                'images' => function ($q) {
+                    $q->orderBy('id')->limit(1);
+                },
+                'state',
+                'crops',
+            ])
+            ->orderBy('id')
+            ->get();
+    }
 }

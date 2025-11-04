@@ -153,10 +153,9 @@ class FarmController extends Controller
      */
     public function myFarms(): Response
     {
-        $farms = auth()->user()->farms()->with([
-                'images' => function ($q) {
-                    $q->orderBy('id')->limit(1);},'state','crops',])
-                    ->get();
+        $userId = auth()->id();
+
+        $farms = $this->farmRepository->getMyFarms($userId);
 
         return Inertia::render('Farm/MyFarms', [
             'farms' => $farms,

@@ -7,9 +7,7 @@ type FarmEmailProps = {
 
 const FarmEmail = ({ email }: FarmEmailProps) => {
     return (
-        <Text mb={1}>
-            メールアドレス：{email ? email : "登録なし"}
-        </Text>
+        <Text mb={1}>メールアドレス：{email}</Text>
     );
 };
 

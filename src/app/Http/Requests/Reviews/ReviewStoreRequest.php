@@ -30,11 +30,7 @@ class ReviewStoreRequest extends FormRequest
             'end_date'        => ['nullable', 'date_format:Y-m-d', 'after_or_equal:start_date'],
             'application_method_id' => ['required', 'integer', 'exists:application_methods,id'],
             'application_method_other' => ['exclude_unless:application_method_id,99','required','string'],
-            'work_rating'     => ['required', 'integer', 'between:1,5'],
-            'salary_rating'   => ['required', 'integer', 'between:1,5'],
-            'hour_rating'     => ['required', 'integer', 'between:1,5'],
-            'relation_rating' => ['required', 'integer', 'between:1,5'],
-            'overall_rating'  => ['required', 'integer', 'between:1,5'],
+            'farm_rating'  => ['required', 'integer', 'between:1,5'],
             'comment'         => ['required', 'string', 'max:1000'],
             'farm_id'         => ['required', 'integer', 'exists:farms,id'],
         ];

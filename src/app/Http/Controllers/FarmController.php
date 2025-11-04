@@ -62,7 +62,7 @@ class FarmController extends Controller
      */
     public function detail(int $id): Response
     {
-        $farm = $this->farmRepository->getDetailById($id, ['reviews.applicationMethod:id,name', 'state', 'images', 'crops']);
+        $farm = $this->farmRepository->getDetailById($id, ['reviews.applicationMethod:id,name', 'reviews.reviewUser:id,nickname', 'state', 'images', 'crops']);
 
         return Inertia::render('Farm/Detail', [
             'farm' => $farm,

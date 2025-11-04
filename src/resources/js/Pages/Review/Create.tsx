@@ -23,11 +23,7 @@ type FormData = {
     end_date: string;
     application_method_id: string;
     application_method_other: string;
-    work_rating: number;
-    salary_rating: number;
-    hour_rating: number;
-    relation_rating: number;
-    overall_rating: number;
+    farm_rating: number;
     comment: string;
 };
 
@@ -38,11 +34,7 @@ type CreateProps = {
 
 const Create = ({ farm, applicationMethods }: CreateProps) => {
     const [selectedApplicationMethod, setSelectedApplicationMethod] = useState("");
-    const [hoverWorkRating, setHoverWorkRating] = useState(0);
-    const [hoverSalaryRating, setHoverSalaryRating] = useState(0);
-    const [hoverHourRating, setHoverHourRating] = useState(0);
-    const [hoverRelationRating, setHoverRelationRating] = useState(0);
-    const [hoverOverallRating, setHoverOverallRating] = useState(0);
+    const [hoverFarmRating, setHoverFarmRating] = useState(0);
     const { data, setData, post, processing, errors: serverErrors } = useForm<FormData>({
         work_position: "",
         hourly_wage: "",
@@ -52,11 +44,7 @@ const Create = ({ farm, applicationMethods }: CreateProps) => {
         end_date: "",
         application_method_id: "",
         application_method_other: "",
-        work_rating: 1,
-        salary_rating: 1,
-        hour_rating: 1,
-        relation_rating: 1,
-        overall_rating: 1,
+        farm_rating: 1,
         comment: "",
     });
 
@@ -89,7 +77,10 @@ const Create = ({ farm, applicationMethods }: CreateProps) => {
                 <FormControl mb={2} isInvalid={!!serverErrors.hourly_wage}>
                     <FormLabel htmlFor="hourly_wage" >時給<Text as="span" color="gray.500" fontSize="sm" pl={2}>*時給の方のみご入力ください。</Text></FormLabel>
                     <Input id="hourly_wage" type="text" autoComplete="text" name="hourly_wage" value={data.hourly_wage} placeholder="30.7" inputMode="decimal"
-                        onChange={handleChange} />
+                        onChange={handleChange}
+                        isDisabled={data.pay_type === 2}
+                        opacity={data.pay_type === 2 ? 0.5 : 1}
+                        cursor={data.pay_type === 2 ? "not-allowed" : "text"} />
                     <FormErrorMessage>{serverErrors.hourly_wage}</FormErrorMessage>
                 </FormControl>
 
@@ -169,57 +160,13 @@ const Create = ({ farm, applicationMethods }: CreateProps) => {
                     <FormErrorMessage>{serverErrors.application_method_other}</FormErrorMessage>
                 </FormControl>
 
-                {/* 仕事内容 */}
-                <Text>仕事内容</Text>
+                {/* 評価 */}
+                <Text>評価</Text>
                 <HStack spacing={1} mb={4}>
                     {Array(5).fill("").map((_, i) =>
                     (
-                        <StarIcon key={i} color={i < data.work_rating || i < hoverWorkRating ? "yellow.500" : "gray.300"} cursor={"pointer"} onClick={() => setData('work_rating', i + 1)} onMouseEnter={() => setHoverWorkRating(i + 1)}
-                            onMouseLeave={() => setHoverWorkRating(0)} />
-                    )
-                    )}
-                </HStack>
-
-                {/* 給料 */}
-                <Text>給料</Text>
-                <HStack spacing={1} mb={4}>
-                    {Array(5).fill("").map((_, i) =>
-                    (
-                        <StarIcon key={i} color={i < data.salary_rating || i < hoverSalaryRating ? "yellow.500" : "gray.300"} cursor={"pointer"} onClick={() => setData('salary_rating', i + 1)} onMouseEnter={() => setHoverSalaryRating(i + 1)}
-                            onMouseLeave={() => setHoverSalaryRating(0)} />
-                    )
-                    )}
-                </HStack>
-
-                {/* 労働時間 */}
-                <Text>労働時間</Text>
-                <HStack spacing={1} mb={4}>
-                    {Array(5).fill("").map((_, i) =>
-                    (
-                        <StarIcon key={i} color={i < data.hour_rating || i < hoverHourRating ? "yellow.500" : "gray.300"} cursor={"pointer"} onClick={() => setData('hour_rating', i + 1)} onMouseEnter={() => setHoverHourRating(i + 1)}
-                            onMouseLeave={() => setHoverHourRating(0)} />
-                    )
-                    )}
-                </HStack>
-
-                {/* 人間関係 */}
-                <Text>人間関係</Text>
-                <HStack spacing={1} mb={4}>
-                    {Array(5).fill("").map((_, i) =>
-                    (
-                        <StarIcon key={i} color={i < data.relation_rating || i < hoverRelationRating ? "yellow.500" : "gray.300"} cursor={"pointer"} onClick={() => setData('relation_rating', i + 1)} onMouseEnter={() => setHoverRelationRating(i + 1)}
-                            onMouseLeave={() => setHoverRelationRating(0)} />
-                    )
-                    )}
-                </HStack>
-
-                {/* 総合評価 */}
-                <Text>総合評価</Text>
-                <HStack spacing={1} mb={4}>
-                    {Array(5).fill("").map((_, i) =>
-                    (
-                        <StarIcon key={i} color={i < data.overall_rating || i < hoverOverallRating ? "yellow.500" : "gray.300"} cursor={"pointer"} onClick={() => setData('overall_rating', i + 1)} onMouseEnter={() => setHoverOverallRating(i + 1)}
-                            onMouseLeave={() => setHoverOverallRating(0)} />
+                        <StarIcon key={i} color={i < data.farm_rating || i < hoverFarmRating ? "yellow.500" : "gray.300"} cursor={"pointer"} onClick={() => setData('farm_rating', i + 1)} onMouseEnter={() => setHoverFarmRating(i + 1)}
+                            onMouseLeave={() => setHoverFarmRating(0)} />
                     )
                     )}
                 </HStack>

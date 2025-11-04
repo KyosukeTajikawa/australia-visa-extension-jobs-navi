@@ -36,10 +36,8 @@ const FarmImageList = ({ farm }: FarmImageListProps) => {
             farmItems?.push(
                 <Box
                     key={"dummy"}
-                    p={4}
                     w={{ base: "none", md: "48%", xl: "45%" }}
                     mb={5}
-                    mx={"auto"}
                     visibility={"hidden"}
                     pointerEvents={"none"}
                 ></Box>
@@ -49,8 +47,6 @@ const FarmImageList = ({ farm }: FarmImageListProps) => {
     return (
         <Flex
             wrap={"wrap"}
-            w={{ base: "80%", xl: "1280px" }}
-            mx={"auto"}
         >
             {farmItems}
         </Flex>

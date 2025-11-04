@@ -59,7 +59,7 @@ class FarmService implements FarmServiceInterface
     {
         DB::beginTransaction();
         try {
-            $previousFarm = Farm::findOrFail($id);
+            $previousFarm = $this->farmRepository->getDetailById($id);
 
             $farm = $this->farmRepository->registerFarmAgain($farmData, $previousFarm);
 

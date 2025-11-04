@@ -62,7 +62,6 @@ class ReviewStoreRequest extends FormRequest
 
     public function prepareForValidation(): void
     {
-
         $hourly = $this->input('hourly_wage');
         $hourly = ($hourly === '' || $hourly === null) ? null : str_replace(',', '.', $hourly);
 
@@ -72,7 +71,6 @@ class ReviewStoreRequest extends FormRequest
         $appId = (int) $this->input('application_method_id');
         $other = $appId === 99 ? $this->input('application_method_other') : null;
 
-        // 歩合(=2)なら時給は常に null
         $payType = $this->input('pay_type');
         if ($payType !== 1) {
             $hourly = null;

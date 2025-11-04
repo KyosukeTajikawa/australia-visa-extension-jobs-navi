@@ -113,7 +113,7 @@ class FarmController extends Controller
      */
     public function edit($id): Response
     {
-        $farm = Farm::with(['state', 'crops', 'images'])->findOrFail($id);
+        $farm = $this->farmRepository->getDetailById($id, ['state', 'crops', 'images']);
 
         $crops = $this->farmRepository->getCrops();
 
@@ -136,8 +136,6 @@ class FarmController extends Controller
         $validated = $request->validated();
         $validated['created_user_id'] = auth()->id();
 
-        // $previousFarm = Farm::findOrFail($id)
-
         $farmData = Arr::except($validated, ['crop_ids']);
         $cropData = array_map('intval', $validated['crop_ids']);
         $files    = $request->file('files');
@@ -145,7 +143,7 @@ class FarmController extends Controller
         $farm = $this->farmService->update($farmData, $cropData, $files, $id);
 
         return redirect()->route('farm.detail', [
-            'id' => $id,
+            'id' => $farm->id,
         ]);
     }
 }

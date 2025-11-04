@@ -73,8 +73,16 @@ class ReviewController extends Controller
      */
     public function favoritesStore(Review $review): RedirectResponse
     {
-        $this->reviewRepository->registerFavoriteReview($review);
+        // $this->reviewRepository->registerFavoriteReview($review);
+        $review->favoritedUsers()->syncWithoutDetaching([auth()->id()]);
+        return back();
 
-        return redirect()->route('review.favorites');
+        // return redirect()->route('review.favorites');
+    }
+
+    public function favoritesDestroy(Review $review): RedirectResponse
+    {
+        $review->favoritedUsers()->detach(auth()->id());
+        return back();
     }
 }

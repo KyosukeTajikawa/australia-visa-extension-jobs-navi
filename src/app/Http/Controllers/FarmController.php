@@ -62,12 +62,29 @@ class FarmController extends Controller
      */
     public function detail(int $id): Response
     {
-        $farm = $this->farmRepository->getDetailById($id, ['reviews.applicationMethod:id,name', 'reviews.reviewUser:id,nickname', 'state', 'images', 'crops']);
+        $farm = $this->farmRepository->getDetailById($id, [
+            // 既存のリレーション指定
+            'reviews.applicationMethod:id,name',
+            'reviews.reviewUser:id,nickname',
+            'state',
+            'images',
+            'crops',
+        ]);
+
+        // ★ここを追加：各レビューに is_favorite を付ける
+        $farm->load(['reviews' => function ($q) {
+            $q->withExists([
+                'favoritedUsers as is_favorite' => function ($qq) {
+                    $qq->where('user_id', auth()->id());
+                }
+            ]);
+        }]);
 
         return Inertia::render('Farm/Detail', [
             'farm' => $farm,
         ]);
     }
+
 
     /**
      * ファーム新規作成のページを表示

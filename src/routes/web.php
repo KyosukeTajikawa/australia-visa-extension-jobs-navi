@@ -27,6 +27,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/farm/{id}/review', [ReviewController::class, 'store'])->name('review.store');
     Route::get('/review/favorites', [ReviewController::class, 'favorites'])->name('review.favorites');
     Route::post('/review/{review}/favorites', [ReviewController::class, 'favoritesStore'])->name('favorites.store');
+    Route::delete('/review/{review}/favorites', [ReviewController::class, 'favoritesDestroy'])
+        ->name('review.favorites.destroy');
 });
 
 require __DIR__ . '/auth.php';

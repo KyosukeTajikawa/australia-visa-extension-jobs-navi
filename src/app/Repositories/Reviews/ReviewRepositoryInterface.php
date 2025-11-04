@@ -33,5 +33,5 @@ interface ReviewRepositoryInterface
      * お気に入りレビューを登録
      * @return Review
      */
-    public function registerFavoriteReview(Review $review): void;
+    // public function registerFavoriteReview(Review $review): void;
 }

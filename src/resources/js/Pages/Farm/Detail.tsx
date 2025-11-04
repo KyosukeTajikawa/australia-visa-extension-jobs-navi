@@ -28,6 +28,7 @@ type Review = {
     application_method?: { id: number; name: string } | null;
     review_user?: { id: number; nickname: string } | null;
     created_at: string;
+    is_favorite?: boolean; // ★ 追加
 };
 
 type Farm = {
@@ -46,6 +47,43 @@ type Farm = {
 };
 
 type DetailProps = { farm: Farm };
+
+// ★ ハートコンポーネント（中でPOST/DELETE＆UI切替）
+const HeartFavorite: React.FC<{ reviewId: number; initial?: boolean }> = ({ reviewId, initial = false }) => {
+    const [isFavorite, setIsFavorite] = useState<boolean>(initial);
+    const [pending, setPending] = useState(false);
+
+    const handleFavorite = () => {
+        if (pending) return;
+        setPending(true);
+
+        setIsFavorite(prev => {
+            const next = !prev;
+            const method: "post" | "delete" = next ? "post" : "delete";
+
+            router[method](`/review/${reviewId}/favorites`, {}, {
+                preserveScroll: true,
+                onFinish: () => setPending(false),
+                onError: () => { setIsFavorite(prev2 => !prev2); setPending(false); },
+            });
+
+            return next;
+        });
+    };
+
+    return (
+        <Box
+            onClick={handleFavorite}
+            cursor={pending ? "not-allowed" : "pointer"}
+            opacity={pending ? 0.6 : 1}
+            fontSize="28px"
+            color={isFavorite ? "red.500" : "gray.400"}
+            mr={4}
+        >
+            {isFavorite ? <AiFillHeart /> : <AiOutlineHeart />}
+        </Box>
+    );
+};
 
 const RatingSummary: React.FC<{ reviews?: Review[] }> = ({ reviews }) => {
     const ratings = reviews?.map((r) => r.farm_rating) ?? [];
@@ -66,15 +104,9 @@ const RatingSummary: React.FC<{ reviews?: Review[] }> = ({ reviews }) => {
             <VStack align="flex-start">
                 <Text fontSize="6xl" fontWeight="bold" lineHeight="1">{avg.toFixed(1)}</Text>
                 <HStack>
-                    {Array(5)
-                        .fill(0)
-                        .map((_, i) => (
-                            <StarIcon
-                                key={i}
-                                color={i < Math.round(avg) ? "green.500" : "gray.300"}
-                                boxSize={5}
-                            />
-                        ))}
+                    {Array(5).fill(0).map((_, i) => (
+                        <StarIcon key={i} color={i < Math.round(avg) ? "green.500" : "gray.300"} boxSize={5} />
+                    ))}
                 </HStack>
                 <Text color="gray.600" fontSize="sm">{total.toLocaleString()} 件のレビュー</Text>
             </VStack>
@@ -83,14 +115,7 @@ const RatingSummary: React.FC<{ reviews?: Review[] }> = ({ reviews }) => {
                 {[5, 4, 3, 2, 1].map((star, idx) => (
                     <HStack key={star} spacing={3}>
                         <Text w="16px" textAlign="right" fontSize="sm">{star}</Text>
-                        <Progress
-                            value={percents[idx]}
-                            flex="1"
-                            size="md"
-                            borderRadius="md"
-                            colorScheme="green"
-                            bg="gray.200"
-                        />
+                        <Progress value={percents[idx]} flex="1" size="md" borderRadius="md" colorScheme="green" bg="gray.200" />
                     </HStack>
                 ))}
             </VStack>
@@ -99,48 +124,24 @@ const RatingSummary: React.FC<{ reviews?: Review[] }> = ({ reviews }) => {
 };
 
 const Detail = ({ farm }: DetailProps) => {
-    const [showCommentForm, setShowCommentForm] = useState(false);
-
-    const FavoriteButton = () => {
-        const [isFavorite, setIsFavorite] = useState(false);
-
-        const toggleFavorite = () => {
-            setIsFavorite((prev) => !prev);
-        };
+    const [showCommentForm, setShowCommentForm] = useState<number | null>(null);
 
     const OTHER_ID = 99;
     const OTHER_LABEL = "その他";
 
     const renderApplicationMethod = (review: Review): string => {
-        const name =
-            (review.application_method_name ?? review.application_method?.name ?? "").trim();
-
-        const other =
-            (review.application_method_other ?? review.other_application_method ?? "").trim();
-
+        const name = (review.application_method_name ?? review.application_method?.name ?? "").trim();
+        const other = (review.application_method_other ?? review.other_application_method ?? "").trim();
         const isOther = review.application_method_id === OTHER_ID || name === OTHER_LABEL;
-
-        if (isOther) {
-            return other ? `${OTHER_LABEL}：「${other}」` : OTHER_LABEL;
-        }
-        if (name) return name;
-        return "未入力";
+        if (isOther) return other ? `${OTHER_LABEL}：「${other}」` : OTHER_LABEL;
+        return name || "未入力";
     };
 
     return (
         <Box w={{ base: "100%", sm: "460px", md: "750px", xl: "1000px" }} mx={"auto"}>
-            {/* ファーム情報 */}
             <Box mb={4}>
-                <Box
-                    mx={"auto"}
-                    w={{ base: "90%", sm: "100%", md: "98%", xl: "95%" }}
-                >
-                    <Heading
-                        as="h2"
-                        py={2}
-                        fontSize={{ base: "36px", md: "50px" }}
-                        wordBreak="break-word"
-                    >
+                <Box mx={"auto"} w={{ base: "90%", sm: "100%", md: "98%", xl: "95%" }}>
+                    <Heading as="h2" py={2} fontSize={{ base: "36px", md: "50px" }} wordBreak="break-word">
                         {farm.name}
                     </Heading>
                 </Box>
@@ -148,116 +149,57 @@ const Detail = ({ farm }: DetailProps) => {
                 <FarmList farm={farm} />
             </Box>
 
-            {/* レビュー */}
-            <Box
-                mx={"auto"}
-                w={{ base: "90%", sm: "100%", md: "98%", xl: "95%" }}
-                fontSize={"20px"}
-                letterSpacing={1}
-            >
-                <Heading mt={8} mb={2} as="h2" fontSize={{ base: "36px", md: "50px" }}>
-                    レビュー
-                </Heading>
-
+            <Box mx={"auto"} w={{ base: "90%", sm: "100%", md: "98%", xl: "95%" }} fontSize={"20px"} letterSpacing={1}>
+                <Heading mt={8} mb={2} as="h2" fontSize={{ base: "36px", md: "50px" }}>レビュー</Heading>
                 <RatingSummary reviews={farm.reviews} />
-
                 <Box display="flex" justifyContent="space-between" mb={3}>
                     {farm.reviews?.length === 0 ? "レビューの登録なし" : `${farm.reviews?.length}件`}
-                    <Link
-                        href={route("review.create", { id: farm.id })}
-                        display="inline-flex"
-                        alignItems="center"
-                        _hover={{ color: "gray.500" }}
-                    >
-                        <EditIcon mr={1} boxSize={4} />
-                        レビューを投稿する
+                    <Link href={route("review.create", { id: farm.id })} display="inline-flex" alignItems="center" _hover={{ color: "gray.500" }}>
+                        <EditIcon mr={1} boxSize={4} />レビューを投稿する
                     </Link>
                 </Box>
             </Box>
 
-            {/* 各レビュー */}
-            <Box
-                fontSize={"20px"}
-                letterSpacing={1}
-            >
-                {
-                    farm.reviews?.map((review) => (
-                        <Box
-                            key={review.id}
-                            p={3}
-                            mb={3}
-                        >
-                            <Text mb={1}>{review.review_user?.nickname ?? "匿名ユーザー"}</Text>
-                            <HStack>
-                                <HStack mb={2} align="stretch">
-                                    <HStack>
-                                        {Array(5)
-                                            .fill("")
-                                            .map((_, i) => (
-                                                <StarIcon
-                                                    key={i}
-                                                    color={i < review.farm_rating ? "green.500" : "gray.300"}
-                                                    fontSize={"12px"}
-                                                />
-                                            ))}
-                                    </HStack>
+            <Box fontSize={"20px"} letterSpacing={1}>
+                {farm.reviews?.map((review) => (
+                    <Box key={review.id} p={3} mb={3}>
+                        <Text mb={1}>{review.review_user?.nickname ?? "匿名ユーザー"}</Text>
+                        <HStack>
+                            <HStack mb={2} align="stretch">
+                                <HStack>
+                                    {Array(5).fill("").map((_, i) => (
+                                        <StarIcon key={i} color={i < review.farm_rating ? "green.500" : "gray.300"} fontSize={"12px"} />
+                                    ))}
                                 </HStack>
-                                <Text mb={1} color="gray.500" fontSize="16px" textAlign={"center"}>
-                                    {new Date(review.created_at).toLocaleDateString("ja-JP")}
-                                </Text>
                             </HStack>
-                            <Text mb={1}>仕事のポジション{review.work_position}</Text>
-                            <Text mb={1}>
-                                支払種別：{review.pay_type === 1 ? "Hourly-Rate" : "Piece-Rate"}
+                            <Text mb={1} color="gray.500" fontSize="16px" textAlign={"center"}>
+                                {new Date(review.created_at).toLocaleDateString("ja-JP")}
                             </Text>
-                            <Text mb={1}>時給：{review.hourly_wage}</Text>
-                            <Text mb={1}>応募方法：{renderApplicationMethod(review)}</Text>
-                            <Text mb={1}>
-                                車の有無：{review.is_car_required === 1 ? "必要" : "不要"}
-                            </Text>
-                            <HStack mb={1}>
-                                <Text>開始日: {review.start_date}</Text>
-                                <Text>〜</Text>
-                                <Text>終了日: {review.end_date}</Text>
-                            </HStack>
-                            <Text>{review.comment}</Text>
+                        </HStack>
+                        <Text mb={1}>仕事のポジション{review.work_position}</Text>
+                        <Text mb={1}>支払種別：{review.pay_type === 1 ? "Hourly-Rate" : "Piece-Rate"}</Text>
+                        <Text mb={1}>時給：{review.hourly_wage}</Text>
+                        <Text mb={1}>応募方法：{renderApplicationMethod(review)}</Text>
+                        <Text mb={1}>車の有無：{review.is_car_required === 1 ? "必要" : "不要"}</Text>
+                        <HStack mb={1}>
+                            <Text>開始日: {review.start_date}</Text><Text>〜</Text><Text>終了日: {review.end_date}</Text>
+                        </HStack>
+                        <Text>{review.comment}</Text>
 
-                            <Flex justifyContent={"flex-end"}>
-                                <Button
-                                    mr={10}
-                                    mt={2}
-                                    colorScheme="green"
-                                    onClick={() => setShowCommentForm(!showCommentForm)}
-                                >
-                                    コメントする
-                                </Button>
-
-                                <Button
-                                    mt={2}
-                                    colorScheme="green"
-                                    onClick={() => router.post(`/review/${review.id}/favorites`)}
-                                >
-                                    お気に入り
-                                </Button>
-                            </Flex>
-                            <Box>
-                                {showCommentForm && (
-                                    <Textarea mt={4} placeholder="コメントを書いてください" />
-                                )}
-                            </Box>
-                            <Button
-                                onClick={toggleFavorite}
-                                leftIcon={isFavorite ? <AiFillHeart /> : <AiOutlineHeart />}
-                                colorScheme={isFavorite ? "red" : "gray"}  // ❤️の時だけ赤くする
-                                variant="solid"
-                            >
-                                {isFavorite ? "お気に入り済み" : "お気に入り"}
+                        <Flex justifyContent={"flex-end"} alignItems="center">
+                            <HeartFavorite reviewId={review.id} initial={review.is_favorite ?? false} />
+                            <Button ml={10} mt={2} colorScheme="green" onClick={() => setShowCommentForm(showCommentForm === review.id ? null : review.id)}>
+                                コメントする
                             </Button>
-                        </Box>
-                    ))
-                }
+                        </Flex>
+
+                        {showCommentForm === review.id && (
+                            <Textarea mt={4} placeholder="コメントを書いてください" />
+                        )}
+                    </Box>
+                ))}
             </Box>
-        </Box >
+        </Box>
     );
 };
 

@@ -43,8 +43,8 @@ class ReviewRepository implements ReviewRepositoryInterface
      * お気に入りレビューを登録
      * @return Review
      */
-    public function registerFavoriteReview(Review $review): void
-    {
-        $review->favoritedUsers()->syncWithoutDetaching([auth()->id()]);
-    }
+    // public function registerFavoriteReview(Review $review): void
+    // {
+    //     $review->favoritedUsers()->syncWithoutDetaching([auth()->id()]);
+    // }
 }

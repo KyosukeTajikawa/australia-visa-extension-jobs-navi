@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Farms;
 
 use App\Models\Crop;
 use App\Models\Farm;
-use App\Repositories\FarmRepositoryInterface;
+use App\Repositories\Farms\FarmRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 

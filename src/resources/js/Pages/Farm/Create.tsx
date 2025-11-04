@@ -1,6 +1,6 @@
 import React from "react";
 import MainLayout from "@/Layouts/MainLayout";
-import { Box, Heading, Text, FormControl, FormLabel, FormErrorMessage, Input, Select, Textarea, Button, HStack } from "@chakra-ui/react";
+import { Box, Heading, Text, FormControl, FormLabel, FormErrorMessage, Input, Select, Textarea, Button, HStack,} from "@chakra-ui/react";
 import { useForm } from "@inertiajs/react";
 import ReactSelect from "react-select";
 import { MultiValue } from "react-select";

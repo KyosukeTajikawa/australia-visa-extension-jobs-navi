@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Farms\FarmStoreRequest;
-use App\Models\Farm;
-use App\Models\State;
 use App\Repositories\Farms\FarmRepositoryInterface;
 use App\Repositories\StateRepositoryInterface;
 use App\Services\FarmServiceInterface;
@@ -62,23 +60,7 @@ class FarmController extends Controller
      */
     public function detail(int $id): Response
     {
-        $farm = $this->farmRepository->getDetailById($id, [
-            // 既存のリレーション指定
-            'reviews.applicationMethod:id,name',
-            'reviews.reviewUser:id,nickname',
-            'state',
-            'images',
-            'crops',
-        ]);
-
-        // ★ここを追加：各レビューに is_favorite を付ける
-        $farm->load(['reviews' => function ($q) {
-            $q->withExists([
-                'favoritedUsers as is_favorite' => function ($qq) {
-                    $qq->where('user_id', auth()->id());
-                }
-            ]);
-        }]);
+        $farm = $this->farmRepository->getDetailById($id);
 
         return Inertia::render('Farm/Detail', [
             'farm' => $farm,

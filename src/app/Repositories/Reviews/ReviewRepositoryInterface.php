@@ -5,6 +5,7 @@ namespace App\Repositories\Reviews;
 use App\Models\Farm;
 use App\Models\Review;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 
 interface ReviewRepositoryInterface
 {
@@ -31,7 +32,20 @@ interface ReviewRepositoryInterface
 
     /**
      * お気に入りレビューを登録
-     * @return Review
+     * @param Review $review
      */
-    // public function registerFavoriteReview(Review $review): void;
+    public function registerFavoriteReview(Review $review): void;
+
+    /**
+     * お気に入りレビューを削除
+     * @param Review $review
+     */
+    public function destroyFavoriteReview(Review $review): void;
+
+    /**
+     * レビューコメントを登録
+     * @param Request $request
+     * @param Review $review
+     */
+    public function registerReviewComment(Request $request, Review $review): void;
 }

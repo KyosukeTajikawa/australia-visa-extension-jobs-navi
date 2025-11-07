@@ -64,7 +64,7 @@ class Review extends Model
      */
     public function reviewComments(): HasMany
     {
-        return $this->hasMany(ReviewComment::class);
+        return $this->hasMany(ReviewComments::class);
     }
 
     /**

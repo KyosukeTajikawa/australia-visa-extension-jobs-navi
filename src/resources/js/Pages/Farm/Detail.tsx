@@ -10,6 +10,7 @@ import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 type State = { id: number; name: string };
 type FarmImages = { id: number; farm_id: number; url: string };
 type Crops = { id: number; name: string };
+type ReviewComments = { id: number; review_id: number; user_id: number; comment: string; created_at: string; };
 
 type Review = {
     id: number;
@@ -28,7 +29,8 @@ type Review = {
     application_method?: { id: number; name: string } | null;
     review_user?: { id: number; nickname: string } | null;
     created_at: string;
-    is_favorite?: boolean; // ★ 追加
+    is_favorite?: boolean;
+    review_comments?: ReviewComments[] | null;
 };
 
 type Farm = {
@@ -125,6 +127,8 @@ const RatingSummary: React.FC<{ reviews?: Review[] }> = ({ reviews }) => {
 
 const Detail = ({ farm }: DetailProps) => {
     const [showCommentForm, setShowCommentForm] = useState<number | null>(null);
+    const [reviewComment, setReviewComment] = useState<Record<number, string>>({});
+    const [showCommentReplyForm, setShowCommentReplyForm] = useState<number | null>(null);
 
     const OTHER_ID = 99;
     const OTHER_LABEL = "その他";
@@ -136,6 +140,30 @@ const Detail = ({ farm }: DetailProps) => {
         if (isOther) return other ? `${OTHER_LABEL}：「${other}」` : OTHER_LABEL;
         return name || "未入力";
     };
+
+    const handleChange = (reviewId: number, value: string) => {
+        setReviewComment((e) => ({ ...e, [reviewId]: value }))
+    }
+
+    const handleSubmit = (e: React.FormEvent, reviewId: number) => {
+        e.preventDefault();
+
+        const empty = (reviewComment[reviewId] ?? "").trim();
+        if (!empty) return;
+
+        router.post(
+            route("reviewComment.store", { review: reviewId }),
+            { reviewComment: reviewComment[reviewId] },
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    setReviewComment(prev => ({ ...prev, [reviewId]: "" }));
+                    setShowCommentForm(null);
+                    setShowCommentReplyForm(null);
+                }
+            }
+        )
+    }
 
     return (
         <Box w={{ base: "100%", sm: "460px", md: "750px", xl: "1000px" }} mx={"auto"}>
@@ -184,18 +212,50 @@ const Detail = ({ farm }: DetailProps) => {
                         <HStack mb={1}>
                             <Text>開始日: {review.start_date}</Text><Text>〜</Text><Text>終了日: {review.end_date}</Text>
                         </HStack>
-                        <Text>{review.comment}</Text>
+                        <Text whiteSpace="pre-wrap">{review.comment}</Text>
 
                         <Flex justifyContent={"flex-end"} alignItems="center">
                             <HeartFavorite reviewId={review.id} initial={review.is_favorite ?? false} />
-                            <Button ml={10} mt={2} colorScheme="green" onClick={() => setShowCommentForm(showCommentForm === review.id ? null : review.id)}>
+                            <Button ml={{ md: 5 }} mt={2} colorScheme="green" onClick={() => setShowCommentForm(showCommentForm === review.id ? null : review.id)}>
                                 コメントする
                             </Button>
                         </Flex>
-
-                        {showCommentForm === review.id && (
-                            <Textarea mt={4} placeholder="コメントを書いてください" />
-                        )}
+                        <form onSubmit={(e) => handleSubmit(e, review.id)}>
+                            {showCommentForm === review.id && (
+                                <>
+                                    <Textarea isRequired mt={4} name="reviewComment" value={reviewComment[review.id] ?? ""} onChange={(e) => handleChange(review.id, e.target.value)} placeholder="コメントを書いてください" />
+                                    <Button mt={2} type="submit">登録</Button>
+                                </>
+                            )}
+                        </form>
+                        <Box w={{ base: "90%", sm: "380px", md: "650px", xl: "850px" }} mx={"auto"} >
+                            {review.review_comments?.map((review_comment) => (
+                                <Box key={review_comment.id}>
+                                    <Box mt={5} bg={"gray.300"} border={"1px solid none"} borderRadius={"md"} p={4}>
+                                        <Flex justifyContent={"space-between"}>
+                                            <Text>{review_comment.user.nickname}</Text>
+                                            <Text mb={1} color="gray.500" fontSize="16px" textAlign={"center"}>
+                                                {new Date(review.created_at).toLocaleDateString("ja-JP")}
+                                            </Text>
+                                        </Flex>
+                                        <Text whiteSpace="pre-wrap">{review_comment.comment}</Text>
+                                    </Box>
+                                    <Link as={Button} fontWeight={"normal"} bg={"none"} color="gray.500" fontSize="18px" _hover={{ textDecoration: "none", bg: "none", opacity: 0.7 }} onClick={() => setShowCommentReplyForm(showCommentReplyForm === review_comment.id ? null : review_comment.id)}>
+                                        ↪︎返信する
+                                    </Link>
+                            <Box>
+                                        {showCommentReplyForm === review_comment.id && (
+                                    <>
+                                        <form onSubmit={(e) => handleSubmit(e, review.id)}>
+                                            <Textarea isRequired mt={4} name="reviewComment" value={reviewComment[review.id] ?? ""} onChange={(e) => handleChange(review.id, e.target.value)} placeholder="コメントを書いてください" />
+                                            <Button mt={2} type="submit">登録</Button>
+                                        </form>
+                                    </>
+                                )}
+                            </Box>
+                                </Box>
+                            ))}
+                        </Box>
                     </Box>
                 ))}
             </Box>

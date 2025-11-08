@@ -88,16 +88,16 @@ const HeartFavorite: React.FC<{ reviewId: number; initial?: boolean }> = ({ revi
 };
 
 const RatingSummary: React.FC<{ reviews?: Review[] }> = ({ reviews }) => {
-    const ratings = reviews?.map((r) => r.farm_rating) ?? [];
+    const ratings = reviews?.map((rating) => rating.farm_rating) ?? [];
     const total = ratings.length;
 
     const { avg, percents } = useMemo(() => {
         if (total === 0) return { avg: 0, counts: [0, 0, 0, 0, 0], percents: [0, 0, 0, 0, 0] };
 
-        const avg = Math.round((ratings.reduce((a, b) => a + b, 0) / total) * 10) / 10;
-        const counts = [5, 4, 3, 2, 1].map((n) => ratings.filter((r) => r === n).length);
+        const avg = Math.round((ratings.reduce((total, item) => total + item, 0) / total) * 10) / 10;
+        const counts = [5, 4, 3, 2, 1].map((mapCount) => ratings.filter((filterCount) => filterCount === mapCount).length);
         const max = Math.max(...counts);
-        const percents = counts.map((c) => (max ? (c / max) * 100 : 0));
+        const percents = counts.map((count) => (max ? (count / max) * 100 : 0));
         return { avg, counts, percents };
     }, [ratings, total]);
 
@@ -216,7 +216,7 @@ const Detail = ({ farm }: DetailProps) => {
 
                         <Flex justifyContent={"flex-end"} alignItems="center">
                             <HeartFavorite reviewId={review.id} initial={review.is_favorite ?? false} />
-                            <Button ml={{ md: 5 }} mt={2} colorScheme="green" onClick={() => setShowCommentForm(showCommentForm === review.id ? null : review.id)}>
+                            <Button ml={{ md: 5 }} mr={5} mt={2} colorScheme="green" onClick={() => setShowCommentForm(showCommentForm === review.id ? null : review.id)}>
                                 コメントする
                             </Button>
                         </Flex>
@@ -231,7 +231,7 @@ const Detail = ({ farm }: DetailProps) => {
                         <Box w={{ base: "90%", sm: "380px", md: "650px", xl: "850px" }} mx={"auto"} >
                             {review.review_comments?.map((review_comment) => (
                                 <Box key={review_comment.id}>
-                                    <Box mt={5} bg={"gray.300"} border={"1px solid none"} borderRadius={"md"} p={4}>
+                                    <Box mt={5} bg={"#e2e8f0"} border={"1px solid none"} borderRadius={"md"} p={4}>
                                         <Flex justifyContent={"space-between"}>
                                             <Text>{review_comment.user.nickname}</Text>
                                             <Text mb={1} color="gray.500" fontSize="16px" textAlign={"center"}>
@@ -243,16 +243,16 @@ const Detail = ({ farm }: DetailProps) => {
                                     <Link as={Button} fontWeight={"normal"} bg={"none"} color="gray.500" fontSize="18px" _hover={{ textDecoration: "none", bg: "none", opacity: 0.7 }} onClick={() => setShowCommentReplyForm(showCommentReplyForm === review_comment.id ? null : review_comment.id)}>
                                         ↪︎返信する
                                     </Link>
-                            <Box>
+                                    <Box>
                                         {showCommentReplyForm === review_comment.id && (
-                                    <>
-                                        <form onSubmit={(e) => handleSubmit(e, review.id)}>
-                                            <Textarea isRequired mt={4} name="reviewComment" value={reviewComment[review.id] ?? ""} onChange={(e) => handleChange(review.id, e.target.value)} placeholder="コメントを書いてください" />
-                                            <Button mt={2} type="submit">登録</Button>
-                                        </form>
-                                    </>
-                                )}
-                            </Box>
+                                            <>
+                                                <form onSubmit={(e) => handleSubmit(e, review.id)}>
+                                                    <Textarea isRequired mt={4} name="reviewComment" value={reviewComment[review.id] ?? ""} onChange={(e) => handleChange(review.id, e.target.value)} placeholder="コメントを書いてください" />
+                                                    <Button mt={2} type="submit">登録</Button>
+                                                </form>
+                                            </>
+                                        )}
+                                    </Box>
                                 </Box>
                             ))}
                         </Box>

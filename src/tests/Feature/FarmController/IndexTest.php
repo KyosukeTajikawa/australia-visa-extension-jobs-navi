@@ -15,7 +15,7 @@ class IndexTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * indexメソッドの確認
+     * indexの確認
      * ファームがHomeに送られているか
      * 画像も一緒に送られ、かつ、1枚しか送られてないか
      */
@@ -54,7 +54,7 @@ class IndexTest extends TestCase
     }
 
     /**
-     * indexメソッドの確認
+     * indexの確認
      * プロップス（farmデータ）が空でもエラーにならないか
      */
     public function testEmptyFarmsWhenNoneExist(): void

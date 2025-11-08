@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Reviews\ReviewStoreRequest;
-use App\Models\Farm;
+use App\Models\Review;
 use App\Repositories\Reviews\ReviewRepositoryInterface;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -46,5 +46,30 @@ class ReviewController extends Controller
         return redirect()->route('farm.detail', [
             'id' => $review->farm_id,
         ]);
+    }
+
+    /**
+     * ファームの新規登録
+     * @return Response
+     */
+    public function favorites(): Response
+    {
+        $reviews = $this->reviewRepository->getFavoriteReviews();
+
+        return Inertia::render('Review/FavoriteReview', [
+            'reviews' => $reviews,
+        ]);
+    }
+
+    /**
+     * お気に入りレビューの登録
+     * @param Review $review
+     * @return RedirectResponse
+     */
+    public function favoritesStore(Review $review): RedirectResponse
+    {
+        $this->reviewRepository->registerFavoriteReview($review);
+
+        return redirect()->route('review.favorites');
     }
 }

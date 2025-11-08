@@ -28,4 +28,22 @@ class ReviewRepository implements ReviewRepositoryInterface
     {
         return Review::create($validated);
     }
+
+    /**
+     * お気に入りレビューを取得
+     * @return collection
+     */
+    public function getFavoriteReviews(): collection
+    {
+        return auth()->user()->reviews()->orderBy('review_favorites.review_id')->get();
+    }
+
+    /**
+     * お気に入りレビューを登録
+     * @return Review
+     */
+    public function registerFavoriteReview(Review $review): void
+    {
+        $review->favoritedUsers()->syncWithoutDetaching([auth()->id()]);
+    }
 }

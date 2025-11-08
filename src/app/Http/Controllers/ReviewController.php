@@ -90,7 +90,7 @@ class ReviewController extends Controller
     }
 
     /**
-     * お気に入りレビューの削除
+     * レビューコメントの登録
      * @param Request $request
      * @param Review $review
      * @return RedirectResponse

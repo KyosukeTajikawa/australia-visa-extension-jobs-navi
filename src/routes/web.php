@@ -28,7 +28,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/review/favorites', [ReviewController::class, 'favorites'])->name('review.favorites');
     Route::post('/review/{review}/favorites', [ReviewController::class, 'favoritesStore'])->name('favorites.store');
     Route::delete('/review/{review}/favorites', [ReviewController::class, 'favoritesDestroy'])->name('review.favorites.destroy');
-    Route::post('/review/{review}/favorites', [ReviewController::class, 'reviewCommentStore'])->name('reviewComment.store');
+    Route::post('/review/{review}/reviewComment', [ReviewController::class, 'reviewCommentStore'])->name('reviewComment.store');
 });
 
 require __DIR__ . '/auth.php';

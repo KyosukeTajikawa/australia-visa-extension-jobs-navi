@@ -148,8 +148,8 @@ const Detail = ({ farm }: DetailProps) => {
     const handleSubmit = (e: React.FormEvent, reviewId: number) => {
         e.preventDefault();
 
-        const empty = (reviewComment[reviewId] ?? "").trim();
-        if (!empty) return;
+        const text = (reviewComment[reviewId] ?? "").trim();
+        if (text.length === 0) return;
 
         router.post(
             route("reviewComment.store", { review: reviewId }),

@@ -1,27 +1,34 @@
 import React from "react";
 import MainLayout from "@/Layouts/MainLayout";
 import { Box, Heading, Text, HStack, FormControl, FormLabel, FormErrorMessage, Input, Button, RadioGroup, Radio } from "@chakra-ui/react";
-import { useForm, Link } from "@inertiajs/react";
+import { useForm } from "@inertiajs/react";
 
 type FormData = {
-    file: File | null;
+    _method: string;
     nickname: string;
     email: string;
-    password: string;
-    password_confirmation: string;
     gender: number | null;
     birthday: string;
-};
+}
 
-const Register = () => {
-    const { data, setData, post, processing, errors, reset } = useForm<FormData>({
-        file: null,
-        nickname: '',
-        email: '',
-        password: '',
-        password_confirmation: '',
-        gender: null,
-        birthday: '',
+type User = {
+    nickname: string;
+    email: string;
+    gender: number | null;
+    birthday?: string | null;
+}
+
+type UserProps = {
+    user: User;
+}
+
+const Edit = ({ user }: UserProps) => {
+    const { data, setData, post, processing, errors } = useForm<FormData>({
+        _method: "put",
+        nickname: user.nickname,
+        email: user.email,
+        gender: user.gender,
+        birthday: user.birthday ?? "",
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,35 +39,18 @@ const Register = () => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        post(route('register'), {
-            onFinish: () => reset('password', 'password_confirmation'),
+        post(route("update"), {
+            preserveScroll: true,
+            forceFormData: true,
         });
     };
 
     return (
         <Box w={{ base: "90%", md: "60%" }} mx={"auto"} mt={"150px"}>
 
-            <Heading as={"h3"} mb={4} fontWeight={"bold"} fontSize={{ base: "18px", md: "24px" }} color={"gray.600"}>新規登録</Heading>
+            <Heading as={"h3"} mb={4} fontWeight={"bold"} fontSize={{ base: "18px", md: "24px" }} color={"gray.600"}>編集</Heading>
 
             <form onSubmit={handleSubmit}>
-
-                {/* 画像 */}
-                <FormControl mb={2} isRequired>
-                    <FormLabel htmlFor="file">名前</FormLabel>
-                    <Input
-                        id="file"
-                        name="file"
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => {const file = e.target.files?.[0] ?? null;
-                            setData('file', file );
-                        }}
-                        mt={"1"}
-                        w={"full"}
-                    />
-                    <FormErrorMessage>{errors.nickname}</FormErrorMessage>
-                </FormControl>
-
                 {/* 名前 */}
                 <FormControl mb={2} isRequired isInvalid={!!errors.nickname}>
                     <FormLabel htmlFor="nickname">名前</FormLabel>
@@ -79,7 +69,6 @@ const Register = () => {
                     />
                     <FormErrorMessage>{errors.nickname}</FormErrorMessage>
                 </FormControl>
-
                 {/* メールアドレス */}
                 <FormControl mb={2} isRequired isInvalid={!!errors.email}>
                     <FormLabel htmlFor="email">メールアドレス</FormLabel>
@@ -98,7 +87,6 @@ const Register = () => {
                     />
                     <FormErrorMessage>{errors.email}</FormErrorMessage>
                 </FormControl>
-
                 {/* 性別 */}
                 <FormControl as="fieldset" mb={2} isRequired isInvalid={!!errors.gender}>
                     <FormLabel as="legend" id="gender">性別</FormLabel>
@@ -113,7 +101,6 @@ const Register = () => {
                     </RadioGroup>
                     <FormErrorMessage>{errors.gender}</FormErrorMessage>
                 </FormControl>
-
                 {/* 生年月日 */}
                 <FormControl mb={2} isInvalid={!!errors.birthday}>
                     <FormLabel htmlFor="birthday">生年月日<Text as="span" color="gray.500" fontSize="sm">（任意）</Text></FormLabel>
@@ -132,60 +119,11 @@ const Register = () => {
                     <FormErrorMessage>{errors.birthday}</FormErrorMessage>
                 </FormControl>
 
-                {/* パスワード */}
-                <FormControl mb={2} isRequired isInvalid={!!errors.password}>
-                    <FormLabel htmlFor="password">パスワード</FormLabel>
-                    <Input
-                        id="password"
-                        name="password"
-                        type="password"
-                        value={data.password}
-                        autoComplete="new-password"
-                        onChange={handleChange}
-                        placeholder="パスワード"
-                        mt={"1"}
-                        display={"block"}
-                        w={"full"}
-                    />
-                    <FormErrorMessage>{errors.password}</FormErrorMessage>
-                </FormControl>
-
-                {/* パスワード確認 */}
-                <FormControl mb={2} isRequired isInvalid={!!errors.password_confirmation}>
-                    <FormLabel htmlFor="password_confirmation">パスワード確認</FormLabel>
-                    <Input
-                        id="password_confirmation"
-                        name="password_confirmation"
-                        type="password"
-                        value={data.password_confirmation}
-                        autoComplete="new-password"
-                        onChange={handleChange}
-                        placeholder="パスワード"
-                        mt={"1"}
-                        display={"block"}
-                        w={"full"}
-                    />
-                    <FormErrorMessage>{errors.password_confirmation}</FormErrorMessage>
-                </FormControl>
-
                 <Box mt="4"
                     display={"flex"}
                     alignItems={"center"}
                     justifyContent={"flex-end"}
                 >
-
-                    <Text
-                        as={Link}
-                        href={route('login')}
-                        size={"sm"}
-                        color={"gray.700"}
-                        borderRadius={"md"}
-                        _hover={{
-                            color: "gray.900",
-                        }}
-                    >
-                        既に登録はお済みですか？
-                    </Text>
                     <Button
                         type="submit"
                         ml="4"
@@ -194,7 +132,7 @@ const Register = () => {
                         _hover={{ bg: "green.700" }}
                         isLoading={processing}
                     >
-                        登録
+                        変更
                     </Button>
                 </Box>
             </form>
@@ -202,7 +140,7 @@ const Register = () => {
     );
 }
 
-Register.layout = (page: React.ReactNode) => (
+Edit.layout = (page: React.ReactNode) => (
     <MainLayout title="新規登録">{page}</MainLayout>
 );
-export default Register;
+export default Edit;

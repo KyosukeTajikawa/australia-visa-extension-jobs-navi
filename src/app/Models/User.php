@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Models\Review;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -67,5 +68,14 @@ class User extends Authenticatable
     public function reviews(): BelongsToMany
     {
         return $this->belongsToMany(Review::class, 'review_favorites', 'user_id', 'review_id')->withTimestamps();
+    }
+
+    /**
+     * ファームの画像を取得
+     * @return BelongsTo
+     */
+    public function image(): BelongsTo
+    {
+        return $this->belongsTo(UserImage::class);
     }
 }

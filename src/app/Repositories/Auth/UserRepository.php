@@ -24,4 +24,15 @@ class UserRepository implements UserRepositoryInterface
         ]);
     }
 
+    /**
+     * ユーザー更新
+     * @param array $validated
+     * @param User $user
+     */
+    public function updateUser(array $validated, User $user): void
+    {
+        $user->update($validated);
+
+        $user->refresh();
+    }
 }

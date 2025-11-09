@@ -78,6 +78,11 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                                     お気に入りレビュー
                                 </MenuItem>
                                 <MenuItem
+                                    onClick={() => router.get("/edit")}
+                                >
+                                    プロフィール編集
+                                </MenuItem>
+                                <MenuItem
                                     onClick={() => router.post(route("logout"))}
                                 >
                                     ログアウト
@@ -148,6 +153,15 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                             pr={2}
                         >
                             お気に入りレビュー
+                        </Text>
+                        <Text
+                            as={Link}
+                            color={"white"}
+                            _hover={{ opacity: 0.9 }}
+                            href={route("edit")}
+                            pr={2}
+                        >
+                            プロフィール編集
                         </Text>
                         <Text
                             as={Link}

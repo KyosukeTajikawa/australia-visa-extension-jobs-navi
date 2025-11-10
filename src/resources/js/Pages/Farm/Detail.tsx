@@ -5,8 +5,8 @@ import { StarIcon, EditIcon } from "@chakra-ui/icons";
 import { router } from "@inertiajs/react";
 import FarmImageList from "@/Components/Organisms/FarmImageList";
 import FarmList from "@/Components/Organisms/FarmList";
-import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import FarmRatingGraph from "@/Components/Organisms/FarmRatingGraph";
+import HeartFavorite from "@/Components/Organisms/HeartFavorite";
 
 type State = { id: number; name: string };
 type FarmImages = { id: number; farm_id: number; url: string };
@@ -49,43 +49,6 @@ type Farm = {
 };
 
 type DetailProps = { farm: Farm };
-
-// ★ ハートコンポーネント（中でPOST/DELETE＆UI切替）
-const HeartFavorite: React.FC<{ reviewId: number; initial?: boolean }> = ({ reviewId, initial = false }) => {
-    const [isFavorite, setIsFavorite] = useState<boolean>(initial);
-    const [pending, setPending] = useState(false);
-
-    const handleFavorite = () => {
-        if (pending) return;
-        setPending(true);
-
-        setIsFavorite(prev => {
-            const next = !prev;
-            const method: "post" | "delete" = next ? "post" : "delete";
-
-            router[method](`/review/${reviewId}/favorites`, {}, {
-                preserveScroll: true,
-                onFinish: () => setPending(false),
-                onError: () => { setIsFavorite(prev2 => !prev2); setPending(false); },
-            });
-
-            return next;
-        });
-    };
-
-    return (
-        <Box
-            onClick={handleFavorite}
-            cursor={pending ? "not-allowed" : "pointer"}
-            opacity={pending ? 0.6 : 1}
-            fontSize="28px"
-            color={isFavorite ? "red.500" : "gray.400"}
-            mr={4}
-        >
-            {isFavorite ? <AiFillHeart /> : <AiOutlineHeart />}
-        </Box>
-    );
-};
 
 const Detail = ({ farm }: DetailProps) => {
     const [showCommentForm, setShowCommentForm] = useState<number | null>(null);
@@ -134,13 +97,19 @@ const Detail = ({ farm }: DetailProps) => {
 
     return (
         <Box w={{ base: "100%", sm: "460px", md: "750px", xl: "1000px" }} mx={"auto"}>
+
+            {/* ファーム */}
             <Box mb={4}>
                 <Box mx={"auto"} w={{ base: "90%", sm: "100%", md: "98%", xl: "95%" }}>
                     <Heading as="h2" py={2} fontSize={{ base: "36px", md: "50px" }} wordBreak="break-word">
                         {farm.name}
                     </Heading>
                 </Box>
+
+                {/* ファーム画像 */}
                 <FarmImageList farm={farm} />
+
+                {/* ファーム情報 */}
                 <FarmList farm={farm} />
             </Box>
 
@@ -155,8 +124,8 @@ const Detail = ({ farm }: DetailProps) => {
                     レビュー
                 </Heading>
 
+                {/* レビュー評価グラフ */}
                 <FarmRatingGraph reviews={farm.reviews ?? []} />
-
                 <Box display="flex" justifyContent="space-between" mb={3}>
                     {farm.reviews?.length === 0 ? "レビューの登録なし" : `${farm.reviews?.length}件`}
                     <Link href={route("review.create", { id: farm.id })} display="inline-flex" alignItems="center" _hover={{ color: "gray.500" }}>
@@ -192,6 +161,8 @@ const Detail = ({ farm }: DetailProps) => {
                         <Text whiteSpace="pre-wrap">{review.comment}</Text>
 
                         <Flex justifyContent={"flex-end"} alignItems="center">
+
+                            {/* レビューお気に入り */}
                             <HeartFavorite reviewId={review.id} initial={review.is_favorite ?? false} />
                             <Button ml={{ md: 5 }} mr={5} mt={2} colorScheme="green" onClick={() => setShowCommentForm(showCommentForm === review.id ? null : review.id)}>
                                 コメントする
@@ -205,6 +176,8 @@ const Detail = ({ farm }: DetailProps) => {
                                 </>
                             )}
                         </form>
+
+                        {/* レビュー返信 */}
                         <Box w={{ base: "90%", sm: "380px", md: "650px", xl: "850px" }} mx={"auto"} >
                             {review.review_comments?.map((review_comment) => (
                                 <Box key={review_comment.id}>

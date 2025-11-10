@@ -32,8 +32,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/review/{review}/reviewComment', [ReviewController::class, 'reviewCommentStore'])->name('reviewComment.store');
 
     //プロフィール
-    Route::get('/
-    ', [RegisteredUserController::class, 'index'])->name('profile');
+    Route::get('/profile', [RegisteredUserController::class, 'index'])->name('profile');
 });
 
 require __DIR__ . '/auth.php';

@@ -1,6 +1,6 @@
 import React from "react";
 import MainLayout from "@/Layouts/MainLayout";
-import { Box, Heading, Text, VStack, Button, Image } from "@chakra-ui/react";
+import { Box, Heading, Text, VStack, Button, Image, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, useDisclosure } from "@chakra-ui/react";
 import { Link, router } from "@inertiajs/react";
 
 type UserImage = {
@@ -23,10 +23,40 @@ type ProfileProps = {
 }
 
 const Profile = ({ user, user_image }: ProfileProps) => {
-    console.log(user_image);
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const cancelRef = React.useRef<HTMLButtonElement>(null)
 
     return (
+
         <Box w={{ base: "90%", md: "60%" }} mx={"auto"} mt={"150px"}>
+
+            <AlertDialog
+                isOpen={isOpen}
+                leastDestructiveRef={cancelRef}
+                onClose={onClose}
+            >
+                <AlertDialogOverlay>
+                    <AlertDialogContent w={"90%"}>
+                        <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                            ユーザー削除
+                        </AlertDialogHeader>
+
+                        <AlertDialogBody>
+                            本当に削除しますか？
+                        </AlertDialogBody>
+
+                        <AlertDialogFooter>
+                            <Button ref={cancelRef} onClick={onClose} mr={5}>
+                                戻る
+                            </Button>
+                            <Button oml={3} colorScheme='red' onClick={() => router.delete(route("user.destroy"), { onSuccess: () => { onClose() } })} >
+                                削除
+                            </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialogOverlay>
+            </AlertDialog>
+
             <VStack fontSize={"20px"} mx={"auto"}>
                 <Heading as={"h3"} mb={4} fontWeight={"bold"} fontSize={{ base: "18px", md: "24px" }} color={"gray.600"}>プロフィール</Heading>
                 <Box>
@@ -58,7 +88,7 @@ const Profile = ({ user, user_image }: ProfileProps) => {
                     編集
                 </Button>
                 <Button
-                    onClick={() => router.delete(route("user.destroy"))}
+                    onClick={() => { onOpen() }}
                     mt={2}
                     fontWeight={"normal"}
                     bg="green.800"
@@ -70,7 +100,7 @@ const Profile = ({ user, user_image }: ProfileProps) => {
             </VStack>
 
 
-        </Box>
+        </Box >
     );
 }
 

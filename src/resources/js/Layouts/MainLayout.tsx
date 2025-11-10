@@ -41,7 +41,7 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                             <MenuButton as={IconButton} aria-label="Options" icon={<HamburgerIcon color={"white"} />} variant={"ghost"} _hover={{ bg: "green.300" }} _active={{ bg: "green.300" }} />
                             <MenuList>
                                 <MenuItem onClick={() => router.visit(route("login"))}>ログイン</MenuItem>
-                                <MenuItem>新規登録</MenuItem>
+                                <MenuItem onClick={() => router.visit(route("register"))}>新規登録</MenuItem>
                                 <MenuItem onClick={() => router.visit(route("home"))}>ファーム一覧</MenuItem>
                             </MenuList>
                         </Menu>
@@ -94,7 +94,7 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                                         </Link>
                                     </Box>
                                     <Box mb={1} _hover={{ opacity: 0.7, bg: "gray.100" }}>
-                                        <Link _hover={{ color: "none" }}>
+                                        <Link _hover={{ color: "none" }} href={route("register")}>
                                             <Text>新規登録</Text>
                                         </Link>
                                     </Box>

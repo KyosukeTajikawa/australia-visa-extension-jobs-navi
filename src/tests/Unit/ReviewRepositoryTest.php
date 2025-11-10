@@ -67,6 +67,10 @@ class ReviewRepositoryTest extends TestCase
         $this->assertDatabaseHas('reviews', $review);
     }
 
+    /**
+     * getFavoriteReviews()のテスト
+     * getFavoriteReviews() がデータを取得できている
+     */
     public function testGetFavoriteReviews(): void
     {
         $user = User::factory()->create();
@@ -80,6 +84,10 @@ class ReviewRepositoryTest extends TestCase
         $this->assertSame($reviews->modelKeys(), $result->modelKeys());
     }
 
+    /**
+     * registerFavoriteReview()のテスト
+     * registerFavoriteReview() がpivot(review_favorites)にデータを登録できている
+     */
     public function testRegisterFavoriteReview(): void
     {
         $user = User::factory()->create();

@@ -111,7 +111,7 @@ const Detail = ({ farm }: DetailProps) => {
             </Box>
             <Box display={"flex"} justifyContent={"space-between"}>
                 {farm.reviews?.length === 0 ? "レビューの登録なし" : `${farm.reviews?.length}件`}
-                <Link href={route("review.create", { id: farm.id })} display="inline-flex" alignItems="center" _hover={{ color: "gray.500" }}><EditIcon mr={1} boxSize={4} />レビューを投稿する</Link>
+                <Link href={route("review.create", {id: farm.id})} display="inline-flex" alignItems="center" _hover={{ color: "gray.500" }}><EditIcon mr={1} boxSize={4} />レビューを投稿する</Link>
             </Box>
             {farm.reviews?.map((review) => (
                 <Box key={review.id} border={"1px"} borderRadius={"md"} borderColor={"gray.300"} boxShadow={"md"}>

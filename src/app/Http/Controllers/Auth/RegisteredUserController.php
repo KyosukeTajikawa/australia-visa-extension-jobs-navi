@@ -5,14 +5,11 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\UserStoreRequest;
 use App\Http\Requests\Auth\UserUpdateRequest;
-use App\Models\UserImage;
+use App\Repositories\Auth\UserImageRepositoryInterface;
 use App\Repositories\Auth\UserRepositoryInterface;
 use App\Services\UserServiceInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -20,9 +17,25 @@ class RegisteredUserController extends Controller
 {
 
     public function __construct(
+        private readonly UserImageRepositoryInterface $userImageRepository,
         private readonly UserRepositoryInterface $userRepository,
         private readonly UserServiceInterface $userService,
     ) {}
+
+    /**
+     * プロフィール表示
+     * @return Response
+     */
+    public function index(): Response
+    {
+        $user = $this->userRepository->getUser();
+        $userImage = $this->userImageRepository->getImage($user);
+
+        return Inertia::render('Auth/Profile', [
+            'user' => $user,
+            'user_image' => $userImage,
+        ]);
+    }
 
     /**
      * ユーザー登録ページの表示

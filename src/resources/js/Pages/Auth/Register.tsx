@@ -45,8 +45,8 @@ const Register = () => {
             <form onSubmit={handleSubmit}>
 
                 {/* 画像 */}
-                <FormControl mb={2} isRequired>
-                    <FormLabel htmlFor="file">名前</FormLabel>
+                <FormControl mb={2}>
+                    <FormLabel htmlFor="file">名前<Text as="span" color="gray.500" fontSize="sm">（任意）</Text></FormLabel>
                     <Input
                         id="file"
                         name="file"

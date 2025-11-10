@@ -5,6 +5,7 @@ import { useForm } from "@inertiajs/react";
 
 type FormData = {
     _method: string;
+    file?: File | null;
     nickname: string;
     email: string;
     gender: number | null;
@@ -12,6 +13,7 @@ type FormData = {
 }
 
 type User = {
+    file?: File | null;
     nickname: string;
     email: string;
     gender: number | null;
@@ -25,6 +27,7 @@ type UserProps = {
 const Edit = ({ user }: UserProps) => {
     const { data, setData, post, processing, errors } = useForm<FormData>({
         _method: "put",
+        file: null,
         nickname: user.nickname,
         email: user.email,
         gender: user.gender,
@@ -51,6 +54,26 @@ const Edit = ({ user }: UserProps) => {
             <Heading as={"h3"} mb={4} fontWeight={"bold"} fontSize={{ base: "18px", md: "24px" }} color={"gray.600"}>編集</Heading>
 
             <form onSubmit={handleSubmit}>
+
+                {/* 画像 */}
+                <FormControl mb={2}>
+                    <FormLabel htmlFor="file">名前<Text as="span" color="gray.500" fontSize="sm">（任意）</Text></FormLabel>
+                    <Text as="span" color="gray.500" fontSize="sm">※画像を選択しない場合は、前回の画像登録から変更ありません。</Text>
+                    <Input
+                        id="file"
+                        name="file"
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                            const file = e.target.files?.[0] ?? null;
+                            setData('file', file);
+                        }}
+                        mt={"1"}
+                        w={"full"}
+                    />
+                    <FormErrorMessage>{errors.nickname}</FormErrorMessage>
+                </FormControl>
+
                 {/* 名前 */}
                 <FormControl mb={2} isRequired isInvalid={!!errors.nickname}>
                     <FormLabel htmlFor="nickname">名前</FormLabel>
@@ -69,6 +92,7 @@ const Edit = ({ user }: UserProps) => {
                     />
                     <FormErrorMessage>{errors.nickname}</FormErrorMessage>
                 </FormControl>
+
                 {/* メールアドレス */}
                 <FormControl mb={2} isRequired isInvalid={!!errors.email}>
                     <FormLabel htmlFor="email">メールアドレス</FormLabel>
@@ -87,6 +111,7 @@ const Edit = ({ user }: UserProps) => {
                     />
                     <FormErrorMessage>{errors.email}</FormErrorMessage>
                 </FormControl>
+
                 {/* 性別 */}
                 <FormControl as="fieldset" mb={2} isRequired isInvalid={!!errors.gender}>
                     <FormLabel as="legend" id="gender">性別</FormLabel>
@@ -101,6 +126,7 @@ const Edit = ({ user }: UserProps) => {
                     </RadioGroup>
                     <FormErrorMessage>{errors.gender}</FormErrorMessage>
                 </FormControl>
+
                 {/* 生年月日 */}
                 <FormControl mb={2} isInvalid={!!errors.birthday}>
                     <FormLabel htmlFor="birthday">生年月日<Text as="span" color="gray.500" fontSize="sm">（任意）</Text></FormLabel>

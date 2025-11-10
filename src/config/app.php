@@ -146,8 +146,11 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-
         App\Providers\AppServiceProvider::class,
+        App\Providers\UserServiceProvider::class,
+        App\Providers\FarmServiceProvider::class,
+        App\Providers\ReviewServiceProvider::class,
+
     ],
 
 ];

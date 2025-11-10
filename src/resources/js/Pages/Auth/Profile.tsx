@@ -1,7 +1,7 @@
 import React from "react";
 import MainLayout from "@/Layouts/MainLayout";
 import { Box, Heading, Text, VStack, Button, Image } from "@chakra-ui/react";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 
 type UserImage = {
     id: number;
@@ -48,7 +48,7 @@ const Profile = ({ user, user_image }: ProfileProps) => {
             <VStack>
                 <Button
                     as={Link}
-                    href={`/edit`}
+                    href={"/edit"}
                     mt={2}
                     fontWeight={"normal"}
                     bg="green.800"
@@ -58,8 +58,7 @@ const Profile = ({ user, user_image }: ProfileProps) => {
                     編集
                 </Button>
                 <Button
-                    as={Link}
-                    href={`#`}
+                    onClick={() => router.delete(route("user.destroy"))}
                     mt={2}
                     fontWeight={"normal"}
                     bg="green.800"

@@ -45,4 +45,14 @@ class UserRepository implements UserRepositoryInterface
 
         return $previousUser->refresh();
     }
+
+    /**
+     * ユーザー削除
+     */
+    public function destroyUser():void
+    {
+        $user = auth()->user();
+
+        $user->delete();
+    }
 }

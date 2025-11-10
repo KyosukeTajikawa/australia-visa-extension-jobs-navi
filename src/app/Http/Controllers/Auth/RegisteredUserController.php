@@ -89,4 +89,23 @@ class RegisteredUserController extends Controller
 
         return redirect()->route('home');
     }
+
+    /**
+     * ユーザー削除
+     * @return RedirectResponse
+     */
+    public function destroy(): RedirectResponse
+    {
+        $this->userRepository->destroyUser();
+
+        auth()->logout();
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+
+        $status = "delete_success";
+
+        return redirect()->route('home', [
+            'status' => $status,
+        ]);
+    }
 }

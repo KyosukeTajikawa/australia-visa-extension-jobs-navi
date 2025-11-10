@@ -27,4 +27,9 @@ interface UserRepositoryInterface
      * @return User
      */
     public function updateUser(array $validated, User $previousUser): User;
+
+    /**
+     * ユーザー削除
+     */
+    public function destroyUser(): void;
 }

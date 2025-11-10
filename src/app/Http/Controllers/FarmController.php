@@ -34,6 +34,8 @@ class FarmController extends Controller
      */
     public function index(Request $request): Response
     {
+        $status = request('status');
+
         $keyword = $request->input('keyword' ?? '');
         $stateName = $request->input('stateName' ?? '');
 
@@ -50,6 +52,7 @@ class FarmController extends Controller
             'states' => $states,
             'keyword' => $keyword,
             'stateName' => $stateName,
+            'status' => $status,
         ]);
     }
 

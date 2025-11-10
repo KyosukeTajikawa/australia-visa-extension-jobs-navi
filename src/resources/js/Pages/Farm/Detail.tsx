@@ -1,11 +1,12 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import MainLayout from "@/Layouts/MainLayout";
-import { Box, Heading, Link, Textarea, HStack, Text, Button, VStack, Progress, Flex } from "@chakra-ui/react";
+import { Box, Heading, Link, Textarea, HStack, Text, Button, Flex } from "@chakra-ui/react";
 import { StarIcon, EditIcon } from "@chakra-ui/icons";
 import { router } from "@inertiajs/react";
 import FarmImageList from "@/Components/Organisms/FarmImageList";
 import FarmList from "@/Components/Organisms/FarmList";
-import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import FarmRatingGraph from "@/Components/Organisms/FarmRatingGraph";
+import HeartFavorite from "@/Components/Organisms/HeartFavorite";
 
 type State = { id: number; name: string };
 type FarmImages = { id: number; farm_id: number; url: string };
@@ -24,7 +25,6 @@ type Review = {
     end_date: string;
     application_method_id?: number | null;
     application_method_name?: string | null;
-    other_application_method?: string | null;
     application_method_other?: string | null;
     application_method?: { id: number; name: string } | null;
     review_user?: { id: number; nickname: string } | null;
@@ -50,95 +50,25 @@ type Farm = {
 
 type DetailProps = { farm: Farm };
 
-// ★ ハートコンポーネント（中でPOST/DELETE＆UI切替）
-const HeartFavorite: React.FC<{ reviewId: number; initial?: boolean }> = ({ reviewId, initial = false }) => {
-    const [isFavorite, setIsFavorite] = useState<boolean>(initial);
-    const [pending, setPending] = useState(false);
-
-    const handleFavorite = () => {
-        if (pending) return;
-        setPending(true);
-
-        setIsFavorite(prev => {
-            const next = !prev;
-            const method: "post" | "delete" = next ? "post" : "delete";
-
-            router[method](`/review/${reviewId}/favorites`, {}, {
-                preserveScroll: true,
-                onFinish: () => setPending(false),
-                onError: () => { setIsFavorite(prev2 => !prev2); setPending(false); },
-            });
-
-            return next;
-        });
-    };
-
-    return (
-        <Box
-            onClick={handleFavorite}
-            cursor={pending ? "not-allowed" : "pointer"}
-            opacity={pending ? 0.6 : 1}
-            fontSize="28px"
-            color={isFavorite ? "red.500" : "gray.400"}
-            mr={4}
-        >
-            {isFavorite ? <AiFillHeart /> : <AiOutlineHeart />}
-        </Box>
-    );
-};
-
-const RatingSummary: React.FC<{ reviews?: Review[] }> = ({ reviews }) => {
-    const ratings = reviews?.map((rating) => rating.farm_rating) ?? [];
-    const total = ratings.length;
-
-    const { avg, percents } = useMemo(() => {
-        if (total === 0) return { avg: 0, counts: [0, 0, 0, 0, 0], percents: [0, 0, 0, 0, 0] };
-
-        const avg = Math.round((ratings.reduce((total, item) => total + item, 0) / total) * 10) / 10;
-        const counts = [5, 4, 3, 2, 1].map((mapCount) => ratings.filter((filterCount) => filterCount === mapCount).length);
-        const max = Math.max(...counts);
-        const percents = counts.map((count) => (max ? (count / max) * 100 : 0));
-        return { avg, counts, percents };
-    }, [ratings, total]);
-
-    return (
-        <HStack align="flex-start" spacing={8} mt={4} mb={6}>
-            <VStack align="flex-start">
-                <Text fontSize="6xl" fontWeight="bold" lineHeight="1">{avg.toFixed(1)}</Text>
-                <HStack>
-                    {Array(5).fill(0).map((_, i) => (
-                        <StarIcon key={i} color={i < Math.round(avg) ? "green.500" : "gray.300"} boxSize={5} />
-                    ))}
-                </HStack>
-                <Text color="gray.600" fontSize="sm">{total.toLocaleString()} 件のレビュー</Text>
-            </VStack>
-
-            <VStack flex="1" spacing={2} align="stretch">
-                {[5, 4, 3, 2, 1].map((star, idx) => (
-                    <HStack key={star} spacing={3}>
-                        <Text w="16px" textAlign="right" fontSize="sm">{star}</Text>
-                        <Progress value={percents[idx]} flex="1" size="md" borderRadius="md" colorScheme="green" bg="gray.200" />
-                    </HStack>
-                ))}
-            </VStack>
-        </HStack>
-    );
-};
-
 const Detail = ({ farm }: DetailProps) => {
     const [showCommentForm, setShowCommentForm] = useState<number | null>(null);
     const [reviewComment, setReviewComment] = useState<Record<number, string>>({});
     const [showCommentReplyForm, setShowCommentReplyForm] = useState<number | null>(null);
 
-    const OTHER_ID = 99;
-    const OTHER_LABEL = "その他";
+    const OtherId = 99;
+    const OtherLabel = "その他";
 
     const renderApplicationMethod = (review: Review): string => {
         const name = (review.application_method_name ?? review.application_method?.name ?? "").trim();
-        const other = (review.application_method_other ?? review.other_application_method ?? "").trim();
-        const isOther = review.application_method_id === OTHER_ID || name === OTHER_LABEL;
-        if (isOther) return other ? `${OTHER_LABEL}：「${other}」` : OTHER_LABEL;
-        return name || "未入力";
+
+        const other = (review.application_method_other ?? "").trim();
+
+        const isOther = review.application_method_id === OtherId || name === OtherLabel;
+
+        if (isOther) {
+            return other ? other : OtherLabel;
+        }
+        return name;
     };
 
     const handleChange = (reviewId: number, value: string) => {
@@ -167,19 +97,35 @@ const Detail = ({ farm }: DetailProps) => {
 
     return (
         <Box w={{ base: "100%", sm: "460px", md: "750px", xl: "1000px" }} mx={"auto"}>
+
+            {/* ファーム */}
             <Box mb={4}>
                 <Box mx={"auto"} w={{ base: "90%", sm: "100%", md: "98%", xl: "95%" }}>
                     <Heading as="h2" py={2} fontSize={{ base: "36px", md: "50px" }} wordBreak="break-word">
                         {farm.name}
                     </Heading>
                 </Box>
+
+                {/* ファーム画像 */}
                 <FarmImageList farm={farm} />
+
+                {/* ファーム情報 */}
                 <FarmList farm={farm} />
             </Box>
 
-            <Box mx={"auto"} w={{ base: "90%", sm: "100%", md: "98%", xl: "95%" }} fontSize={"20px"} letterSpacing={1}>
-                <Heading mt={8} mb={2} as="h2" fontSize={{ base: "36px", md: "50px" }}>レビュー</Heading>
-                <RatingSummary reviews={farm.reviews} />
+            {/* レビュー */}
+            <Box
+                mx={"auto"}
+                w={{ base: "90%", sm: "100%", md: "98%", xl: "95%" }}
+                fontSize={"20px"}
+                letterSpacing={1}
+            >
+                <Heading mt={8} mb={2} as="h2" fontSize={{ base: "36px", md: "50px" }}>
+                    レビュー
+                </Heading>
+
+                {/* レビュー評価グラフ */}
+                <FarmRatingGraph reviews={farm.reviews ?? []} />
                 <Box display="flex" justifyContent="space-between" mb={3}>
                     {farm.reviews?.length === 0 ? "レビューの登録なし" : `${farm.reviews?.length}件`}
                     <Link href={route("review.create", { id: farm.id })} display="inline-flex" alignItems="center" _hover={{ color: "gray.500" }}>
@@ -215,6 +161,8 @@ const Detail = ({ farm }: DetailProps) => {
                         <Text whiteSpace="pre-wrap">{review.comment}</Text>
 
                         <Flex justifyContent={"flex-end"} alignItems="center">
+
+                            {/* レビューお気に入り */}
                             <HeartFavorite reviewId={review.id} initial={review.is_favorite ?? false} />
                             <Button ml={{ md: 5 }} mr={5} mt={2} colorScheme="green" onClick={() => setShowCommentForm(showCommentForm === review.id ? null : review.id)}>
                                 コメントする
@@ -228,6 +176,8 @@ const Detail = ({ farm }: DetailProps) => {
                                 </>
                             )}
                         </form>
+
+                        {/* レビュー返信 */}
                         <Box w={{ base: "90%", sm: "380px", md: "650px", xl: "850px" }} mx={"auto"} >
                             {review.review_comments?.map((review_comment) => (
                                 <Box key={review_comment.id}>

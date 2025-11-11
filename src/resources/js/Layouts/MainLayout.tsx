@@ -15,9 +15,9 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
     const { auth } = usePage().props;
     const { isOpen, onOpen, onClose } = useDisclosure()
     return (
-        <Box m={2} minH={"98vh"} display={"flex"} flexDirection={"column"}>
+        <Box minH={"98vh"} display={"flex"} flexDirection={"column"}>
             {/* ヘッダー */}
-            <Box bg={"green.500"} p={"4px"} mb={2} display={"flex"} justifyContent={"space-between"} alignItems={"center"}>
+            <Box bg={"green.500"} p={"4px"} display={"flex"} justifyContent={"space-between"} alignItems={"center"}>
                 <Link href={route("home")}>
                 <Heading as={"h1"} color={"white"} fontSize={{ base: "24px", md: "30px", lg: "40px" }} >ファーム一覧</Heading>
                 </Link>

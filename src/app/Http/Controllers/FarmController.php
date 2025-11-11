@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Farms\FarmStoreRequest;
+use App\Models\State;
 use App\Repositories\Farms\FarmRepositoryInterface;
 use App\Repositories\StateRepositoryInterface;
 use App\Services\FarmServiceInterface;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -28,18 +30,27 @@ class FarmController extends Controller
 
     /**
      * 農場の一覧ページを表示
+     * @param Request $request
      * @return Response
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $farms = $this->farmRepository->getAllFarmsWithImageIfExist([
-            'images' => function ($query) {
-                $query->orderBy('id')->limit(1);
-            },
-        ]);
+        $keyword = $request->input('keyword' ?? '');
+        $stateName = $request->input('stateName' ?? '');
+
+        $states = $this->stateRepository->getAll();
+
+        $data = $this->farmRepository->getAllFarmsWithImageAndSearch($keyword, $stateName);
+
+        $farms = $data['farms'];
+        $keyword = $data['keyword'];
+        $stateName = $data['stateName'];
 
         return Inertia::render('Home', [
-            'farms'     => $farms,
+            'farms' => $farms,
+            'states' => $states,
+            'keyword' => $keyword,
+            'stateName' => $stateName,
         ]);
     }
 

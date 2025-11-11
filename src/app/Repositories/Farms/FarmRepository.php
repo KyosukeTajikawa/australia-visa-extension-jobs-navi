@@ -5,19 +5,54 @@ namespace App\Repositories\Farms;
 use App\Models\Crop;
 use App\Models\Farm;
 use App\Repositories\Farms\FarmRepositoryInterface;
+use App\Repositories\StateRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class FarmRepository implements FarmRepositoryInterface
 {
+
+    /**
+     * FarmRepository constructor
+     * @param StateRepositoryInterface $stateRepository 州情報を扱うリポジトリの実装
+     */
+    public function __construct(
+        private readonly StateRepositoryInterface $stateRepository,
+    ) {}
+
     /**
      * すべてのファーム情報を取得する
-     * @param array $relation
-     * @return Collection<Farm>
+     * 検索キーワードによるデータ取得
+     * @param string $keyword
+     * @param string $stateName
+     * @return array
      */
-    public function getAllFarmsWithImageIfExist(array $relation = []): Collection
+    public function getAllFarmsWithImageAndSearch(?string $keyword, ?string $stateName): array
     {
-        return Farm::with($relation)->orderBy('id')->get();
+        $farmQuery = Farm::with(['images' => function ($q) {
+            $q->orderBy('id')->limit(1);
+        }, 'state', 'crops']);
+
+        if (!empty($keyword)) {
+            $farmQuery->where(function ($q) use ($keyword) {
+                $q->where('name', 'LIKE', "%{$keyword}%");
+            });
+        }
+
+        if (!empty($stateName)) {
+            $stateId = $this->stateRepository->homeById($stateName);
+        }
+        if (!empty($stateId)) {
+            $farmQuery->where('state_id', $stateId);
+        }
+
+        $farms = $farmQuery->orderBy('id')->get();
+
+        return [
+            'farms' => $farms,
+            'keyword' => $keyword,
+            'stateName' => $stateName
+        ];
     }
 
     /**

@@ -10,10 +10,12 @@ interface FarmRepositoryInterface
 {
     /**
      * すべてのファーム情報を取得する
-     * @param array $relation
-     * @return Collection<Farm>
+     * 検索キーワードによるデータ取得
+     * @param string $keyword
+     * @param string $stateName
+     * @return array
      */
-    public function getAllFarmsWithImageIfExist(): Collection;
+    public function getAllFarmsWithImageAndSearch(?string $keyword, ?string $stateName): array;
 
     /**
      * 指定したIDのファーム詳細を取得する

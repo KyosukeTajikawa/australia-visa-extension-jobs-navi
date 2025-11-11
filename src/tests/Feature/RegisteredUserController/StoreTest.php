@@ -10,7 +10,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
 
 class StoreTest extends TestCase

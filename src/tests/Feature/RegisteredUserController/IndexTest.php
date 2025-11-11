@@ -17,7 +17,7 @@ class IndexTest extends TestCase
      * Indexの確認
      * ユーザー・画像情報がprofileに渡っているか確認
      */
-    public function testCreateWithStatesAndCrops(): void
+    public function testIndex(): void
     {
         $user = User::factory()->create();
 

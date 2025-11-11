@@ -56,7 +56,7 @@ class RegisteredUserController extends Controller
         $validated = $request->validated();
         $file = $request->file('file');
 
-        $user = $this->userService->update($validated, $file);
+        $user = $this->userService->store($validated, $file);
 
         Auth::login($user);
         return redirect()->route('home');

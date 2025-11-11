@@ -35,6 +35,4 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [RegisteredUserController::class, 'index'])->name('profile');
 });
 
-Route::post('register', [RegisteredUserController::class, 'store'])->name('register.store');
-
 require __DIR__ . '/auth.php';

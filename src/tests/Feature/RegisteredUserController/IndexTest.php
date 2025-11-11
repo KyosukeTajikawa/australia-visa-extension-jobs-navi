@@ -2,8 +2,6 @@
 
 namespace Tests\Feature\RegisteredUserController;
 
-use App\Models\Crop;
-use App\Models\State;
 use App\Models\User;
 use App\Models\UserImage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -16,8 +14,8 @@ class IndexTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * Createの確認
-     * 州・作物情報がCreateに渡っているか確認
+     * Indexの確認
+     * ユーザー・画像情報がprofileに渡っているか確認
      */
     public function testCreateWithStatesAndCrops(): void
     {

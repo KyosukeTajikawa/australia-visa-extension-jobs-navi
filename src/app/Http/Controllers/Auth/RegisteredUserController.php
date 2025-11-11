@@ -87,7 +87,7 @@ class RegisteredUserController extends Controller
 
         $user = $this->userService->update($validated, $file);
 
-        return redirect()->route('home');
+        return redirect()->route('profile');
     }
 
     /**

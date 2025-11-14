@@ -77,7 +77,7 @@ const Edit = ({ farm, states, crops }: EditProps) => {
         setData(name as keyof typeof data, value);
     };
 
-    const handleOptionChange = (selectedOptions: MultiValue<Option>) => {
+    const handleOptionChange = (selectedOptions: MultiValue<any>) => {
         const selectedIds = selectedOptions.map((option) => option.value);
         setData("crop_ids", selectedIds);
     };

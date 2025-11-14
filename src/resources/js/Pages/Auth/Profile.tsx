@@ -49,7 +49,7 @@ const Profile = ({ user, user_image }: ProfileProps) => {
                             <Button ref={cancelRef} onClick={onClose} mr={5}>
                                 戻る
                             </Button>
-                            <Button oml={3} colorScheme='red' onClick={() => router.delete(route("user.destroy"), { onSuccess: () => { onClose() } })} >
+                            <Button ml={3} colorScheme='red' onClick={() => router.delete(route("user.destroy"), { onSuccess: () => { onClose() } })} >
                                 削除
                             </Button>
                         </AlertDialogFooter>

@@ -1,7 +1,8 @@
 import React, { ReactNode } from "react";
-import { Box, Heading, Text, Menu, MenuButton, MenuList, MenuItem, IconButton } from "@chakra-ui/react";
+import { Box, Heading, Text, Menu, MenuButton, MenuList, MenuItem, IconButton, Image } from "@chakra-ui/react";
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { Link, router, usePage, } from "@inertiajs/react";
+import { FaLeaf } from "react-icons/fa";
 
 type MainLayoutProps = {
     children: ReactNode;
@@ -42,7 +43,9 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                         color={"white"}
                         fontSize={{ base: "24px", md: "30px", lg: "40px" }}
                     >
-                        ファーム一覧
+                        {/* ファーム一覧
+                     */}
+                        <Image src="/images/farmTopIcon.png" alt="ファームアイコン" w={{ base: "80px", xl: "100px" }} h={{ base: "80px", xl: "100px" }} borderRadius={"full"} mt={2} mx={{ base: 3, xl: 5 }} />
                     </Heading>
                 </Text>
                 {auth.user ?
@@ -56,6 +59,7 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                                 as={IconButton}
                                 color={"white"}
                                 variant={"ghost"}
+                                fontSize={"80px"}
                                 _hover={{ bg: "green.600" }}
                                 _active={{ bg: "green.600" }}
                             >
@@ -97,8 +101,10 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                         <Menu>
                             <MenuButton
                                 as={IconButton}
+                                mr={3}
                                 icon={<HamburgerIcon
                                     color={"white"}
+                                    fontSize={"50px"}
                                 />}
                                 variant={"ghost"}
                                 _hover={{ bg: "green.600" }}
@@ -107,16 +113,21 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                             <MenuList>
                                 <MenuItem
                                     onClick={() => router.visit(route("home"))}
+                                    fontSize={"18px"}
                                 >
                                     ファーム一覧
                                 </MenuItem>
                                 <MenuItem
                                     onClick={() => router.visit(route("login"))}
+                                    fontSize={"18px"}
+
                                 >
                                     ログイン
                                 </MenuItem>
                                 <MenuItem
                                     onClick={() => router.visit(route("register"))}
+                                    fontSize={"18px"}
+
                                 >
                                     新規登録
                                 </MenuItem>
@@ -132,7 +143,8 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                             color={"white"}
                             _hover={{ opacity: 0.9 }}
                             href={route("farm.create")}
-                            pr={2}
+                            fontSize={{ base: "none", md: "18px", xl: "25px" }}
+                            mr={{ base: "none", md: 2, xl: 4 }}
                         >
                             ファーム登録
                         </Text>
@@ -141,7 +153,8 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                             color={"white"}
                             _hover={{ opacity: 0.9 }}
                             href={route("farm.myFarms")}
-                            pr={2}
+                            fontSize={{ base: "none", md: "18px", xl: "25px" }}
+                            mr={{ base: "none", md: 2, xl: 4 }}
                         >
                             あなたのファーム
                         </Text>
@@ -150,7 +163,8 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                             color={"white"}
                             _hover={{ opacity: 0.9 }}
                             href={route("review.favorites")}
-                            pr={2}
+                            fontSize={{ base: "none", md: "18px", xl: "25px" }}
+                            mr={{ base: "none", md: 2, xl: 4 }}
                         >
                             お気に入りレビュー
                         </Text>
@@ -159,7 +173,8 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                             color={"white"}
                             _hover={{ opacity: 0.9 }}
                             href={route("profile")}
-                            pr={2}
+                            fontSize={{ base: "none", md: "18px", xl: "25px" }}
+                            mr={{ base: "none", md: 2, xl: 4 }}
                         >
                             プロフィール
                         </Text>
@@ -170,6 +185,8 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                             href={route("logout")}
                             pr={2}
                             method="post"
+                            fontSize={{ base: "none", md: "18px", xl: "25px" }}
+                            mr={{ base: "none", md: 2, xl: 4 }}
                         >
                             ログアウト
                         </Text>
@@ -181,7 +198,8 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                             color={"white"}
                             _hover={{ opacity: 0.9 }}
                             href={route("home")}
-                            pr={2}
+                            fontSize={{ base: "none", md: "20px", xl: "25px" }}
+                            mr={{ base: "none", md: 2, xl: 4 }}
                         >
                             ファーム一覧
                         </Text>
@@ -190,7 +208,9 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                             color={"white"}
                             _hover={{ opacity: 0.9 }}
                             href={route("login")}
-                            pr={2}
+                            mr={{ base: "none", md: 2, xl: 4 }}
+                            fontSize={{ base: "none", md: "20px", xl: "25px" }}
+
                         >
                             ログイン
                         </Text>
@@ -199,7 +219,9 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                             color={"white"}
                             _hover={{ opacity: 0.9 }}
                             href={route("register")}
-                            pr={2}
+                            mr={{ base: "none", md: 2, xl: 4 }}
+                            fontSize={{ base: "none", md: "20px", xl: "25px" }}
+
                         >
                             新規登録
                         </Text>

@@ -96,32 +96,29 @@ const Home = ({ farms, states, keyword, stateName, status }: HomeProps) => {
                     _groupHover={{ transform: "translateY(0)", opacity: 0.8 }}
                 >
                     <Heading
+                        fontSize={{ base: "40px", xl: "50px" }}
                         as={"h3"}
                         color={"white"}
+                        mx={2}
                     >
                         {farm.name}
                     </Heading>
                     <Text
                         color={"white"}
-                        fontSize={"20px"}
-                        mb={1}
+                        fontSize={{ base: "30px", xl: "40px" }}
+                        ml={4}
                     >
                         {farm.state.name}
                     </Text>
-                    <Box
-                        mt={3}
-                    >
+                    <Box>
                         {farm.crops.map((crop) => (
                             <Text
                                 key={crop.id}
                                 display={"inline-block"}
-                                // bg="green.50"
                                 color="white"
-                                // borderColor="green.200"
-                                // borderRadius="md"
-                                py={1}
-                                fontSize={"20px"}
-                                mr={2}
+                                // py={1}
+                                fontSize={{ base: "20px", xl: "35px" }}
+                                mx={3}
                             >
                                 {crop.name}</Text>
                         ))}
@@ -129,8 +126,8 @@ const Home = ({ farms, states, keyword, stateName, status }: HomeProps) => {
                     <Button
                         as={Link}
                         href={`/farm/${farm.id}`}
-                        mt={2}
-                        fontWeight={"normal"}
+                        mt={4}
+                        fontSize={{ base: "20px", xl: "30px" }}
                         bg={"005133"}
                         _hover={{ bg: "green.700", textDecoration: "none" }}
                         color="white"

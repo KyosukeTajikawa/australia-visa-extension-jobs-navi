@@ -183,7 +183,7 @@ const Detail = ({ farm }: DetailProps) => {
                                 <Box key={review_comment.id}>
                                     <Box mt={5} bg={"#e2e8f0"} border={"1px solid none"} borderRadius={"md"} p={4}>
                                         <Flex justifyContent={"space-between"}>
-                                            <Text>{review_comment.user.nickname}</Text>
+                                            <Text>{(review_comment as any).user.nickname}</Text>
                                             <Text mb={1} color="gray.500" fontSize="16px" textAlign={"center"}>
                                                 {new Date(review.created_at).toLocaleDateString("ja-JP")}
                                             </Text>

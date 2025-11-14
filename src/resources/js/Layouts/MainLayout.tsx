@@ -1,8 +1,14 @@
 import React, { ReactNode } from "react";
 import { Box, Heading, Text, Menu, MenuButton, MenuList, MenuItem, IconButton, Image } from "@chakra-ui/react";
-import { HamburgerIcon } from '@chakra-ui/icons';
+import { HamburgerIcon, Icon } from '@chakra-ui/icons';
 import { Link, router, usePage, } from "@inertiajs/react";
-import { FaLeaf } from "react-icons/fa";
+import { FaLeaf, FaUserPlus, FaUserCircle, FaBookmark } from "react-icons/fa";
+import { TbDoorEnter, TbDoorExit } from "react-icons/tb";
+import { GiFarmTractor } from "react-icons/gi";
+import { PiPlantLight } from "react-icons/pi";
+
+
+
 
 type MainLayoutProps = {
     children: ReactNode;
@@ -57,9 +63,10 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                         <Menu>
                             <MenuButton
                                 as={IconButton}
+                                size={"lg"}
                                 color={"white"}
                                 variant={"ghost"}
-                                fontSize={"80px"}
+                                fontSize={{ base: "30px", sm: "40px" }}
                                 _hover={{ bg: "green.600" }}
                                 _active={{ bg: "green.600" }}
                             >
@@ -68,28 +75,43 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                             <MenuList>
                                 <MenuItem
                                     onClick={() => router.get("/farm/create")}
+                                    fontSize={"18px"}
+                                    justifyContent={"space-between"}
                                 >
                                     ファーム登録
+                                <Icon as={GiFarmTractor}/>
                                 </MenuItem>
                                 <MenuItem
                                     onClick={() => router.get("/farm/myFarms")}
+                                    fontSize={"18px"}
+                                    justifyContent={"space-between"}
                                 >
                                     あなたのファーム
+                                    <Icon as={PiPlantLight} />
                                 </MenuItem>
                                 <MenuItem
                                     onClick={() => router.get("/review/favorites")}
+                                    fontSize={"18px"}
+                                    justifyContent={"space-between"}
                                 >
                                     お気に入りレビュー
+                                    <Icon as={FaBookmark} />
                                 </MenuItem>
                                 <MenuItem
                                     onClick={() => router.get("/profile")}
+                                    fontSize={"18px"}
+                                    justifyContent={"space-between"}
                                 >
                                     プロフィール
+                                    <Icon as={FaUserCircle} />
                                 </MenuItem>
                                 <MenuItem
                                     onClick={() => router.post(route("logout"))}
+                                    fontSize={"18px"}
+                                    justifyContent={"space-between"}
                                 >
                                     ログアウト
+                                    <Icon as={TbDoorExit} />
                                 </MenuItem>
                             </MenuList>
                         </Menu>
@@ -114,22 +136,26 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                                 <MenuItem
                                     onClick={() => router.visit(route("home"))}
                                     fontSize={"18px"}
+                                    justifyContent={"space-between"}
                                 >
                                     ファーム一覧
+                                    <Icon as={FaLeaf} />
                                 </MenuItem>
                                 <MenuItem
                                     onClick={() => router.visit(route("login"))}
                                     fontSize={"18px"}
-
+                                    justifyContent={"space-between"}
                                 >
                                     ログイン
+                                    <Icon as={TbDoorEnter} />
                                 </MenuItem>
                                 <MenuItem
                                     onClick={() => router.visit(route("register"))}
                                     fontSize={"18px"}
-
+                                    justifyContent={"space-between"}
                                 >
                                     新規登録
+                                    <Icon as={FaUserPlus} />
                                 </MenuItem>
                             </MenuList>
                         </Menu>
@@ -137,7 +163,9 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                 }
                 {auth.user ?
                     /* PC ログイン*/
-                    <Box display={{ base: "none", md: "flex" }} justifyContent={"center"} pr={2}>
+                    <Box display={{ base: "none", md: "flex" }} alignItems={"center"} pr={2}>
+                        <Icon as={GiFarmTractor} fontSize={{ base: "none", md: "20px", xl: "25px" }}
+                            mr={1} color={"white"} />
                         <Text
                             as={Link}
                             color={"white"}
@@ -148,6 +176,8 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                         >
                             ファーム登録
                         </Text>
+                        <Icon as={PiPlantLight} fontSize={{ base: "none", md: "20px", xl: "25px" }}
+                            mr={1} color={"white"} />
                         <Text
                             as={Link}
                             color={"white"}
@@ -158,6 +188,8 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                         >
                             あなたのファーム
                         </Text>
+                        <Icon as={FaBookmark} fontSize={{ base: "none", md: "20px", xl: "25px" }}
+                            mr={1} color={"white"} />
                         <Text
                             as={Link}
                             color={"white"}
@@ -168,6 +200,8 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                         >
                             お気に入りレビュー
                         </Text>
+                        <Icon as={FaUserCircle} fontSize={{ base: "none", md: "20px", xl: "25px" }}
+                            mr={1} color={"white"} />
                         <Text
                             as={Link}
                             color={"white"}
@@ -178,6 +212,8 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                         >
                             プロフィール
                         </Text>
+                        <Icon as={TbDoorExit} fontSize={{ base: "none", md: "20px", xl: "25px" }}
+                            mr={1} color={"white"} />
                         <Text
                             as={Link}
                             color={"white"}
@@ -192,7 +228,9 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                         </Text>
                     </Box>
                     /* PC 未ログイン*/
-                    : <Box display={{ base: "none", md: "block" }} pr={2}>
+                    : <Box display={{ base: "none", md: "flex" }} alignItems="center" pr={2}>
+                        <Icon as={FaLeaf} fontSize={{ base: "none", md: "20px", xl: "25px" }}
+                            mr={1} color={"white"} />
                         <Text
                             as={Link}
                             color={"white"}
@@ -203,6 +241,8 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                         >
                             ファーム一覧
                         </Text>
+                        <Icon as={TbDoorEnter} fontSize={{ base: "none", md: "20px", xl: "25px" }}
+                            mr={1} color={"white"} />
                         <Text
                             as={Link}
                             color={"white"}
@@ -214,6 +254,8 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                         >
                             ログイン
                         </Text>
+                        <Icon as={FaUserPlus} fontSize={{ base: "none", md: "20px", xl: "25px" }}
+                            mr={1} color={"white"} />
                         <Text
                             as={Link}
                             color={"white"}

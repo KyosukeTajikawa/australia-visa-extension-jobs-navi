@@ -217,6 +217,6 @@ const Create = ({ states, crops }: CreateProps) => {
 };
 
 Create.layout = (page: React.ReactNode) => (
-    <MainLayout title="ファーム情報サイト">{page}</MainLayout>
+    <MainLayout title="ファーム登録">{page}</MainLayout>
 );
 export default Create;

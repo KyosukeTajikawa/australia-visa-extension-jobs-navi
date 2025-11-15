@@ -117,5 +117,5 @@ const Login = () => {
     )
 }
 
-Login.layout = (page: React.ReactNode) => <MainLayout children={page} title="ファーム情報サイト" />
+Login.layout = (page: React.ReactNode) => <MainLayout children={page} title="ログイン" />
 export default Login;

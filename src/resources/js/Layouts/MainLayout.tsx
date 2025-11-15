@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import { Box, Heading, Text, Menu, MenuButton, MenuList, MenuItem, IconButton, Image } from "@chakra-ui/react";
 import { HamburgerIcon, Icon } from '@chakra-ui/icons';
-import { Link, router, usePage, } from "@inertiajs/react";
+import { Link, router, usePage, Head } from "@inertiajs/react";
 import { FaLeaf, FaUserPlus, FaUserCircle, FaBookmark } from "react-icons/fa";
 import { TbDoorEnter, TbDoorExit } from "react-icons/tb";
 import { GiFarmTractor } from "react-icons/gi";
@@ -33,6 +33,9 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
             display={"flex"}
             flexDirection={"column"}
         >
+
+            <Head title={title} />
+
             {/* ヘッダー */}
             <Box
                 bg={"green.800"}
@@ -289,7 +292,8 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                     <Text
                         fontSize={{ base: 13, md: 16 }}
                     >
-                        &copy; ファーム攻略サイト
+                        &copy; Farm Info Site<br />
+                        掲載されている情報はユーザー投稿に基づいています
                     </Text>
                 </Box>
             </Box>

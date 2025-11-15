@@ -146,5 +146,5 @@ const MyFarms = ({ farms }: MyFarmsProps) => {
     );
 };
 
-MyFarms.layout = (page: React.ReactNode) => (<MainLayout title="ファーム情報サイト">{page}</MainLayout>);
+MyFarms.layout = (page: React.ReactNode) => (<MainLayout title="作成済ファーム一覧">{page}</MainLayout>);
 export default MyFarms;

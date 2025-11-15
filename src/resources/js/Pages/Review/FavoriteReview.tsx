@@ -86,7 +86,7 @@ const FavoriteReview = ({ reviews }: FavoriteReviewProps) => {
                     </HStack>
                     <Text whiteSpace="pre-wrap" mb={2}>{review.comment}</Text>
                     {/* レビューお気に入り */}
-                    <Flex justifyContent={"flex-end"}>
+                    <Flex justifyContent={"flex-end"} mb={5}>
                     <HeartFavorite reviewId={review.id} initial={true}/>
                     </Flex>
                 </Box>

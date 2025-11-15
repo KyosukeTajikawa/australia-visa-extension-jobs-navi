@@ -221,7 +221,7 @@ const Detail = ({ farm }: DetailProps) => {
 };
 
 Detail.layout = (page: React.ReactNode) => (
-    <MainLayout title="ファーム情報サイト">{page}</MainLayout>
+    <MainLayout title="ファーム詳細">{page}</MainLayout>
 );
 
 export default Detail;

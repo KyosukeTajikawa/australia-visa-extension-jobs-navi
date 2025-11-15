@@ -243,6 +243,6 @@ const Edit = ({ farm, states, crops }: EditProps) => {
 };
 
 Edit.layout = (page: React.ReactNode) => (
-    <MainLayout title="ファーム情報サイト">{page}</MainLayout>
+    <MainLayout title="ファーム編集">{page}</MainLayout>
 );
 export default Edit;

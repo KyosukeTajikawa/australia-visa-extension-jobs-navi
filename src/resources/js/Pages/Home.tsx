@@ -83,7 +83,10 @@ const Home = ({ farms, states, keyword, stateName, status }: HomeProps) => {
                     h={{ base: "200px", sm: "300px", md: "200px", xl: "300px" }}
                     objectFit={"cover"}
                 />
+
+                {/* PC画面 */}
                 <Box
+                    display={{ base: "none", md: "block" }}
                     position={"absolute"}
                     left={0}
                     right={0}
@@ -137,6 +140,59 @@ const Home = ({ farms, states, keyword, stateName, status }: HomeProps) => {
                         <ArrowForwardIcon />
                     </Button>
                 </Box>
+
+                {/* SP画面 */}
+                <Box
+                    mt={3}
+                    display={{ base: "block", md: "none" }}
+                >
+                    <Heading
+                        as={"h3"}
+                        color={"green.800"}
+                    >
+                        {farm.name}
+                    </Heading>
+                    <Text
+                        color={"green.800"}
+                        fontSize={"20px"}
+                        mb={1}
+                    >
+                        {farm.state.name}
+                    </Text>
+                    {farm.crops.map((crop) => (
+                        <Text
+                            key={crop.id}
+                            display={"inline-block"}
+                            bg="green.50"
+                            color="green.800"
+                            borderColor="green.200"
+                            borderRadius="md"
+                            py={1}
+                            fontSize={"20px"}
+                            mr={2}
+                        >
+                            {crop.name}</Text>
+                    ))}
+                </Box>
+                <Button
+                    as={Link}
+                    href={`/farm/${farm.id}`}
+                    mt={2}
+                    fontWeight="normal"
+                    bg="green.800"
+                    _hover={{ bg: "green.700", textDecoration: "none" }}
+                    color="white"
+                    display={{ base: "inline-flex", md: "none" }}
+                    alignItems="center"
+                    justifyContent="center"
+                    px={4}
+                    py={2}
+                    borderRadius="md"
+                    w="auto"
+                >
+                    詳しく見る
+                </Button>
+
             </Box>
         </Box>
     ))

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Box, Heading, VStack, HStack, Image, Text, Link, Input, Button, Select, Flex, useToast, position } from "@chakra-ui/react";
+import { Box, Heading, VStack, HStack, Image, Text, Link, Input, Button, Select, Flex, useToast } from "@chakra-ui/react";
 import MainLayout from "@/Layouts/MainLayout";
 import { router } from "@inertiajs/react";
+import { ArrowForwardIcon } from '@chakra-ui/icons';
 
 type FarmImage = {
     id: number;
@@ -129,10 +130,11 @@ const Home = ({ farms, states, keyword, stateName, status }: HomeProps) => {
                         mt={4}
                         fontSize={{ base: "20px", xl: "30px" }}
                         bg={"005133"}
-                        _hover={{ bg: "green.700", textDecoration: "none" }}
+                        _hover={{ opacity: 0.7, textDecoration: "none" }}
                         color="white"
                     >
                         詳しく見る
+                        <ArrowForwardIcon />
                     </Button>
                 </Box>
             </Box>
@@ -162,7 +164,7 @@ const Home = ({ farms, states, keyword, stateName, status }: HomeProps) => {
 
     return (
         <Box>
-            <Box bg={"#FAF7F0"}>
+            <Box bg={"#fdf9f2"}>
                 <Box
                     py={30}
                     mb={5}
@@ -193,7 +195,7 @@ const Home = ({ farms, states, keyword, stateName, status }: HomeProps) => {
                         {/* キーワード入力 */}
                         <Input
                             value={searchKeyword}
-                            placeholder="検索..."
+                            placeholder="ファーム名を検索..."
                             onChange={(e) => setSearchKeyword(e.target.value)}
                         />
                         <HStack>

@@ -38,7 +38,10 @@ class ReviewRepository implements ReviewRepositoryInterface
      */
     public function getFavoriteReviews(array $relations = []): collection
     {
-        return auth()->user()->reviews()->with($relations)->orderBy('review_favorites.review_id')->get();
+        return auth()->user()->reviews()->with(array_merge($relations, [
+            'reviewUser:id,nickname',
+            'reviewUser.image:id,user_id,url',
+        ]))->orderBy('review_favorites.review_id')->get();
     }
 
     /**

@@ -22,8 +22,10 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
 
     const isFarmDetail = component === "Farm/Detail";
     const isFavoriteReview = component === "Review/FavoriteReview";
+    const isMyFarms = component === "Farm/MyFarms";
+    const isProfile = component === "Auth/Profile";
 
-    const hasCustomBg = isFarmDetail || isFavoriteReview;
+    const hasCustomBg = isFarmDetail || isFavoriteReview || isMyFarms || isProfile;
 
     return (
         <Box
@@ -79,7 +81,7 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                                     justifyContent={"space-between"}
                                 >
                                     ファーム登録
-                                <Icon as={GiFarmTractor}/>
+                                    <Icon as={GiFarmTractor} />
                                 </MenuItem>
                                 <MenuItem
                                     onClick={() => router.get("/farm/myFarms")}
@@ -163,56 +165,56 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                 }
                 {auth.user ?
                     /* PC ログイン*/
-                    <Box display={{ base: "none", md: "flex" }} alignItems={"center"} pr={2}>
-                        <Icon as={GiFarmTractor} fontSize={{ base: "none", md: "20px", xl: "25px" }}
+                    <Box
+                        display={{ base: "none", md: "flex" }}
+                        alignItems={"center"}
+                        pr={2}
+                        fontSize={{ base: "none", md: "16px", xl: "20px" }}>
+                        <Icon as={GiFarmTractor}
                             mr={1} color={"white"} />
                         <Text
                             as={Link}
                             color={"white"}
                             _hover={{ opacity: 0.9 }}
                             href={route("farm.create")}
-                            fontSize={{ base: "none", md: "18px", xl: "25px" }}
                             mr={{ base: "none", md: 2, xl: 4 }}
                         >
                             ファーム登録
                         </Text>
-                        <Icon as={PiPlantLight} fontSize={{ base: "none", md: "20px", xl: "25px" }}
+                        <Icon as={PiPlantLight}
                             mr={1} color={"white"} />
                         <Text
                             as={Link}
                             color={"white"}
                             _hover={{ opacity: 0.9 }}
                             href={route("farm.myFarms")}
-                            fontSize={{ base: "none", md: "18px", xl: "25px" }}
                             mr={{ base: "none", md: 2, xl: 4 }}
                         >
                             あなたのファーム
                         </Text>
-                        <Icon as={FaBookmark} fontSize={{ base: "none", md: "20px", xl: "25px" }}
+                        <Icon as={FaBookmark}
                             mr={1} color={"white"} />
                         <Text
                             as={Link}
                             color={"white"}
                             _hover={{ opacity: 0.9 }}
                             href={route("review.favorites")}
-                            fontSize={{ base: "none", md: "18px", xl: "25px" }}
                             mr={{ base: "none", md: 2, xl: 4 }}
                         >
                             お気に入りレビュー
                         </Text>
-                        <Icon as={FaUserCircle} fontSize={{ base: "none", md: "20px", xl: "25px" }}
+                        <Icon as={FaUserCircle}
                             mr={1} color={"white"} />
                         <Text
                             as={Link}
                             color={"white"}
                             _hover={{ opacity: 0.9 }}
                             href={route("profile")}
-                            fontSize={{ base: "none", md: "18px", xl: "25px" }}
                             mr={{ base: "none", md: 2, xl: 4 }}
                         >
                             プロフィール
                         </Text>
-                        <Icon as={TbDoorExit} fontSize={{ base: "none", md: "20px", xl: "25px" }}
+                        <Icon as={TbDoorExit}
                             mr={1} color={"white"} />
                         <Text
                             as={Link}
@@ -221,27 +223,29 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                             href={route("logout")}
                             pr={2}
                             method="post"
-                            fontSize={{ base: "none", md: "18px", xl: "25px" }}
                             mr={{ base: "none", md: 2, xl: 4 }}
                         >
                             ログアウト
                         </Text>
                     </Box>
                     /* PC 未ログイン*/
-                    : <Box display={{ base: "none", md: "flex" }} alignItems="center" pr={2}>
-                        <Icon as={FaLeaf} fontSize={{ base: "none", md: "20px", xl: "25px" }}
+                    : <Box
+                        display={{ base: "none", md: "flex" }}
+                        alignItems="center"
+                        fontSize={{ base: "none", md: "16px", xl: "20px" }}
+                        pr={2}>
+                        <Icon as={FaLeaf}
                             mr={1} color={"white"} />
                         <Text
                             as={Link}
                             color={"white"}
                             _hover={{ opacity: 0.9 }}
                             href={route("home")}
-                            fontSize={{ base: "none", md: "20px", xl: "25px" }}
                             mr={{ base: "none", md: 2, xl: 4 }}
                         >
                             ファーム一覧
                         </Text>
-                        <Icon as={TbDoorEnter} fontSize={{ base: "none", md: "20px", xl: "25px" }}
+                        <Icon as={TbDoorEnter}
                             mr={1} color={"white"} />
                         <Text
                             as={Link}
@@ -249,12 +253,10 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                             _hover={{ opacity: 0.9 }}
                             href={route("login")}
                             mr={{ base: "none", md: 2, xl: 4 }}
-                            fontSize={{ base: "none", md: "20px", xl: "25px" }}
-
                         >
                             ログイン
                         </Text>
-                        <Icon as={FaUserPlus} fontSize={{ base: "none", md: "20px", xl: "25px" }}
+                        <Icon as={FaUserPlus}
                             mr={1} color={"white"} />
                         <Text
                             as={Link}
@@ -262,8 +264,6 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                             _hover={{ opacity: 0.9 }}
                             href={route("register")}
                             mr={{ base: "none", md: 2, xl: 4 }}
-                            fontSize={{ base: "none", md: "20px", xl: "25px" }}
-
                         >
                             新規登録
                         </Text>

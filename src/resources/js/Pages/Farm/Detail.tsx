@@ -1,17 +1,20 @@
 import React, { useState } from "react";
 import MainLayout from "@/Layouts/MainLayout";
-import { Box, Heading, Link, Textarea, HStack, Text, Button, Flex } from "@chakra-ui/react";
-import { StarIcon, EditIcon } from "@chakra-ui/icons";
+import { Box, Heading, Link, Textarea, HStack, Text, Button, Flex, Image } from "@chakra-ui/react";
+import { StarIcon, EditIcon, Icon } from "@chakra-ui/icons";
 import { router } from "@inertiajs/react";
 import FarmImageList from "@/Components/Organisms/FarmImageList";
 import FarmList from "@/Components/Organisms/FarmList";
 import FarmRatingGraph from "@/Components/Organisms/FarmRatingGraph";
 import HeartFavorite from "@/Components/Organisms/HeartFavorite";
+import { FaUserCircle } from "react-icons/fa";
 
 type State = { id: number; name: string };
 type FarmImages = { id: number; farm_id: number; url: string };
 type Crops = { id: number; name: string };
 type ReviewComments = { id: number; review_id: number; user_id: number; comment: string; created_at: string; };
+type ReviewUser = { id: number; nickname: string; image?: ReviewUserImage | null }
+type ReviewUserImage = { id: number; user_id: number; url: string }
 
 type Review = {
     id: number;
@@ -27,9 +30,8 @@ type Review = {
     application_method_name?: string | null;
     application_method_other?: string | null;
     application_method?: { id: number; name: string } | null;
-    review_user?: { id: number; nickname: string } | null;
+    review_user?: ReviewUser | null;
     created_at: string;
-    is_favorite?: boolean;
     review_comments?: ReviewComments[] | null;
 };
 
@@ -101,7 +103,7 @@ const Detail = ({ farm }: DetailProps) => {
             {/* ファーム */}
             <Box mb={4}>
                 <Box mx={"auto"} w={{ base: "90%", sm: "100%", md: "98%", xl: "95%" }}>
-                    <Heading as="h2" py={2} fontSize={{ base: "36px", md: "50px" }} wordBreak="break-word">
+                    <Heading as="h2" py={2} color={"#4D4D4F"} fontSize={{ base: "36px", md: "50px" }} wordBreak="break-word">
                         {farm.name}
                     </Heading>
                 </Box>
@@ -120,7 +122,7 @@ const Detail = ({ farm }: DetailProps) => {
                 fontSize={"20px"}
                 letterSpacing={1}
             >
-                <Heading mt={8} mb={2} as="h2" fontSize={{ base: "36px", md: "50px" }}>
+                <Heading mt={8} mb={2} as="h2" color={"#4D4D4F"} fontSize={{ base: "36px", md: "50px" }}>
                     レビュー
                 </Heading>
 
@@ -137,7 +139,10 @@ const Detail = ({ farm }: DetailProps) => {
             <Box fontSize={"20px"} letterSpacing={1}>
                 {farm.reviews?.map((review) => (
                     <Box key={review.id} p={3} mb={3}>
-                        <Text mb={1}>{review.review_user?.nickname ?? "匿名ユーザー"}</Text>
+                        <Flex alignItems={"center"} mb={1}>
+                            <Image w={"25px"} h={"25px"} borderRadius={"full"} src={review.review_user?.image?.url ?? ""} fallback={<Icon w={"30px"} h={"30px"} as={FaUserCircle} color={"gray.500"} />} />
+                            <Text ml={2}>{review.review_user?.nickname ?? "匿名ユーザー"}</Text>
+                        </Flex>
                         <HStack>
                             <HStack mb={2} align="stretch">
                                 <HStack>
@@ -163,8 +168,8 @@ const Detail = ({ farm }: DetailProps) => {
                         <Flex justifyContent={"flex-end"} alignItems="center">
 
                             {/* レビューお気に入り */}
-                            <HeartFavorite reviewId={review.id} initial={review.is_favorite ?? false} />
-                            <Button ml={{ md: 5 }} mr={5} mt={2} colorScheme="green" onClick={() => setShowCommentForm(showCommentForm === review.id ? null : review.id)}>
+                            <HeartFavorite reviewId={review.id}  />
+                            <Button ml={{ md: 5 }} mr={5} mt={2} bg={"green.800"} _hover={{ bg: "green.700" }} color={"white"} onClick={() => setShowCommentForm(showCommentForm === review.id ? null : review.id)}>
                                 コメントする
                             </Button>
                         </Flex>
@@ -172,7 +177,9 @@ const Detail = ({ farm }: DetailProps) => {
                             {showCommentForm === review.id && (
                                 <>
                                     <Textarea isRequired mt={4} name="reviewComment" value={reviewComment[review.id] ?? ""} onChange={(e) => handleChange(review.id, e.target.value)} placeholder="コメントを書いてください" />
-                                    <Button mt={2} type="submit">登録</Button>
+                                    <Button mt={2} type="submit" bg="#388E3C"
+                                        _hover={{ bg: "#2E7D32" }}
+                                        color="#FFFFFF">登録</Button>
                                 </>
                             )}
                         </form>

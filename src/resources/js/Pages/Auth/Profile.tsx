@@ -60,40 +60,42 @@ const Profile = ({ user, user_image }: ProfileProps) => {
             <VStack fontSize={"20px"} mx={"auto"}>
                 <Heading as={"h3"} mb={4} fontWeight={"bold"} fontSize={{ base: "18px", md: "24px" }} color={"gray.600"}>プロフィール</Heading>
                 <Box>
-                    <Image src={user_image?.url ?? "/images/default_avatar.png"} h={{ base: "200px", sm: "300px", md: "200px", xl: "300px" }}
+                    <Image src={user_image?.url ?? "/images/default_avatar.png"}
+                        w={{ base: "120px", lg: "200px" }} h={{ base: "120px", lg: "200px" }}
                         objectFit={"cover"} borderRadius={"full"}
                         onError={(e) => {
                             (e.currentTarget as HTMLImageElement).src = "https://placehold.co/300x300";
                         }} />
                 </Box>
-                <Text>ニックネーム</Text>
+                <Text mt={3}>ニックネーム</Text>
                 <Text>{user.nickname}</Text>
-                <Text>メールアドレス</Text>
+                <Text mt={3}>メールアドレス</Text>
                 <Text>{user.email}</Text>
-                <Text>性別</Text>
-                <Text>{user.gender === 1 ? "男性" : "女性"}</Text>
-                <Text>生年月日</Text>
+                <Text mt={3}>生年月日</Text>
                 <Text>{user?.birthday ?? "登録なし"}</Text>
+                <Text mt={3}>{user.gender === 1 ? "男性" : "女性"}</Text>
             </VStack>
             <VStack>
                 <Button
                     as={Link}
                     href={"/edit"}
-                    mt={2}
-                    fontWeight={"normal"}
+                    mt={5}
+                    fontWeight={"bold"}
                     bg="green.800"
                     _hover={{ bg: "green.700", textDecoration: "none" }}
                     color="white"
+                    w={{md:"150px"}}
                 >
                     編集
                 </Button>
                 <Button
                     onClick={() => { onOpen() }}
-                    mt={2}
-                    fontWeight={"normal"}
+                    mt={5}
+                    fontWeight={"bold"}
                     bg="green.800"
                     _hover={{ bg: "green.700", textDecoration: "none" }}
                     color="white"
+                    w={{ md: "150px" }}
                 >
                     削除
                 </Button>

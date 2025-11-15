@@ -12,7 +12,7 @@ const ForgotPassword = ({ status }: { status?: string }) => {
 
     return (
         <Box maxW="md" mx="auto" mt={10} p={6} borderWidth={1} rounded="md">
-            <Heading size="lg" mb={4}>パスワード再設定</Heading>
+            <Heading size="lg" mb={4} color={"#4D4D4F"}>パスワード再設定</Heading>
             <Text mb={4}>
                 登録したメールアドレスを入力してください。<br />
                 パスワード再設定用リンクを送信します。

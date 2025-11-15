@@ -34,7 +34,7 @@ const FarmRatingGraph = ({ reviews }: FarmRatingGraphProps) => {
     return (
         <HStack align="flex-start" spacing={8} mt={4} mb={6}>
             <VStack align="flex-start">
-                <Text fontSize="6xl" fontWeight="bold" lineHeight="1">{avg.toFixed(1)}</Text>
+                <Text color={"#4D4D4F"} fontSize="6xl" fontWeight="bold" lineHeight="1">{avg.toFixed(1)}</Text>
                 <HStack>
                     {Array(5)
                         .fill(0)

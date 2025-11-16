@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\FarmController;
 use App\Http\Controllers\ReviewController;
@@ -34,5 +35,11 @@ Route::middleware(['auth'])->group(function () {
     //プロフィール
     Route::get('/profile', [RegisteredUserController::class, 'index'])->name('profile');
 });
+
+Route::prefix('admin')->middleware(['auth', ])->group(
+    function () {
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+    }
+);
 
 require __DIR__ . '/auth.php';

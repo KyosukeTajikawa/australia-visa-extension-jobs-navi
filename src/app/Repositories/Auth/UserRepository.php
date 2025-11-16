@@ -28,9 +28,9 @@ class UserRepository implements UserRepositoryInterface
      * ユーザー情報取得
      * @return User
      */
-    public function getUser(): User
+    public function getUser(array $relation = []): User
     {
-        return User::findOrFail(auth()->id());
+        return User::with($relation)->findOrFail(auth()->id());
     }
 
     /**

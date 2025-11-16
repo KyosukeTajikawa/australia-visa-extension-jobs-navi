@@ -1,7 +1,9 @@
 import React from "react";
 import MainLayout from "@/Layouts/MainLayout";
 import { Box, Heading, Text, VStack, Button, Image, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, useDisclosure } from "@chakra-ui/react";
+import { Icon } from '@chakra-ui/icons';
 import { Link, router } from "@inertiajs/react";
+import { FaUserCircle } from "react-icons/fa";
 
 type UserImage = {
     id: number;
@@ -12,17 +14,17 @@ type UserImage = {
 type User = {
     id: number;
     nickname: string;
+    email: string;
     gender: number | null;
     birthday?: string | "";
-    email: string;
+    image: UserImage | null;
 };
 
 type ProfileProps = {
     user: User;
-    user_image: UserImage | null;
 }
 
-const Profile = ({ user, user_image }: ProfileProps) => {
+const Profile = ({ user }: ProfileProps) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const cancelRef = React.useRef<HTMLButtonElement>(null)
 
@@ -60,7 +62,7 @@ const Profile = ({ user, user_image }: ProfileProps) => {
             <VStack fontSize={"20px"} mx={"auto"}>
                 <Heading as={"h3"} mb={4} fontWeight={"bold"} fontSize={{ base: "18px", md: "24px" }} color={"gray.600"}>プロフィール</Heading>
                 <Box>
-                    <Image src={user_image?.url ?? "/images/default_avatar.png"}
+                    <Image src={user.image?.url ?? ""} fallback={<Icon as={FaUserCircle} w={{ base: "120px", lg: "200px" }} h={{ base: "120px", lg: "200px" }} color={"gray.500"} />}
                         w={{ base: "120px", lg: "200px" }} h={{ base: "120px", lg: "200px" }}
                         objectFit={"cover"} borderRadius={"full"}
                         onError={(e) => {

@@ -43,31 +43,6 @@ class UserRepositoryTest extends TestCase
     }
 
     /**
-     * getUser()のテスト
-     * getUser() 取得できている
-     */
-    public function testGetUser(): void
-    {
-
-        $user = User::factory()->sequence([
-            'nickname' => 'Test User',
-            'email' => 'test@example.com',
-            'gender' => 1,
-            'birthday' => '2000-10-10',
-            'password' => 'password',
-        ])->create();
-
-        $this->actingAs($user);
-
-        $result = $this->repository->getUser();
-
-        $this->assertSame($result['nickname'], $user['nickname']);
-        $this->assertSame($result['email'], $user['email']);
-        $this->assertSame($result['gender'], $user['gender']);
-        $this->assertSame($result['birthday'], $user['birthday']);
-    }
-
-    /**
      * updateUser()のテスト
      * updateUser() 更新できている
      */

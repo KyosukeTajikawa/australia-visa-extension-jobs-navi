@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminDashboardController;
-use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\AdminFarmController;
+use App\Http\Controllers\Admin\AdminReviewController;
+use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\FarmController;
 use App\Http\Controllers\ReviewController;
@@ -37,11 +39,23 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [RegisteredUserController::class, 'index'])->name('profile');
 });
 
-Route::prefix('admin')->middleware(['auth', ])->group(
+Route::prefix('admin')->middleware(['auth',])->group(
     function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-        Route::get('/user', [UserController::class, 'index'])->name('user');
-        Route::get('/user/{id}', [UserController::class, 'detail'])->name('user.detail');
+
+        //ユーザー
+        Route::get('/user', [AdminUserController::class, 'index'])->name('user');
+        Route::get('/user/{id}', [AdminUserController::class, 'detail'])->name('user.detail');
+
+        // ファーム
+        Route::get('/farm/{id}/edit', [AdminFarmController::class, 'edit'])->name('admin.farm.edit');
+        Route::put('/farm/{id}/update', [AdminFarmController::class, 'update'])->name('admin.farm.update');
+        Route::delete('/farm/{id}/destroy', [AdminFarmController::class, 'destroy'])->name('admin.farm.destroy');
+
+        //レビュー
+        Route::get('/review/{id}/edit', [AdminReviewController::class, 'edit'])->name('admin.review.edit');
+        Route::put('/review/{id}/update', [AdminReviewController::class, 'update'])->name('admin.review.update');
+        Route::delete('/review/{id}/destroy', [AdminReviewController::class, 'destroy'])->name('admin.review.destroy');
     }
 );
 

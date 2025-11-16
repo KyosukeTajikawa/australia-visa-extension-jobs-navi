@@ -7,7 +7,7 @@ use App\Models\User;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class UserController extends Controller
+class AdminUserController extends Controller
 {
     /**
      * ユーザー一覧ページを表示
@@ -28,7 +28,7 @@ class UserController extends Controller
     public function detail(int $id): Response
     {
 
-        $user = User::with(['farms', 'userReviews.farm'])->findOrFail($id);
+        $user = User::with(['image', 'farms', 'userReviews.farm'])->findOrFail($id);
 
         return Inertia::render('Admin/Detail', [
             'user' => $user,

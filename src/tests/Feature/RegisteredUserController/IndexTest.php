@@ -38,9 +38,9 @@ class IndexTest extends TestCase
                 ->component('Auth/Profile')
                 ->where('user.id', $user->id)
                 ->where('user.nickname', $user->nickname)
-                ->where('user_image.user_id', $user->id)
-                ->where('user_image.url', $userImage->url)
-                ->where('user_image.path', $userImage->path)
+                ->where('user.image.user_id', $user->id)
+                ->where('user.image.url', $userImage->url)
+                ->where('user.image.path', $userImage->path)
         );
     }
 

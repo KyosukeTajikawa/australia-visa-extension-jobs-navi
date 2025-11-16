@@ -18,16 +18,6 @@ class UserImageRepository implements UserImageRepositoryInterface
     }
 
     /**
-     * ユーザー画像取得
-     * @param User $user
-     * @return UserImage
-     */
-    public function getImage(User $user): UserImage
-    {
-        return UserImage::where('user_id', $user->id)->first();
-    }
-
-    /**
      * ユーザー画像更新
      * @param array $imageData
      * @param UserImage $previousImage

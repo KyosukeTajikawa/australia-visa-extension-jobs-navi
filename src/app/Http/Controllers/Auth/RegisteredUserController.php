@@ -28,12 +28,10 @@ class RegisteredUserController extends Controller
      */
     public function index(): Response
     {
-        $user = $this->userRepository->getUser();
-        $userImage = $this->userImageRepository->getImage($user);
+        $user = $this->userRepository->getUser(['image']);
 
         return Inertia::render('Auth/Profile', [
             'user' => $user,
-            'user_image' => $userImage,
         ]);
     }
 

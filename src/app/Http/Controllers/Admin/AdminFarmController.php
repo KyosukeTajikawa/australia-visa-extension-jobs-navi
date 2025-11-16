@@ -76,8 +76,7 @@ class AdminFarmController extends Controller
      */
     public function destroy(int $id): RedirectResponse
     {
-        $farm = Farm::with(['images', 'reviews.reviewComments', 'reviews.favoritedUsers'])
-            ->findOrFail($id);
+        $farm = Farm::with(['images', 'reviews.reviewComments', 'reviews.favoritedUsers'])->findOrFail($id);
 
         $createdUserId = $farm->created_user_id;
 

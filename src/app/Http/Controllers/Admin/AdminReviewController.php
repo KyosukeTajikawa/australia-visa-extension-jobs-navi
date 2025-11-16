@@ -45,10 +45,10 @@ class AdminReviewController extends Controller
         ]);
     }
 
-
     /**
      * レビュー編集
-     * @param $id
+     * @param ReviewStoreRequest $request
+     * @param  int $id
      * @return RedirectResponse
      */
     public function update(ReviewStoreRequest $request, int $id): RedirectResponse
@@ -65,5 +65,23 @@ class AdminReviewController extends Controller
         return redirect()->route('user.detail', [
             'id' => $review->user_id,
         ]);
+    }
+
+    /**
+     * レビューの削除
+     * @param int $id
+     * @return RedirectResponse
+     */
+    public function destroy(int $id): RedirectResponse
+    {
+        $review = Review::with(['reviewComments', 'favoritedUsers'])->findOrFail($id);
+
+        $review->favoritedUsers()->detach();
+
+        $review->reviewComments()->delete();
+
+        $review->delete();
+
+        return redirect()->route('user.detail', ['id' => $review->user_id]);
     }
 }

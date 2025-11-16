@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Heading, Text, SimpleGrid, Flex, Stack, HStack, Divider, Badge, } from "@chakra-ui/react";
+import { Box, Heading, Text, SimpleGrid, Flex, Stack, HStack, Divider, Badge, Link, Button } from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
 import MainLayout from "@/Layouts/MainLayout";
 
@@ -94,7 +94,7 @@ const Dashboard = ({ farmCount, reviewCount, userCount, latestFarms, latestRevie
                         >
                             <Text>{farm.name}</Text>
                             <Text color="gray.500">
-                                {formatDate(farm.created_at)}
+                                {new Date(farm.created_at).toLocaleDateString("ja-JP")}
                             </Text>
                         </Flex>
                     ))}
@@ -125,7 +125,7 @@ const Dashboard = ({ farmCount, reviewCount, userCount, latestFarms, latestRevie
                                         ID: {review.id} / {review.farm.name}
                                     </Text>
                                     <Text fontSize="xs" color="gray.500">
-                                        {formatDate(review.created_at)}
+                                        {new Date(review.created_at).toLocaleDateString("ja-JP")}
                                     </Text>
                                 </Flex>
 
@@ -148,6 +148,22 @@ const Dashboard = ({ farmCount, reviewCount, userCount, latestFarms, latestRevie
                             </Box>
                         );
                     })}
+                    <Flex justifyContent={"center"}>
+                    <Button
+                        as={Link}
+                        href={"user"}
+                        mt={2}
+                        fontWeight="normal"
+                        bg="green.800"
+                        _hover={{ bg: "green.700", textDecoration: "none" }}
+                        color="white"
+                        py={2}
+                        borderRadius="md"
+                        w={{md:"200px"}}
+                        >
+                        詳しく見る
+                    </Button>
+                        </Flex>
                 </Stack>
             </Box>
         </Box>

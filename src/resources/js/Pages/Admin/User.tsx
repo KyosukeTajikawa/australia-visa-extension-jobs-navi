@@ -1,14 +1,5 @@
 import React from "react";
-import {
-    Box,
-    Heading,
-    Text,
-    Flex,
-    Stack,
-    HStack,
-    Badge,
-    Link,
-} from "@chakra-ui/react";
+import { Box, Heading, Text, Flex, Stack, HStack, Badge, Link, } from "@chakra-ui/react";
 import MainLayout from "@/Layouts/MainLayout";
 
 // ------- 型定義 -------
@@ -25,7 +16,7 @@ type Review = {
     created_at: string;
 };
 
-type UserSummary = {
+type User = {
     id: number;
     name: string;
     email: string;
@@ -35,7 +26,7 @@ type UserSummary = {
 };
 
 type UserListProps = {
-    users: UserSummary[];
+    users: User[];
 };
 
 // ------- コンポーネント本体 -------
@@ -89,7 +80,7 @@ const UserList = ({ users }: UserListProps) => {
                     {users.map((user) => (
                         <Link
                             key={user.id}
-                            href={`/admin/users/${user.id}`}
+                            href={`/admin/user/${user.id}`}
                             _hover={{ textDecoration: "none" }}
                         >
                             <Flex
@@ -125,7 +116,7 @@ const UserList = ({ users }: UserListProps) => {
                                 </Box>
 
                                 {/* 登録日 */}
-                                <Box flex="1" textAlign="right" display={{base:"none", md:"block"}}>
+                                <Box flex="1" textAlign="right" display={{ base: "none", md: "block" }}>
                                     <Text color="gray.500">
                                         {new Date(user.created_at).toLocaleDateString("ja-JP")}
                                     </Text>

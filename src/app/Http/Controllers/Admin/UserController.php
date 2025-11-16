@@ -21,4 +21,17 @@ class UserController extends Controller
             'users' => $users,
         ]);
     }
+
+    /**
+     * ユーザー詳細ページを表示
+     */
+    public function detail(int $id): Response
+    {
+
+        $user = User::with(['farms', 'userReviews.farm'])->findOrFail($id);
+
+        return Inertia::render('Admin/Detail', [
+            'user' => $user,
+        ]);
+    }
 }

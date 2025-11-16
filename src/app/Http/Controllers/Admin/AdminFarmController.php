@@ -9,7 +9,6 @@ use App\Repositories\Farms\FarmRepositoryInterface;
 use App\Repositories\StateRepositoryInterface;
 use App\Services\FarmServiceInterface;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -30,7 +29,7 @@ class AdminFarmController extends Controller
     ) {}
 
     /**
-     * ファーム新規作成のページを表示
+     * ファーム編集ページを表示
      * @param $id
      * @return Response
      */
@@ -50,8 +49,9 @@ class AdminFarmController extends Controller
     }
 
     /**
-     * ファームの新規登録
+     * ファームの編集
      * @param FarmStoreRequest $request
+     * @param int $int
      * @return RedirectResponse
      */
     public function update(FarmStoreRequest $request, int $id): RedirectResponse
@@ -69,32 +69,31 @@ class AdminFarmController extends Controller
         ]);
     }
 
-    public function destroy($id)
+    /**
+     * ファームの削除
+     * @param int $id
+     * @return RedirectResponse
+     */
+    public function destroy(int $id): RedirectResponse
     {
         $farm = Farm::with(['images', 'reviews.reviewComments', 'reviews.favoritedUsers'])
             ->findOrFail($id);
 
         $createdUserId = $farm->created_user_id;
 
-        // 画像削除
         foreach ($farm->images as $image) {
             Storage::disk('s3')->delete($image->path);
             $image->delete();
         }
 
-        // レビュー関連削除
         foreach ($farm->reviews as $review) {
-            // お気に入り（中間テーブル）削除
             $review->favoritedUsers()->detach();
 
-            // コメント削除
             $review->reviewComments()->delete();
 
-            // レビュー本体削除
             $review->delete();
         }
 
-        // ファーム削除
         $farm->delete();
 
         return redirect()->route('user.detail', ['id' => $createdUserId]);

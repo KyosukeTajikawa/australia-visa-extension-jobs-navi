@@ -109,7 +109,7 @@ class FarmController extends Controller
     }
 
     /**
-     * ファーム新規作成のページを表示
+     * ファーム編集ページを表示
      * @param $id
      * @return Response
      */
@@ -129,8 +129,9 @@ class FarmController extends Controller
     }
 
     /**
-     * ファームの新規登録
+     * ファームの編集
      * @param FarmStoreRequest $request
+     * @param int $id
      * @return RedirectResponse
      */
     public function update(FarmStoreRequest $request, int $id): RedirectResponse

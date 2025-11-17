@@ -41,7 +41,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [RegisteredUserController::class, 'index'])->name('profile');
 });
 
-Route::prefix('admin')->middleware(['auth',])->group(
+Route::prefix('admin')->middleware(['auth', 'admin'])->group(
     function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 

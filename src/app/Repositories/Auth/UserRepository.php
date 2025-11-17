@@ -48,7 +48,7 @@ class UserRepository implements UserRepositoryInterface
     }
 
     /**
-     * ユーザー画像削除
+     * ユーザー画像取得
      * @param int $id
      * @return UserImage
      */

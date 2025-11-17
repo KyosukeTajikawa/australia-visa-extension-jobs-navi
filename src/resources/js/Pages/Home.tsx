@@ -28,8 +28,16 @@ type Farm = {
     crops: Crops[];
 };
 
+type PaginateFarm = {
+    data: Farm[];
+    current_page: number;
+    last_page: number;
+    next_page_url: string | null;
+    prev_page_url: string | null;
+}
+
 type HomeProps = {
-    farms: Farm[];
+    farms: PaginateFarm;
     states: States[];
     keyword: string;
     stateName: string;
@@ -39,7 +47,7 @@ const Home = ({ farms, states, keyword, stateName }: HomeProps) => {
     const [searchKeyword, setSearchKeyword] = useState(keyword ?? "");
     const [searchStateName, setSearchStateName] = useState(stateName ?? "");
 
-    const farmItems = farms.map((farm) => (
+    const farmItems = farms.data.map((farm) => (
         <Box
             key={farm.id}
             p={4}
@@ -122,7 +130,7 @@ const Home = ({ farms, states, keyword, stateName }: HomeProps) => {
 
     return (
         <Box>
-            <Box bg="#FAF7F0">
+            <Box bg={"#FAF7F0"}>
                 <Box
                     px={15}
                     py={30}
@@ -156,13 +164,6 @@ const Home = ({ farms, states, keyword, stateName }: HomeProps) => {
                             value={searchKeyword}
                             placeholder="検索..."
                             onChange={(e) => setSearchKeyword(e.target.value)}
-                            sx={{
-                                '::placeholder': {
-                                    color: 'green.800',
-                                    opacity: 0.8,
-                                },
-                                color: 'green.800',
-                            }}
                         />
                         <HStack>
                             <Select
@@ -174,11 +175,6 @@ const Home = ({ farms, states, keyword, stateName }: HomeProps) => {
                                 size="md"
                                 w={"80%"}
                                 mr={5}
-                                sx={{
-                                    '&[data-placeholder]': {
-                                        color: 'green.800',
-                                    },
-                                }}
                             >
                                 <option>
                                     州を選択（任意）
@@ -213,6 +209,33 @@ const Home = ({ farms, states, keyword, stateName }: HomeProps) => {
             >
                 {farmItems}
             </Flex>
+            <Box
+                justifyContent={"center"}
+                display={"flex"}
+                mb={4}
+            >
+                {farms.prev_page_url && (
+                    <Text
+                        as={Link}
+                        href={farms.prev_page_url}
+                    >
+                        前へ
+                    </Text>
+                )}
+                <Text
+                    mx={5}
+                >
+                    {farms.current_page} / {farms.last_page}
+                </Text>
+                {farms.next_page_url && (
+                    <Text
+                        as={Link}
+                        href={farms.next_page_url}
+                    >
+                        次へ
+                    </Text>
+                )}
+            </Box>
         </Box >
     );
 };

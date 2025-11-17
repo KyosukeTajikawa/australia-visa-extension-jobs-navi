@@ -84,7 +84,7 @@ const Create = ({ states, crops }: CreateProps) => {
     };
 
     return (
-        <Box m={2} w={"90%"}>
+        <Box my={2} w={{ base: "80%", xl: "1280px" }} mx={"auto"}>
             <Heading as={"h4"} mb={4}>ファーム新規登録</Heading>
             <form onSubmit={handleSubmit} encType="multipart/form-data">
                 {/* ファーム名 */}
@@ -210,7 +210,7 @@ const Create = ({ states, crops }: CreateProps) => {
                 </FormControl>
 
                 {/* ボタン */}
-                <Button type="submit" colorScheme="green" isLoading={processing}>登録</Button>
+                <Button type="submit" bg={"green.800"} _hover={{ bg: "green.700" }} color={"white"} isLoading={processing}>登録</Button>
             </form>
         </Box>
     );

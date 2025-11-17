@@ -24,9 +24,10 @@ interface ReviewRepositoryInterface
 
     /**
      * お気に入りレビューを取得
+     * @param array $relations
      * @return collection
      */
-    public function getFavoriteReviews(): collection;
+    public function getFavoriteReviews(array $relations = []): collection;
 
     /**
      * お気に入りレビューを登録

@@ -40,9 +40,9 @@ class IndexTest extends TestCase
         $response->assertInertia(
             fn(Assert $page) => $page
                 ->component('Home')
-                ->has('farms', 2)
+                ->has('farms.data', 2)
                 ->has(
-                    'farms.0',
+                    'farms.data.0',
                     fn(Assert $farm) => $farm
                         ->hasAll(['id', 'name'])
                         //imagesが1枚しかない。2枚目以降存在する場合はエラーになる。
@@ -61,14 +61,14 @@ class IndexTest extends TestCase
     public function testIndexFarmsWithSearch(): void
     {
         $user = User::factory()->create();
-        $state =  State::factory()->sequence(['id' => 10, 'name' => 'QLD'], ['id' => 50, 'name' => 'TAS'])->count(2)->create();
+        State::factory()->sequence(['id' => 10, 'name' => 'QLD'], ['id' => 50, 'name' => 'TAS'])->count(2)->create();
 
-        $farms = Farm::factory()
-            ->sequence(
-                ['id' => 5, 'name' => '松田', 'state_id' => 10],
-                ['id' => 125, 'name' => 'sunRipe', 'state_id' => 50]
+        Farm::factory()
+        ->count(2)
+        ->sequence(
+            ['id' => 5, 'name' => '松田', 'state_id' => 10],
+            ['id' => 125, 'name' => 'sunRipe', 'state_id' => 50]
             )
-            ->count(2)
             ->for($user, 'user')
             ->create();
 
@@ -80,9 +80,9 @@ class IndexTest extends TestCase
         $response->assertInertia(
             fn(Assert $page) => $page
                 ->component('Home')
-                ->has('farms', 2)
-                ->where('farms.0.id', 5)
-                ->where('farms.1.id', 125)
+                ->has('farms.data', 2)
+                ->where('farms.data.0.id', 5)
+                ->where('farms.data.1.id', 125)
         );
     }
 
@@ -96,7 +96,7 @@ class IndexTest extends TestCase
             ->assertInertia(
                 fn(Assert $page) => $page
                     ->component('Home')
-                    ->has('farms', 0)
+                    ->has('farms.data', 0)
             );
     }
 }

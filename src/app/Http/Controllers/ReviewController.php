@@ -54,7 +54,7 @@ class ReviewController extends Controller
      */
     public function favorites(): Response
     {
-        $reviews = $this->reviewRepository->getFavoriteReviews();
+        $reviews = $this->reviewRepository->getFavoriteReviews(['farm']);
 
         return Inertia::render('Review/FavoriteReview', [
             'reviews' => $reviews,

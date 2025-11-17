@@ -3,6 +3,7 @@
 namespace App\Repositories\Auth;
 
 use App\Models\User;
+use App\Models\UserImage;
 use Illuminate\Database\Eloquent\Collection;
 
 interface UserRepositoryInterface
@@ -27,6 +28,13 @@ interface UserRepositoryInterface
      * @return User
      */
     public function updateUser(array $validated, User $previousUser): User;
+
+    /**
+     * ユーザー画像削除
+     * @param int $id
+     * @return UserImage
+     */
+    public function getImage(int $id): UserImage;
 
     /**
      * ユーザー削除

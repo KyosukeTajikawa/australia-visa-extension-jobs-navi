@@ -1,7 +1,7 @@
 import React from "react";
 import MainLayout from "@/Layouts/MainLayout";
 import { Box, Heading, Text, HStack, FormControl, FormLabel, FormErrorMessage, Input, Button, RadioGroup, Radio } from "@chakra-ui/react";
-import { useForm } from "@inertiajs/react";
+import { useForm, router } from "@inertiajs/react";
 
 type FormData = {
     _method: string;
@@ -18,6 +18,7 @@ type User = {
     email: string;
     gender: number | null;
     birthday?: string | null;
+    image?: {id: number;} | null;
 }
 
 type UserProps = {
@@ -148,8 +149,13 @@ const Edit = ({ user }: UserProps) => {
                 <Box mt="4"
                     display={"flex"}
                     alignItems={"center"}
-                    justifyContent={"flex-end"}
+                    justifyContent={"space-between"}
                 >
+                    {user?.image && (
+                        <Button onClick={() => router.delete(route("user.image.destroy", { id: user.id }))}>
+                            前回登録の画像削除
+                        </Button>
+                    )}
                     <Button
                         type="submit"
                         ml="4"

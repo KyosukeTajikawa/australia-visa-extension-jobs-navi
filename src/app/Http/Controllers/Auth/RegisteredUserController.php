@@ -10,6 +10,7 @@ use App\Repositories\Auth\UserRepositoryInterface;
 use App\Services\UserServiceInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -66,7 +67,7 @@ class RegisteredUserController extends Controller
      */
     public function edit(): Response
     {
-        $user = auth()->user();
+        $user = auth()->user()->load('image');
 
         return Inertia::render('Auth/Edit', [
             'user' => $user,
@@ -86,6 +87,21 @@ class RegisteredUserController extends Controller
         $user = $this->userService->update($validated, $file);
 
         return redirect()->route('profile');
+    }
+
+    /**
+     * ユーザー画像を削除
+     * @param int $id
+     * @return RedirectResponse
+     */
+    public function imageDestroy(int $id): RedirectResponse
+    {
+        $image = $this->userRepository->getImage($id);
+
+            Storage::disk('s3')->delete($image->path);
+            $image->delete();
+
+            return redirect()->route('profile');
     }
 
     /**

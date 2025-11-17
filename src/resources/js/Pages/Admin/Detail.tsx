@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Heading, Text, Flex, Stack, HStack, Image, Badge, Button, Divider, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, useDisclosure, Icon } from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
-import { router } from "@inertiajs/react";
+import { router, Link } from "@inertiajs/react";
 import MainLayout from "@/Layouts/MainLayout";
 import { FaUserCircle } from "react-icons/fa";
 
@@ -137,8 +137,21 @@ const Detail: React.FC<Props> = ({ user }) => {
                     </AlertDialogContent>
                 </AlertDialogOverlay>
             </AlertDialog>
+            <Flex justifyContent={"space-between"} >
+                <Heading mb={6}>ユーザー詳細</Heading>
+                <Button
+                    as={Link}
+                    href={"/admin/user"}
+                    fontWeight={"bold"}
+                    bg="green.800"
+                    _hover={{ bg: "green.700", textDecoration: "none" }}
+                    color="white"
+                    w={{ md: "150px" }}
+                >
+                    戻る
+                </Button>
 
-            <Heading mb={6}>ユーザー詳細</Heading>
+            </Flex>
 
             {/* --------------- ユーザー情報 --------------- */}
             <Box

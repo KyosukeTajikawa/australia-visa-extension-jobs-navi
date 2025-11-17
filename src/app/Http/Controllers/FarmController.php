@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Farms\FarmStoreRequest;
 use App\Repositories\Farms\FarmRepositoryInterface;
 use App\Repositories\StateRepositoryInterface;
+use App\Services\FarmImagesServiceInterface;
 use App\Services\FarmServiceInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -24,7 +25,8 @@ class FarmController extends Controller
     public function __construct(
         private readonly FarmRepositoryInterface $farmRepository,
         private readonly StateRepositoryInterface $stateRepository,
-        private readonly FarmServiceInterface $farmService
+        private readonly FarmServiceInterface $farmService,
+        private readonly FarmImagesServiceInterface $farmImageService
     ) {}
 
     /**
@@ -162,6 +164,20 @@ class FarmController extends Controller
 
         return Inertia::render('Farm/MyFarms', [
             'farms' => $farms,
+        ]);
+    }
+
+    /**
+     * ファーム画像を削除
+     * @param int $id
+     * @return RedirectResponse
+     */
+    public function destroy(int $id): RedirectResponse
+    {
+        $this->farmImageService->destroy($id);
+
+        return redirect()->route('farm.detail', [
+            'id' => $id,
         ]);
     }
 }

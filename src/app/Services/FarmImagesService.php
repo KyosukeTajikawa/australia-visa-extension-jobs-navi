@@ -89,4 +89,18 @@ class FarmImagesService implements FarmImagesServiceInterface
 
         $this->farmImageRepository->bulkInsert($insertValues);
     }
+
+    /**
+     * ファーム画像を削除
+     * @param int $id
+     */
+    public function destroy(int $id): void
+    {
+        $farmImages = $this->farmImageRepository->getByFarmId($id);
+
+        foreach ($farmImages as $image) {
+            Storage::disk('s3')->delete($image->path);
+            $image->delete();
+        }
+    }
 }

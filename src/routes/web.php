@@ -26,6 +26,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/farm/{id}', [FarmController::class, 'detail'])->name('farm.detail');
     Route::get('/farm/{id}/edit', [FarmController::class, 'edit'])->name('farm.edit');
     Route::put('/farm/{id}/update', [FarmController::class, 'update'])->name('farm.update');
+    Route::delete('/farm/{id}/destroy', [FarmController::class, 'destroy'])->name('farm.image.destroy');
+
 
     //レビュー
     Route::get('/farm/{id}/review/create', [ReviewController::class, 'create'])->name('review.create');

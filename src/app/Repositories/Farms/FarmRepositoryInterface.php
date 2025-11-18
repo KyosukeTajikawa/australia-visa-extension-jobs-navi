@@ -46,4 +46,19 @@ interface FarmRepositoryInterface
      * @param array $cropData
      */
     public function registerFarmCrops(Farm $farm, array $cropData): void;
+
+    /**
+     * ファームを登録
+     * @param array $farmData
+     * @param Farm $previousFarm
+     * @return Farm 登録後のモデルインスタンス
+     */
+    public function registerFarmAgain(array $farmData, Farm $previousFarm): Farm;
+
+    /**
+     * ログインユーザーのファーム一覧を取得
+     * @param int $userId
+     * @return Collection
+     */
+    public function getMyFarms(int $userId): Collection;
 }

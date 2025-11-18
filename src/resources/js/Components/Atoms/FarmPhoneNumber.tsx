@@ -7,9 +7,7 @@ type FarmPhoneNumberProps = {
 
 const FarmPhoneNumber = ({ phone_number }: FarmPhoneNumberProps) => {
     return (
-        <Text mb={1}>
-            電話番号：{phone_number ? phone_number : "登録なし"}
-        </Text>
+        <Text mb={1}>電話番号：{phone_number}</Text>
     );
 };
 

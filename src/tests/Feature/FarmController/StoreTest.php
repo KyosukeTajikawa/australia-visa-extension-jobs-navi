@@ -13,7 +13,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Ramsey\Uuid\Uuid;
 use Tests\TestCase;
 use Illuminate\Support\Str;
 
@@ -30,6 +29,7 @@ class StoreTest extends TestCase
      */
     public function testStoreWithFileSuccess(): void
     {
+        //VerifyCsrfToken ミドルウェアを無効
         $this->withoutMiddleware(VerifyCsrfToken::class);
 
         //fakeデータの作成
@@ -64,7 +64,7 @@ class StoreTest extends TestCase
         $response->assertStatus(302);
         //ここまででエラーがないことを想定
         $response->assertSessionHasNoErrors();
-        //findorfailでidを取得できないのでfirstorfailにてlimit=1のように登録された$postを取得
+        //findOrFailでidを取得できないのでfirstOrFailにてlimit=1のように登録された$postを取得
         $farm = Farm::firstOrFail();
 
         //Farm_images_tableから画像を取得
@@ -92,8 +92,6 @@ class StoreTest extends TestCase
 
         //リダイレクトされるか確認
         $response->assertRedirect(route('farm.detail', ['id' => $farm->id]));
-        //Uuid::fromStringをリセット
-        Str::createUuidsNormally();
     }
 
     /**

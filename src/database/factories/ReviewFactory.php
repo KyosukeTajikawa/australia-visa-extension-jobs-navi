@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\ApplicationMethod;
 use App\Models\Farm;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -25,11 +26,8 @@ class ReviewFactory extends Factory
             'is_car_required' => fake()->numberBetween(1, 2),
             'start_date' => fake()->date(),
             'end_date' => fake()->date(),
-            'work_rating' => fake()->numberBetween(1, 5),
-            'salary_rating' => fake()->numberBetween(1, 5),
-            'hour_rating' => fake()->numberBetween(1, 5),
-            'relation_rating' => fake()->numberBetween(1, 5),
-            'overall_rating' => fake()->numberBetween(1, 5),
+            'application_method_id' => ApplicationMethod::factory(),
+            'farm_rating' => fake()->numberBetween(1, 5),
             'comment' => fake()->realText(100),
             'user_id' => User::factory(),
             'farm_id' => Farm::factory(),

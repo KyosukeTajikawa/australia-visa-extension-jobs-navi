@@ -5,27 +5,22 @@ import { LockIcon } from '@chakra-ui/icons';
 import { useForm, router } from "@inertiajs/react";
 import MainLayout from "@/Layouts/MainLayout";
 
-const Login = () => {
+    const Login = () => {
+        const { data, setData, post, processing, errors } = useForm({
+            email: "",
+            password: "",
+        });
 
-    const { data, setData, processing, errors } = useForm({
-        email: "",
-        password: "",
-    });
+        const handleSubmit = async (e: React.FormEvent) => {
+            e.preventDefault();
 
-    async function handleLogin(email: string, password: string) {
-        // 1. CSRF初期化
-        await axios.get('/sanctum/csrf-cookie');
+            // SanctumのCSRF初期化（必要なら最初の1回）
+            await axios.get("/sanctum/csrf-cookie");
 
-        // 2. ログイン
-        await axios.post('/login', { email, password });
-
-        router.visit("/home");
-    }
-
-    const handleSubmit = (ev: React.FormEvent) => {
-        ev.preventDefault();
-        handleLogin(data.email, data.password);
-    }
+            post("/login", {
+                preserveScroll: true,
+            });
+        };
 
 
     return (
@@ -88,7 +83,7 @@ const Login = () => {
                         onChange={(e) => setData("password", e.target.value)}
                     />
                     <FormErrorMessage>
-                        {errors.email}
+                        {errors.password}
                     </FormErrorMessage>
                 </FormControl>
                 <Button

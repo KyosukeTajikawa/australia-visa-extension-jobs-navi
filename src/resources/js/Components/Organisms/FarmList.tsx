@@ -40,9 +40,8 @@ const FarmList = ({ farm }: FarmListProps) => {
     return (
         <Box>
             <Box
-                w={{ base: "72%", md: "78%", xl: "1220px" }}
                 mx={"auto"}
-                px={4}
+                w={{ base: "90%", sm: "100%", md: "98%", xl: "95%" }}
                 fontSize={"20px"}
                 letterSpacing={1}
             >

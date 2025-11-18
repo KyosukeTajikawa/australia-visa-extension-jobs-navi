@@ -35,9 +35,9 @@ class FarmRepositoryTest extends TestCase
         $keyword = '';
         $stateName = '';
 
-        $data = $this->repository->getAllFarmsWithImageAndSearch($keyword, $stateName);
+        $farmData = $this->repository->getAllFarmsWithImageAndSearch($keyword, $stateName);
 
-        $result = $data['farms'];
+        $result = $farmData['farms'];
 
         $this->assertSame($farms->modelKeys(), $result->modelKeys());
         $this->assertCount(2, $result);
@@ -52,7 +52,7 @@ class FarmRepositoryTest extends TestCase
         State::factory()->sequence(['id' => 10, 'name' => 'QLD'])->create();
         $farm = Farm::factory()->sequence(['id' => 5, 'name' => '松田', 'state_id' => 10])->create();
 
-        $farmImage = $farm->images()->create(['farm_id' => 5, 'url' => 'test1.jpeg']);
+        $farmImage = $farm->images()->create(['farm_id' => 5, 'url' => 'test1.jpeg', 'path' => 'farm/1/test1.jpeg']);
 
 
         $keyword = '松田';
@@ -60,7 +60,7 @@ class FarmRepositoryTest extends TestCase
 
         $data = $this->repository->getAllFarmsWithImageAndSearch($keyword, $stateName);
 
-        $result =$data['farms'];
+        $result = $data['farms'];
 
 
         $this->assertCount(1, $result);
@@ -181,5 +181,88 @@ class FarmRepositoryTest extends TestCase
                 'crop_id' => $crop->id
             ]);
         }
+    }
+
+    /**
+     * registerFarmAgain()メソッドのテスト
+     * registerFarmAgain()が編集した値のみが変更されているか
+     */
+    public function testRegisterFarmAgain(): void
+    {
+        $state = State::factory()->create();
+        $user = User::factory()->create();
+
+        $previousFarm = [
+            'name' => 'A_farm',
+            'phone_number' => '0492845949',
+            'email' => 'test@gmail.com',
+            'street_address' => '2-4-5',
+            'suburb' => 'PlainLand',
+            'state_id' => $state->id,
+            'postcode' => '4000',
+            'description' => 'such a good farm',
+            'created_user_id' => $user->id,
+        ];
+
+        $farm = $this->repository->registerFarm($previousFarm);
+
+        $this->assertDatabaseHas('farms', [
+            'id'              => $farm->id,
+            'name'            => 'A_farm',
+            'state_id'        => $state->id,
+            'postcode'        => '4000',
+            'created_user_id' => $user->id,
+        ]);
+
+        $newFarm = [
+            'name' => 'B_farm',
+            'phone_number' => '',
+            'email' => 'test@gmail.com',
+            'street_address' => '2-4-5',
+            'suburb' => 'PlainLand',
+            'state_id' => $state->id,
+            'postcode' => '5000',
+            'description' => 'such a good farm',
+            'created_user_id' => $user->id,
+        ];
+
+        $this->repository->registerFarmAgain($newFarm, $farm);
+
+
+        $this->assertSame(1, Farm::count());
+
+        $this->assertDatabaseHas('farms', [
+            'id'              => $farm->id,
+            'name'            => 'B_farm',
+            'phone_number' => '',
+            'state_id'        => $state->id,
+            'postcode'        => '5000',
+            'created_user_id' => $user->id,
+        ]);
+    }
+
+    /**
+     * getMyFarms()メソッドのテスト
+     * getMyFarms()がログインユーザーが作成したファームを取得できている
+     */
+    public function testGetMyFarms(): void
+    {
+        $state = State::factory()->create();
+        $user = User::factory()->create();
+
+        $farm = Farm::factory()
+            ->for($state, 'state')
+            ->for($user, 'user')
+            ->create();
+
+        $farmImage = $farm->images()->create(['farm_id' => 5, 'url' => 'test1.jpeg', 'path' => 'farm/1/test1.jpeg']);
+
+        $result = $this->repository->getMyFarms($user->id);
+
+        $this->assertCount(1, $result);
+
+        $this->assertSame($user->id, $result->first()->created_user_id);
+        $this->assertSame($state->id, $result->first()->state_id);
+        $this->assertSame($farmImage->path, $result->first()->images->first()->path);
     }
 }

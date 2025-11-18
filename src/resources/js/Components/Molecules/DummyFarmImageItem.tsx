@@ -14,8 +14,8 @@ type DummyFarmImageItemProps = {
 const DummyFarmImageItem = ({ farm }: DummyFarmImageItemProps) => {
     return (
         <Box
-            p={4}
-            w={{ base: "90%", md: "48%", xl: "45%" }}
+            pb={8}
+            w={{ base: "90%", sm: "100%", md: "48%", xl: "45%" }}
             mx={"auto"}
         >
             <DummyFarmImage name={farm.name} />

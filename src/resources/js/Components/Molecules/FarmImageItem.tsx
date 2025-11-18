@@ -22,8 +22,8 @@ type FarmImageItemProps = {
 const FarmImageItem = ({ farmImage, farm }: FarmImageItemProps) => {
     return (
         <Box
-            p={4}
-            w={{ base: "90%", md: "48%", xl: "45%" }}
+            pb={8}
+            w={{ base: "90%", sm:"100%", md: "48%", xl: "45%" }}
             mx={"auto"}
         >
             <FarmImage url={farmImage.url} name={farm.name} />

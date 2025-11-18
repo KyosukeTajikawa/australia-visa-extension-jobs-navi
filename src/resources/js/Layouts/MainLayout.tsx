@@ -68,6 +68,11 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                                     ファーム登録
                                 </MenuItem>
                                 <MenuItem
+                                    onClick={() => router.get("/farm/myFarms")}
+                                >
+                                    あなたのファーム
+                                </MenuItem>
+                                <MenuItem
                                     onClick={() => router.get("/review/favorites")}
                                 >
                                     お気に入りレビュー
@@ -125,6 +130,15 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                             pr={2}
                         >
                             ファーム登録
+                        </Text>
+                        <Text
+                            as={Link}
+                            color={"white"}
+                            _hover={{ opacity: 0.9 }}
+                            href={route("farm.myFarms")}
+                            pr={2}
+                        >
+                            あなたのファーム
                         </Text>
                         <Text
                             as={Link}

@@ -30,8 +30,8 @@ class IndexTest extends TestCase
             ->for($state, 'state')
             ->create();
 
-        $farms[0]->images()->create(['url' => 'test1.jpeg']);
-        $farms[1]->images()->create(['url' => 'test2.jpeg']);
+        $farms[0]->images()->create(['url' => 'test1.jpeg', 'path' => 'farm/1/test1.jpeg']);
+        $farms[1]->images()->create(['url' => 'test2.jpeg', 'path' => 'farm/2/test2.jpeg']);
 
         $response = $this->get('/home');
         //画面が開くか

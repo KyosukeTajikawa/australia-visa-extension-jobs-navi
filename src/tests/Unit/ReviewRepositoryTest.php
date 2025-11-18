@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\ApplicationMethod;
 use App\Models\Farm;
 use App\Models\Review;
 use App\Models\User;
@@ -42,7 +43,7 @@ class ReviewRepositoryTest extends TestCase
      */
     public function testRegisterReview(): void
     {
-
+        $ApplicationMethod = ApplicationMethod::factory()->create();
         $farm = Farm::factory()->create();
 
         $review = [
@@ -52,11 +53,9 @@ class ReviewRepositoryTest extends TestCase
             'is_car_required' => 2,
             'start_date' => '3999-12-31',
             'end_date' => null,
-            'work_rating' => 1,
-            'salary_rating' => 2,
-            'hour_rating' => 3,
-            'relation_rating' => 4,
-            'overall_rating' => 5,
+            'application_method_id' => $ApplicationMethod->id,
+            'application_method_other' => '',
+            'farm_rating' => 5,
             'comment' => 'this farm is great',
             'user_id' => $farm->created_user_id,
             'farm_id' => $farm->id,

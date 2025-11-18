@@ -71,8 +71,8 @@ class DetailTest extends TestCase
             ->has(Review::factory()->count(2), 'reviews')
             ->create();
 
-        $farm->images()->create(['url' => 'test1.jpeg']);
-        $farm->images()->create(['url' => 'test2.jpeg']);
+        $farm->images()->create(['url' => 'test1.jpeg', 'path' => 'farm/1/test1.jpeg']);
+        $farm->images()->create(['url' => 'test2.jpeg', 'path' => 'farm/2/test2.jpeg']);
 
         $farm->crops()->sync($crops->pluck('id')->toArray());
 

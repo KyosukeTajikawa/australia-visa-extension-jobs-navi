@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Reviews\ReviewStoreRequest;
+use App\Models\ApplicationMethod;
 use App\Models\Review;
 use App\Repositories\Reviews\ReviewRepositoryInterface;
 use Illuminate\Http\RedirectResponse;
@@ -27,8 +28,11 @@ class ReviewController extends Controller
     {
         $farm = $this->reviewRepository->getCreateById($id);
 
+        $applicationMethods = ApplicationMethod::orderBy('id')->get();
+
         return Inertia::render('Review/Create',[
             'farm' => $farm,
+            'applicationMethods' => $applicationMethods,
         ]);
     }
 
@@ -40,6 +44,7 @@ class ReviewController extends Controller
     public function store(ReviewStoreRequest $request): RedirectResponse
     {
         $validated = $request->validated();
+        $validated['user_id'] = auth()->id();
 
         $review = $this->reviewRepository->registerReview($validated);
 

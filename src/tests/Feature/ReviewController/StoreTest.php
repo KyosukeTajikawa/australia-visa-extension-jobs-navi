@@ -24,7 +24,7 @@ class StoreTest extends TestCase
      */
     public function testStore(): void
     {
-        $ApplicationMethod = ApplicationMethod::factory()->create();
+        $applicationMethod = ApplicationMethod::factory()->create();
         $user = User::factory()->create();
         $farm = Farm::factory()->create();
 
@@ -35,7 +35,7 @@ class StoreTest extends TestCase
             'is_car_required' => 2,
             'start_date' => '3999-12-31',
             'end_date' => null,
-            'application_method_id' => $ApplicationMethod->id,
+            'application_method_id' => $applicationMethod->id,
             'application_method_other' => '',
             'farm_rating' => 5,
             'comment' => 'this farm is great',

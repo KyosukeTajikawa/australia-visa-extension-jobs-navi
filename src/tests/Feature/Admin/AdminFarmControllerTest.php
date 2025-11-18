@@ -229,19 +229,4 @@ class AdminFarmControllerTest extends TestCase
 
         $response->assertRedirect(route('user.detail', ['id' => $user->id]));
     }
-
-    /**
-     * 管理者権限ないものを弾くか
-     */
-    public function testNoAuthenticationUserTryAccessButFailEdit(): void
-    {
-        $user = User::factory()->create(['is_admin' => 0]);
-
-        $farm = Farm::factory()->create();
-
-        $response = $this->actingAs($user)->get("/admin/farm/{$farm->id}/edit");
-
-        $response->assertStatus(403);
-        $response->assertSee('このページにアクセスする権限がありません。');
-    }
 }

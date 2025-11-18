@@ -76,12 +76,7 @@ class AdminDashboardControllerTest extends TestCase
     public function testNoAuthenticationUserTryAccessButFail(): void
     {
         $user = User::factory()->create(['is_admin' => 0]);
-        $state = State::factory()->create();
 
-        $farm = Farm::factory()
-            ->for($user, 'user')
-            ->for($state, 'state')
-            ->create();
 
         $response = $this->actingAs($user)->get('/admin/dashboard');
 

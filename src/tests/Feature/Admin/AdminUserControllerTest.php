@@ -56,28 +56,20 @@ class AdminUserControllerTest extends TestCase
      */
     public function testDetail(): void
     {
-        $users = User::factory()->count(6)->sequence(
-            ['nickname' => 'name1', 'email' => 'email1@email', 'is_admin' => 1],
-            ['nickname' => 'name2', 'email' => 'email2@email'],
-            ['nickname' => 'name3', 'email' => 'email3@email'],
-            ['nickname' => 'name4', 'email' => 'email4@email'],
-            ['nickname' => 'name5', 'email' => 'email5@email'],
-            ['nickname' => 'name6', 'email' => 'email6@email'],
-        )->create();
-        $firstUser = $users->first();
+        $users = User::factory()->create(['nickname' => 'name1', 'email' => 'email1@email', 'is_admin' => 1]);
 
         $state = State::factory()->create(['name' => 'NSW']);
 
-        $farms = Farm::factory()->for($firstUser, 'user')->create(['name' => 'Farm1', 'state_id' => $state->id],);
+        $farms = Farm::factory()->for($users, 'user')->create(['name' => 'Farm1', 'state_id' => $state->id],);
 
         Review::factory()
             ->for($farms, 'farm')
-            ->for($firstUser, 'reviewUser')
+            ->for($users, 'reviewUser')
             ->create();
 
-        UserImage::create(['user_id' => $firstUser->id, 'url' => 'url', 'path' => 'path']);
+        UserImage::create(['user_id' => $users->id, 'url' => 'url', 'path' => 'path']);
 
-        $response = $this->actingAs($firstUser)->get("/admin/user/{$firstUser->id}");
+        $response = $this->actingAs($users)->get("/admin/user/{$users->id}");
 
         $response->assertStatus(200);
 
@@ -98,12 +90,6 @@ class AdminUserControllerTest extends TestCase
     public function testNoAuthenticationUserTryAccessButFailIndex(): void
     {
         $user = User::factory()->create(['is_admin' => 0]);
-        $state = State::factory()->create();
-
-        $farm = Farm::factory()
-            ->for($user, 'user')
-            ->for($state, 'state')
-            ->create();
 
         $response = $this->actingAs($user)->get('/admin/user');
 
@@ -117,12 +103,6 @@ class AdminUserControllerTest extends TestCase
     public function testNoAuthenticationUserTryAccessButFailDetail(): void
     {
         $user = User::factory()->create(['is_admin' => 0]);
-        $state = State::factory()->create();
-
-        $farm = Farm::factory()
-            ->for($user, 'user')
-            ->for($state, 'state')
-            ->create();
 
         $response = $this->actingAs($user)->get("/admin/user/{$user->id}");
 

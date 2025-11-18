@@ -6,9 +6,8 @@ use App\Models\Farm;
 use App\Models\Review;
 use App\Models\State;
 use App\Models\User;
-use Inertia\Testing\AssertableInertia as Assert;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
 
 class AdminDashboardControllerTest extends TestCase
@@ -69,5 +68,24 @@ class AdminDashboardControllerTest extends TestCase
                 ->where('latestFarms.2.name', 'Farm3')
                 ->has('latestReviews', 5)
         );
+    }
+
+    /**
+     * 管理者権限ないものを弾くか
+     */
+    public function testNoAuthenticationUserTryAccessButFail(): void
+    {
+        $user = User::factory()->create(['is_admin' => 0]);
+        $state = State::factory()->create();
+
+        $farm = Farm::factory()
+            ->for($user, 'user')
+            ->for($state, 'state')
+            ->create();
+
+        $response = $this->actingAs($user)->get('/admin/dashboard');
+
+        $response->assertStatus(403);
+        $response->assertSee('このページにアクセスする権限がありません。');
     }
 }

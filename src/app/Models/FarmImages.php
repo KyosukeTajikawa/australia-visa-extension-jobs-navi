@@ -11,6 +11,7 @@ class FarmImages extends Model
     protected $fillable = [
         'farm_id',
         'url',
+        'path',
     ];
 
     /**
@@ -19,6 +20,6 @@ class FarmImages extends Model
      */
     public function farm(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Farm::class);
     }
 }

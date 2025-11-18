@@ -1,8 +1,9 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\FarmController;
 
 use App\Http\Requests\Farms\FarmStoreRequest;
+use App\Models\Crop;
 use App\Models\Farm;
 use App\Models\FarmImages;
 use App\Models\State;
@@ -12,7 +13,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Ramsey\Uuid\Uuid;
 use Tests\TestCase;
 use Illuminate\Support\Str;
 
@@ -29,11 +29,13 @@ class StoreTest extends TestCase
      */
     public function testStoreWithFileSuccess(): void
     {
+        //VerifyCsrfToken ミドルウェアを無効
         $this->withoutMiddleware(VerifyCsrfToken::class);
 
         //fakeデータの作成
         $user = User::factory()->create();
         $State = State::factory()->create();
+        $crops = Crop::factory()->count(3)->create();
 
         //fakeストレージ作成
         Storage::fake('s3');
@@ -48,7 +50,8 @@ class StoreTest extends TestCase
             'state_id'       => $State->id,
             'postcode'       => '4000',
             'description'    => 'such a good farm',
-            'files' => [UploadedFile::fake()->image('avatar.jpg')]
+            'files'          => [UploadedFile::fake()->image('avatar.jpg')],
+            'crop_ids'       => $crops->pluck('id')->toArray(),
         ];
 
         //ユーザーが$postをしたことを再現
@@ -61,7 +64,7 @@ class StoreTest extends TestCase
         $response->assertStatus(302);
         //ここまででエラーがないことを想定
         $response->assertSessionHasNoErrors();
-        //findorfailでidを取得できないのでfirstorfailにてlimit=1のように登録された$postを取得
+        //findOrFailでidを取得できないのでfirstOrFailにてlimit=1のように登録された$postを取得
         $farm = Farm::firstOrFail();
 
         //Farm_images_tableから画像を取得
@@ -89,8 +92,6 @@ class StoreTest extends TestCase
 
         //リダイレクトされるか確認
         $response->assertRedirect(route('farm.detail', ['id' => $farm->id]));
-        //Uuid::fromStringをリセット
-        Str::createUuidsNormally();
     }
 
     /**
@@ -101,18 +102,20 @@ class StoreTest extends TestCase
     {
         $state = State::factory()->create();
         $user = User::factory()->create();
+        $crops = Crop::factory()->count(3)->create();
 
         //ユーザー登録のと同じ形を再現
         $data = [
-            'name' => 'A_farm',
-            'phone_number' => '0492845949',
-            'email' => 'test@gmail.com',
-            'street_address' => '2-4-5',
-            'suburb' => 'PlainLand',
-            'state_id' => $state->id,
-            'postcode' => '4000',
-            'description' => 'such a good farm',
+            'name'            => 'A_farm',
+            'phone_number'    => '0492845949',
+            'email'           => 'test@gmail.com',
+            'street_address'  => '2-4-5',
+            'suburb'          => 'PlainLand',
+            'state_id'        => $state->id,
+            'postcode'        => '4000',
+            'description'     => 'such a good farm',
             'created_user_id' => $user->id,
+            'crop_ids'        => $crops->pluck('id')->toArray(),
         ];
 
         $rules = (new FarmStoreRequest())->rules();
@@ -133,14 +136,14 @@ class StoreTest extends TestCase
 
         //ユーザー登録のと同じ形を再現
         $data = [
-            'name' => '',
-            'phone_number' => '0492845949',
-            'email' => 'test@gmail.com',
-            'street_address' => '2-4-5',
-            'suburb' => 'PlainLand',
-            'state_id' => $State->id,
-            'postcode' => '40004',
-            'description' => 'such a good farm',
+            'name'            => '',
+            'phone_number'    => '0492845949',
+            'email'           => 'test@gmail.com',
+            'street_address'  => '2-4-5',
+            'suburb'          => 'PlainLand',
+            'state_id'        => $State->id,
+            'postcode'        => '40004',
+            'description'     => 'such a good farm',
             'created_user_id' => $user->id,
         ];
 

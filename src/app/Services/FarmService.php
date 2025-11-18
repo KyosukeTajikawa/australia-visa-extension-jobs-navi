@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\Farm;
-use App\Repositories\FarmRepositoryInterface;
+use App\Repositories\Farms\FarmRepositoryInterface;
 use App\Services\FarmImagesServiceInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -22,18 +22,50 @@ class FarmService implements FarmServiceInterface
 
     /**
      * ファームの登録処理
-     * @param array $validated
+     * @param array $farmData 作物以外のtextデータ
+     * @param array $cropData 作物のみのtextデータ
      * @param array $files 画像ファイル | null
      * @return Farm
      */
-    public function store(array $validated, ?array $files = null): Farm
+    public function store(array $farmData, array $cropData, ?array $files = null): Farm
     {
         DB::beginTransaction();
-
         try {
-            $farm = $this->farmRepository->registerFarm($validated);
+            $farm = $this->farmRepository->registerFarm($farmData);
 
             $this->farmImagesService->imagesStore($farm, $files);
+
+            $this->farmRepository->registerFarmCrops($farm, $cropData);
+
+            DB::commit();
+
+            return $farm;
+        } catch (\Exception $e) {
+            Log::error(__METHOD__ . 'ファームの登録処理でエラーが発生しました。' . $e->getMessage());
+            DB::rollBack();
+            throw $e;
+        }
+    }
+
+    /**
+     * ファームの登録処理
+     * @param array $farmData 作物以外のtextデータ
+     * @param array $cropData 作物のみのtextデータ
+     * @param array $files 画像ファイル | null
+     * @param int $id
+     * @return Farm
+     */
+    public function update(array $farmData, array $cropData, ?array $files = null, int $id): Farm
+    {
+        DB::beginTransaction();
+        try {
+            $previousFarm = $this->farmRepository->getDetailById($id);
+
+            $farm = $this->farmRepository->registerFarmAgain($farmData, $previousFarm);
+
+            $this->farmImagesService->imagesUpdate($farm, $files);
+
+            $this->farmRepository->registerFarmCrops($farm, $cropData);
 
             DB::commit();
 

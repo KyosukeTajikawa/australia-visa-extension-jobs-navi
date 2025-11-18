@@ -1,7 +1,9 @@
-import React, {useState} from "react";
+import React from "react";
 import MainLayout from "@/Layouts/MainLayout";
-import { Box, Heading, Text, FormControl, FormLabel, FormErrorMessage, Input, Select, Textarea, Button, HStack } from "@chakra-ui/react";
+import { Box, Heading, Text, FormControl, FormLabel, FormErrorMessage, Input, Select, Textarea, Button, HStack,} from "@chakra-ui/react";
 import { useForm } from "@inertiajs/react";
+import ReactSelect from "react-select";
+import { MultiValue } from "react-select";
 
 type FormData = {
     name: string;
@@ -13,16 +15,25 @@ type FormData = {
     state_id: string;
     description: string;
     files: File[];
+    crop_ids: number[];
 }
 
 type State = {
     id: number;
     name: string;
-};
+}
 
-type CreateProps = { states: State[] };
+type Crop = {
+    id: number;
+    name: string;
+}
 
-const Create = ({ states }: CreateProps) => {
+type CreateProps = {
+    states: State[];
+    crops: Crop[];
+}
+
+const Create = ({ states, crops }: CreateProps) => {
     const { data, setData, post, processing, errors: serverErrors, reset } = useForm<FormData>({
         name: "",
         phone_number: "",
@@ -33,11 +44,19 @@ const Create = ({ states }: CreateProps) => {
         state_id: "",
         description: "",
         files: [],
+        crop_ids: [],
     });
+
+    const cropOptions = crops.map(crop => ({ value: crop.id, label: crop.name }));
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setData(name as keyof typeof data, value);
+    };
+
+    const handleOptionChange = (selectedOptions: MultiValue<Option>) => {
+        const selectedIds = selectedOptions.map((option) => option.value);
+        setData("crop_ids", selectedIds);
     };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +64,7 @@ const Create = ({ states }: CreateProps) => {
         const newFiles = [...data.files, ...images];
 
         if (newFiles.length > 3) {
-            const initialize = newFiles.slice(0,0);
+            const initialize = newFiles.slice(0, 0);
             setData("files", initialize);
             e.target.value = "";
 
@@ -65,7 +84,7 @@ const Create = ({ states }: CreateProps) => {
     };
 
     return (
-        <Box m={2} w={"90%"}>
+        <Box my={2} w={{ base: "80%", xl: "1280px" }} mx={"auto"}>
             <Heading as={"h4"} mb={4}>ファーム新規登録</Heading>
             <form onSubmit={handleSubmit} encType="multipart/form-data">
                 {/* ファーム名 */}
@@ -76,6 +95,21 @@ const Create = ({ states }: CreateProps) => {
                         onChange={handleChange} placeholder="Rugby Farm" maxLength={50}
                     />
                     <FormErrorMessage>{serverErrors.name}</FormErrorMessage>
+                </FormControl>
+
+                {/* 作物 */}
+                <FormControl mb={2} isRequired isInvalid={!!serverErrors.crop_ids}>
+                    <FormLabel htmlFor="crop_ids">作物（複数選択可）</FormLabel>
+                    <ReactSelect
+                        inputId="crop_ids"
+                        isMulti
+                        options={cropOptions}
+                        value={cropOptions.filter(cropOption => data.crop_ids.includes(cropOption.value))}
+                        onChange={handleOptionChange}
+                        closeMenuOnSelect={false}
+                        placeholder="作物を選択してください"
+                    />
+                    <FormErrorMessage>{serverErrors.crop_ids}</FormErrorMessage>
                 </FormControl>
 
                 {/* 電話番号 */}
@@ -176,7 +210,7 @@ const Create = ({ states }: CreateProps) => {
                 </FormControl>
 
                 {/* ボタン */}
-                <Button type="submit" colorScheme="green" isLoading={processing}>登録</Button>
+                <Button type="submit" bg={"green.800"} _hover={{ bg: "green.700" }} color={"white"} isLoading={processing}>登録</Button>
             </form>
         </Box>
     );

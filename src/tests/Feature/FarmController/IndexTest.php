@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\FarmController;
 
 use App\Models\Farm;
 use App\Models\State;
@@ -15,7 +15,7 @@ class IndexTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * indexメソッドの確認
+     * indexの確認
      * ファームがHomeに送られているか
      * 画像も一緒に送られ、かつ、1枚しか送られてないか
      */
@@ -30,8 +30,8 @@ class IndexTest extends TestCase
             ->for($state, 'state')
             ->create();
 
-        $farms[0]->images()->create(['url' => 'test1.jpeg']);
-        $farms[1]->images()->create(['url' => 'test2.jpeg']);
+        $farms[0]->images()->create(['url' => 'test1.jpeg', 'path' => 'farm/1/test1.jpeg']);
+        $farms[1]->images()->create(['url' => 'test2.jpeg', 'path' => 'farm/2/test2.jpeg']);
 
         $response = $this->get('/home');
         //画面が開くか
@@ -40,26 +40,54 @@ class IndexTest extends TestCase
         $response->assertInertia(
             fn(Assert $page) => $page
                 ->component('Home')
-                ->has('farms', 2)
+                ->has('farms.data', 2)
                 ->has(
-                    'farms.0',
+                    'farms.data.0',
                     fn(Assert $farm) => $farm
                         ->hasAll(['id', 'name'])
                         //imagesが1枚しかない。2枚目以降存在する場合はエラーになる。
                         ->has('images', 1)
-                        ->has(
-                            'images.0',
-                            fn(Assert $i) => $i
-                                ->where('url', 'test1.jpeg')
-                                ->etc()
-                        )
+                        ->where('images.0.url', 'test1.jpeg')
                         ->etc()
                 )
         );
     }
 
     /**
-     * indexメソッドの確認
+     * indexの確認
+     * ファームがHomeに送られているか
+     * フィルターできているか
+     */
+    public function testIndexFarmsWithSearch(): void
+    {
+        $user = User::factory()->create();
+        State::factory()->sequence(['id' => 10, 'name' => 'QLD'], ['id' => 50, 'name' => 'TAS'])->count(2)->create();
+
+        Farm::factory()
+        ->count(2)
+        ->sequence(
+            ['id' => 5, 'name' => '松田', 'state_id' => 10],
+            ['id' => 125, 'name' => 'sunRipe', 'state_id' => 50]
+            )
+            ->for($user, 'user')
+            ->create();
+
+        $response = $this->get('/home', [
+            'keyword' => 'sunRipe',
+            'stateName' => 'TAS'
+        ]);
+
+        $response->assertInertia(
+            fn(Assert $page) => $page
+                ->component('Home')
+                ->has('farms.data', 2)
+                ->where('farms.data.0.id', 5)
+                ->where('farms.data.1.id', 125)
+        );
+    }
+
+    /**
+     * indexの確認
      * プロップス（farmデータ）が空でもエラーにならないか
      */
     public function testEmptyFarmsWhenNoneExist(): void
@@ -68,7 +96,7 @@ class IndexTest extends TestCase
             ->assertInertia(
                 fn(Assert $page) => $page
                     ->component('Home')
-                    ->has('farms', 0)
+                    ->has('farms.data', 0)
             );
     }
 }

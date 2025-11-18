@@ -5,44 +5,96 @@ import { LockIcon } from '@chakra-ui/icons';
 import { useForm, router } from "@inertiajs/react";
 import MainLayout from "@/Layouts/MainLayout";
 
-const Login = () => {
+    const Login = () => {
+        const { data, setData, post, processing, errors } = useForm({
+            email: "",
+            password: "",
+        });
 
-    const { data, setData, processing, errors } = useForm({
-        email: "",
-        password: "",
-    });
+        const handleSubmit = async (e: React.FormEvent) => {
+            e.preventDefault();
 
-    async function handleLogin(email: string, password: string) {
-        // 1. CSRF初期化
-        await axios.get('/sanctum/csrf-cookie');
+            // SanctumのCSRF初期化（必要なら最初の1回）
+            await axios.get("/sanctum/csrf-cookie");
 
-        // 2. ログイン
-        await axios.post('/login', { email, password });
-
-        router.visit("/home");
-    }
-
-    const handleSubmit = (ev: React.FormEvent) => {
-        ev.preventDefault();
-        handleLogin(data.email, data.password);
-    }
+            post("/login", {
+                preserveScroll: true,
+            });
+        };
 
 
     return (
-        <Box w={{ base: "90%", md: "60%" }} mx={"auto"} mt={"150px"}>
-            <Heading as={"h3"} mb={4} fontWeight={"bold"} fontSize={{ base: "18px", md: "24px" }} color={"gray.600"}><LockIcon />ログイン</Heading>
-            <form onSubmit={handleSubmit}>
-                <FormControl mb={2} isRequired isInvalid={!!errors.email}>
-                    <FormLabel htmlFor="email">メールアドレス</FormLabel>
-                    <Input id="email" name="email" type="email" placeholder="例)test@example.com" value={data.email} onChange={(e) => setData("email", e.target.value)} />
-                    <FormErrorMessage>{errors.email}</FormErrorMessage>
+        <Box
+            w={{ base: "90%", md: "60%" }}
+            mx={"auto"}
+            mt={"150px"}
+        >
+            <Heading
+                as={"h3"}
+                mb={4}
+                fontWeight={"bold"}
+                fontSize={{ base: "18px", md: "24px" }}
+                color={"gray.600"}
+            ><LockIcon />
+                ログイン
+            </Heading>
+            <form
+                onSubmit={handleSubmit}
+            >
+                <FormControl
+                    mb={2}
+                    isRequired
+                    isInvalid={!!errors.email}
+                >
+                    <FormLabel
+                        htmlFor="email"
+                    >
+                        メールアドレス
+                    </FormLabel>
+                    <Input
+                        id="email"
+                        name="email"
+                        type="email"
+                        autoComplete="email"
+                        placeholder="test@example.com"
+                        value={data.email}
+                        onChange={(e) => setData("email", e.target.value)}
+                    />
+                    <FormErrorMessage>
+                        {errors.email}
+                    </FormErrorMessage>
                 </FormControl>
-                <FormControl mb={4} isRequired isInvalid={!!errors.password}>
-                    <FormLabel htmlFor="password">パスワード</FormLabel>
-                    <Input id="password" name="password" placeholder="●●●●●●" type="password" value={data.password} onChange={(e) => setData("password", e.target.value)} />
-                    <FormErrorMessage>{errors.email}</FormErrorMessage>
+                <FormControl
+                    mb={4}
+                    isRequired
+                    isInvalid={!!errors.password}
+                >
+                    <FormLabel
+                        htmlFor="password"
+                    >
+                        パスワード
+                    </FormLabel>
+                    <Input
+                        id="password"
+                        name="password"
+                        placeholder="パスワード"
+                        type="password"
+                        value={data.password}
+                        onChange={(e) => setData("password", e.target.value)}
+                    />
+                    <FormErrorMessage>
+                        {errors.password}
+                    </FormErrorMessage>
                 </FormControl>
-                <Button type="submit" colorScheme={"green"} isLoading={processing}>ログイン</Button>
+                <Button
+                    type="submit"
+                    bg={"green.800"}
+                    color={"white"}
+                    _hover={{ bg: "green.700" }}
+                    isLoading={processing}
+                >
+                    ログイン
+                </Button>
             </form>
         </Box>
     )

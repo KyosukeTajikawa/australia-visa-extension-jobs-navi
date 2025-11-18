@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('farm_id')->constrained()->comment('ファーム写真が紐づくファームID');
             $table->string('url', 500)->unique()->comment('画像URL');
+            $table->string('path')->unique()->comment('画像パス');
             $table->timestamps();
         });
     }

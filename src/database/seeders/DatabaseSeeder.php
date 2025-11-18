@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
 
         // $this->call(CropSeeder::class);
         // $this->call(StateSeeder::class);
+        // $this->call(ApplicationMethodSeeder::class);
 
         // Farm::factory(10)->create();
         // Review::factory(10)->create();

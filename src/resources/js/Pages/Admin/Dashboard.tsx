@@ -62,7 +62,7 @@ const Dashboard = ({ farmCount, reviewCount, userCount, latestFarms, latestRevie
     return (
         <Box maxW="1200px" mx="auto" py={8} px={{ base: 4, md: 6 }}>
             <Heading mb={6} fontSize={{ base: "2xl", md: "3xl" }}>
-                管理者ダッシュボード
+                管理者ページ
             </Heading>
 
             {/* 上部の統計カード */}

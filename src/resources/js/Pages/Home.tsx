@@ -120,7 +120,6 @@ const Home = ({ farms, states, keyword, stateName, status }: HomeProps) => {
                                 key={crop.id}
                                 display={"inline-block"}
                                 color="white"
-                                // py={1}
                                 fontSize={{ base: "20px", xl: "35px" }}
                                 mx={3}
                             >

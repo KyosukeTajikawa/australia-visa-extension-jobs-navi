@@ -37,7 +37,7 @@ const UserList = ({ users }: UserListProps) => {
             </Heading>
             <Button
                 as={Link}
-                href={"/admin/user"}
+                href={"/admin/dashboard"}
                 fontWeight={"bold"}
                 bg="green.800"
                 _hover={{ bg: "green.700", textDecoration: "none" }}

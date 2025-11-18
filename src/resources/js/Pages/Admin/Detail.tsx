@@ -50,13 +50,7 @@ const formatDate = (value: string) =>
     new Date(value).toLocaleDateString("ja-JP");
 
 const formatDateTime = (value: string) =>
-    new Date(value).toLocaleString("ja-JP", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-    });
+    new Date(value).toLocaleString("ja-JP");
 
 const Detail: React.FC<Props> = ({ user }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();

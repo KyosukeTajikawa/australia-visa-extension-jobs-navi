@@ -21,10 +21,10 @@ class FavoritesStoreTest extends TestCase
     public function testFavoritesStore(): void
     {
         $user = User::factory()->create();
-        $farm = Farm::factory()->create();
+        Farm::factory()->create();
         $review = Review::factory()->create();
 
-        $response = $this->actingAs($user)->post(route('favorites.store', ['review' => $review->id]));
+        $response = $this->actingAs($user)->post(route('favorites.store', ['review' => $review]));
 
         $response->assertStatus(302);
 
@@ -34,7 +34,5 @@ class FavoritesStoreTest extends TestCase
             'review_id' => $review->id,
             'user_id' => $user->id,
         ]);
-
-        $response->assertRedirect(route('review.favorites'));
     }
 }

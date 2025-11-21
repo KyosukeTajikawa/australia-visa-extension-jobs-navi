@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Farms\FarmStoreRequest;
-use App\Models\Farm;
-use App\Models\State;
 use App\Repositories\Farms\FarmRepositoryInterface;
 use App\Repositories\StateRepositoryInterface;
 use App\Services\FarmServiceInterface;
@@ -62,12 +60,13 @@ class FarmController extends Controller
      */
     public function detail(int $id): Response
     {
-        $farm = $this->farmRepository->getDetailById($id, ['reviews.applicationMethod:id,name', 'reviews.reviewUser:id,nickname', 'state', 'images', 'crops']);
+        $farm = $this->farmRepository->getDetailById($id);
 
         return Inertia::render('Farm/Detail', [
             'farm' => $farm,
         ]);
     }
+
 
     /**
      * ファーム新規作成のページを表示

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\FarmController;
 use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/review/{review}/favorites', [ReviewController::class, 'favoritesStore'])->name('favorites.store');
     Route::delete('/review/{review}/favorites', [ReviewController::class, 'favoritesDestroy'])->name('review.favorites.destroy');
     Route::post('/review/{review}/reviewComment', [ReviewController::class, 'reviewCommentStore'])->name('reviewComment.store');
+
+    //プロフィール
+    Route::get('/profile', [RegisteredUserController::class, 'index'])->name('profile');
 });
 
 require __DIR__ . '/auth.php';

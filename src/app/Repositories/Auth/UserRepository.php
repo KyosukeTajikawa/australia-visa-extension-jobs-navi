@@ -24,4 +24,35 @@ class UserRepository implements UserRepositoryInterface
         ]);
     }
 
+    /**
+     * ユーザー情報取得
+     * @return User
+     */
+    public function getUser(): User
+    {
+        return User::findOrFail(auth()->id());
+    }
+
+    /**
+     * ユーザー更新
+     * @param array $validated
+     * @param User $user
+     * @return User
+     */
+    public function updateUser(array $validated, User $previousUser): User
+    {
+        $previousUser->update($validated);
+
+        return $previousUser->refresh();
+    }
+
+    /**
+     * ユーザー削除
+     */
+    public function destroyUser():void
+    {
+        $user = auth()->user();
+
+        $user->delete();
+    }
 }

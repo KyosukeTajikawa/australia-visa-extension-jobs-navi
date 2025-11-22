@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Box, Heading, VStack, HStack, Image, Text, Link, Input, Button, Select, Flex } from "@chakra-ui/react";
+import React, { useState, useEffect } from "react";
+import { Box, Heading, VStack, HStack, Image, Text, Link, Input, Button, Select, Flex, useToast } from "@chakra-ui/react";
 import MainLayout from "@/Layouts/MainLayout";
 import { router } from "@inertiajs/react";
 
@@ -26,7 +26,7 @@ type Farm = {
     images: FarmImage[];
     state: States;
     crops: Crops[];
-};
+}
 
 type PaginateFarm = {
     data: Farm[];
@@ -41,11 +41,26 @@ type HomeProps = {
     states: States[];
     keyword: string;
     stateName: string;
-};
+    status: string;
+}
 
-const Home = ({ farms, states, keyword, stateName }: HomeProps) => {
+const Home = ({ farms, states, keyword, stateName, status }: HomeProps) => {
     const [searchKeyword, setSearchKeyword] = useState(keyword ?? "");
     const [searchStateName, setSearchStateName] = useState(stateName ?? "");
+    const toast = useToast()
+
+    useEffect(() => {
+        if(status === "delete_success") {
+            toast({
+                title: 'ユーザー削除成功.',
+                position: 'top',
+                description: "ユーザーの削除が完了しました。",
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+            })
+        }
+    }, [status]);
 
     const farmItems = farms.data.map((farm) => (
         <Box
@@ -220,7 +235,7 @@ const Home = ({ farms, states, keyword, stateName }: HomeProps) => {
                     </Text>
                 )}
                 <Text
-                mx={5}
+                    mx={5}
                 >
                     {farms.current_page} / {farms.last_page}
                 </Text>

@@ -2,16 +2,13 @@
 
 namespace App\Http\Requests\Auth;
 
-use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules;
+use Illuminate\Validation\Rule;
 
-
-class UserStoreRequest extends FormRequest
+class UserUpdateRequest extends FormRequest
 {
     /**
-     * ユーザーの権限チェック
-     * @return bool
+     * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
@@ -27,10 +24,9 @@ class UserStoreRequest extends FormRequest
         return [
             'file' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
             'nickname' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique('users', 'email')->ignore($this->user()->id)],
             'gender'        => ['required', 'integer', 'in:1,2'],
             'birthday'      => ['nullable', 'date', 'date_format:Y-m-d'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ];
     }
 
@@ -47,7 +43,6 @@ class UserStoreRequest extends FormRequest
             'email.email' => '有効なメールアドレス形式で入力してください。',
             'birthday.date_format' => '生年月日はformatの形式と一致していません。',
             'birthday.date' => '生年月日はYYYY/MM/DDで入力してください。',
-            'password' => 'パスワード確認が一致しません。',
         ];
     }
 

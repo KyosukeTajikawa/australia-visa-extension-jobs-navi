@@ -15,11 +15,11 @@ Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
         ->name('register');
 
-    Route::post('register', [RegisteredUserController::class, 'store']);
+    Route::post('register', [RegisteredUserController::class, 'store'])->name('register.store');
 
-    Route::get('/login',  [AuthenticatedSessionController::class, 'create'])->name('login');
+    Route::get('login',  [AuthenticatedSessionController::class, 'create'])->name('login');
 
-    Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('login.store');
+    Route::post('login', [AuthenticatedSessionController::class, 'store'])->name('login.store');
 
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
         ->name('password.request');
@@ -35,6 +35,11 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('edit', [RegisteredUserController::class, 'edit'])
+        ->name('edit');
+
+    Route::put('update', [RegisteredUserController::class, 'update'])->name('update');
+
     Route::get('verify-email', EmailVerificationPromptController::class)
         ->name('verification.notice');
 
@@ -52,6 +57,9 @@ Route::middleware('auth')->group(function () {
     Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
 
     Route::put('password', [PasswordController::class, 'update'])->name('password.update');
+
+    Route::delete('destroy', [RegisteredUserController::class, 'destroy'])
+        ->name('user.destroy');
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');

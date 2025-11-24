@@ -3,7 +3,6 @@
 namespace App\Repositories\Auth;
 
 use App\Repositories\Auth\UserImageRepositoryInterface;
-use App\Models\User;
 use App\Models\UserImage;
 
 class UserImageRepository implements UserImageRepositoryInterface

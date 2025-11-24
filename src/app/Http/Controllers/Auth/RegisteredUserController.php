@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\UserStoreRequest;
 use App\Http\Requests\Auth\UserUpdateRequest;
-use App\Repositories\Auth\UserImageRepositoryInterface;
 use App\Repositories\Auth\UserRepositoryInterface;
 use App\Services\UserServiceInterface;
 use Illuminate\Http\RedirectResponse;
@@ -18,7 +17,6 @@ class RegisteredUserController extends Controller
 {
 
     public function __construct(
-        private readonly UserImageRepositoryInterface $userImageRepository,
         private readonly UserRepositoryInterface $userRepository,
         private readonly UserServiceInterface $userService,
     ) {}

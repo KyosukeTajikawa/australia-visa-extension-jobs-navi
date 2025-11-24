@@ -203,6 +203,6 @@ const Register = () => {
 }
 
 Register.layout = (page: React.ReactNode) => (
-    <MainLayout title="新規登録">{page}</MainLayout>
+    <MainLayout title="ユーザー登録">{page}</MainLayout>
 );
 export default Register;

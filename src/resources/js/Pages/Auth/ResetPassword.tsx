@@ -27,7 +27,7 @@ const ResetPassword = ({ token, email }: ResetPasswordProps) => {
         <Box>
             <Head title="Reset Password" />
             <Box maxW="lg" mx="auto" mt={10} p={8} borderWidth={1} rounded="lg" bg="white">
-                <Heading size="lg" mb={6}>パスワード再設定</Heading>
+                <Heading size="lg" mb={6} color={"#4D4D4F"}>パスワード再設定</Heading>
                 <Text mb={6}>
                     新しいパスワードを入力してください。確認のためもう一度同じパスワードを入力します。
                 </Text>

@@ -167,6 +167,6 @@ const Edit = ({ user }: UserProps) => {
 }
 
 Edit.layout = (page: React.ReactNode) => (
-    <MainLayout title="新規登録">{page}</MainLayout>
+    <MainLayout title="プロフィール編集">{page}</MainLayout>
 );
 export default Edit;

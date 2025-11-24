@@ -63,7 +63,7 @@ const Create = ({ farm, applicationMethods }: CreateProps) => {
 
     return (
         <Box my={2} w={{ base: "80%", xl: "1280px" }} mx={"auto"}>
-            <Heading as={"h1"}>{farm.name}のレビュー登録</Heading>
+            <Heading as={"h1"} color={"#4D4D4F"} my={3}>{farm.name}のレビュー登録</Heading>
             <form onSubmit={handleSubmit}>
                 {/* 仕事のポジション */}
                 <FormControl mb={2} isRequired isInvalid={!!serverErrors.work_position}>

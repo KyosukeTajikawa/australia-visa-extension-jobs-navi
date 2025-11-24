@@ -75,6 +75,7 @@ class FarmRepository implements FarmRepositoryInterface
                 $q->with([
                     'applicationMethod:id,name',
                     'reviewUser:id,nickname',
+                    'reviewUser.image:id,user_id,url',
                     'reviewComments:id,comment,review_id,user_id,created_at',
                     'reviewComments.user:id,nickname',
                 ])->withExists([

@@ -77,7 +77,7 @@ const Edit = ({ farm, states, crops }: EditProps) => {
         setData(name as keyof typeof data, value);
     };
 
-    const handleOptionChange = (selectedOptions: MultiValue<Option>) => {
+    const handleOptionChange = (selectedOptions: MultiValue<any>) => {
         const selectedIds = selectedOptions.map((option) => option.value);
         setData("crop_ids", selectedIds);
     };
@@ -86,12 +86,12 @@ const Edit = ({ farm, states, crops }: EditProps) => {
         const images = e.target.files ? Array.from(e.target.files) : [];
         const newFiles = [...data.files, ...images];
 
-        if (newFiles.length > 3) {
+        if (newFiles.length > 2) {
             const initialize = newFiles.slice(0, 0);
             setData("files", initialize);
             e.target.value = "";
 
-            alert("画像は3枚以下にしてください。");
+            alert("画像は2枚以下にしてください。");
             return;
         }
 
@@ -109,7 +109,7 @@ const Edit = ({ farm, states, crops }: EditProps) => {
 
     return (
         <Box my={2} w={{ base: "80%", xl: "1280px" }} mx={"auto"}>
-            <Heading as={"h4"} mb={4}>ファーム編集画面</Heading>
+            <Heading as={"h4"} mb={4} color={"#4D4D4F"}>ファーム編集画面</Heading>
             <form onSubmit={handleSubmit} encType="multipart/form-data">
                 {/* ファーム名 */}
                 <FormControl mb={2} isRequired isInvalid={!!serverErrors.name}>
@@ -235,7 +235,7 @@ const Edit = ({ farm, states, crops }: EditProps) => {
                 </FormControl>
 
                 {/* ボタン */}
-                <Button type="submit" bg={"green.800"} _hover={{ bg: "green.700" }} color={"white"} isLoading={processing}>登録</Button>
+                <Button type="submit" bg={"green.800"} _hover={{ bg: "green.700" }} color={"white"} isLoading={processing} mt={5}>登録</Button>
             </form>
 
         </Box>
@@ -243,6 +243,6 @@ const Edit = ({ farm, states, crops }: EditProps) => {
 };
 
 Edit.layout = (page: React.ReactNode) => (
-    <MainLayout title="ファーム情報サイト">{page}</MainLayout>
+    <MainLayout title="ファーム編集">{page}</MainLayout>
 );
 export default Edit;

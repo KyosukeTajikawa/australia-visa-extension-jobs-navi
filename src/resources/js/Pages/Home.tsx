@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Box, Heading, VStack, HStack, Image, Text, Link, Input, Button, Select, Flex, useToast } from "@chakra-ui/react";
 import MainLayout from "@/Layouts/MainLayout";
 import { router } from "@inertiajs/react";
+import { ArrowForwardIcon } from '@chakra-ui/icons';
 
 type FarmImage = {
     id: number;
@@ -50,7 +51,7 @@ const Home = ({ farms, states, keyword, stateName, status }: HomeProps) => {
     const toast = useToast()
 
     useEffect(() => {
-        if(status === "delete_success") {
+        if (status === "delete_success") {
             toast({
                 title: 'ユーザー削除成功.',
                 position: 'top',
@@ -69,55 +70,130 @@ const Home = ({ farms, states, keyword, stateName, status }: HomeProps) => {
             mb={5}
             mx={"auto"}
         >
-            <Image
-                src={farm.images?.[0]?.url ?? "https://placehold.co/100x100"}
-                alt={farm.name}
-                w={{ base: "full" }}
-                h={{ base: "200px", sm: "300px", md: "200px", xl: "300px" }}
-                objectFit={"cover"}
-            />
             <Box
-                mt={3}
+                role="group"
+                w={{ base: "full" }}
+                position={"relative"}
+                overflow={"hidden"}
             >
-                <Heading
-                    as={"h3"}
-                    color={"green.800"}
+                <Image
+                    src={farm.images?.[0]?.url ?? "https://placehold.co/100x100"}
+                    alt={farm.name}
+                    w={{ base: "full" }}
+                    h={{ base: "200px", sm: "300px", md: "200px", xl: "300px" }}
+                    objectFit={"cover"}
+                />
+
+                {/* PC画面 */}
+                <Box
+                    display={{ base: "none", md: "block" }}
+                    position={"absolute"}
+                    left={0}
+                    right={0}
+                    top={0}
+                    inset={0}
+                    zIndex={1}
+                    opacity={0}
+                    bg="#005133"
+                    transform={"translateY(100%)"}
+                    transition={"transform 1s ease"}
+                    _groupHover={{ transform: "translateY(0)", opacity: 0.8 }}
                 >
-                    {farm.name}
-                </Heading>
-                <Text
-                    color={"green.800"}
-                    fontSize={"20px"}
-                    mb={1}
-                >
-                    {farm.state.name}
-                </Text>
-                {farm.crops.map((crop) => (
-                    <Text
-                        key={crop.id}
-                        display={"inline-block"}
-                        bg="green.50"
-                        color="green.800"
-                        borderColor="green.200"
-                        borderRadius="md"
-                        py={1}
-                        fontSize={"20px"}
-                        mr={2}
+                    <Heading
+                        fontSize={{ base: "40px", xl: "50px" }}
+                        as={"h3"}
+                        color={"white"}
+                        mx={2}
                     >
-                        {crop.name}</Text>
-                ))}
+                        {farm.name}
+                    </Heading>
+                    <Text
+                        color={"white"}
+                        fontSize={{ base: "30px", xl: "40px" }}
+                        ml={4}
+                    >
+                        {farm.state.name}
+                    </Text>
+                    <Box>
+                        {farm.crops.map((crop) => (
+                            <Text
+                                key={crop.id}
+                                display={"inline-block"}
+                                color="white"
+                                // py={1}
+                                fontSize={{ base: "20px", xl: "35px" }}
+                                mx={3}
+                            >
+                                {crop.name}</Text>
+                        ))}
+                    </Box>
+                    <Button
+                        as={Link}
+                        href={`/farm/${farm.id}`}
+                        mt={4}
+                        fontSize={{ base: "20px", xl: "30px" }}
+                        bg={"005133"}
+                        _hover={{ opacity: 0.7, textDecoration: "none" }}
+                        color="white"
+                    >
+                        詳しく見る
+                        <ArrowForwardIcon />
+                    </Button>
+                </Box>
+
+                {/* SP画面 */}
+                <Box
+                    mt={3}
+                    display={{ base: "block", md: "none" }}
+                >
+                    <Heading
+                        as={"h3"}
+                        color={"green.800"}
+                    >
+                        {farm.name}
+                    </Heading>
+                    <Text
+                        color={"green.800"}
+                        fontSize={"20px"}
+                        mb={1}
+                    >
+                        {farm.state.name}
+                    </Text>
+                    {farm.crops.map((crop) => (
+                        <Text
+                            key={crop.id}
+                            display={"inline-block"}
+                            bg="green.50"
+                            color="green.800"
+                            borderColor="green.200"
+                            borderRadius="md"
+                            py={1}
+                            fontSize={"20px"}
+                            mr={2}
+                        >
+                            {crop.name}</Text>
+                    ))}
+                </Box>
+                <Button
+                    as={Link}
+                    href={`/farm/${farm.id}`}
+                    mt={2}
+                    fontWeight="normal"
+                    bg="green.800"
+                    _hover={{ bg: "green.700", textDecoration: "none" }}
+                    color="white"
+                    display={{ base: "inline-flex", md: "none" }}
+                    alignItems="center"
+                    justifyContent="center"
+                    px={4}
+                    py={2}
+                    borderRadius="md"
+                    w="auto"
+                >
+                    詳しく見る
+                </Button>
+
             </Box>
-            <Button
-                as={Link}
-                href={`/farm/${farm.id}`}
-                mt={2}
-                fontWeight={"normal"}
-                bg="green.800"
-                _hover={{ bg: "green.700", textDecoration: "none" }}
-                color="white"
-            >
-                詳しく見る
-            </Button>
         </Box>
     ))
 
@@ -144,7 +220,7 @@ const Home = ({ farms, states, keyword, stateName, status }: HomeProps) => {
 
     return (
         <Box>
-            <Box bg={"#FAF7F0"}>
+            <Box bg={"#fdf9f2"}>
                 <Box
                     py={30}
                     mb={5}
@@ -175,7 +251,7 @@ const Home = ({ farms, states, keyword, stateName, status }: HomeProps) => {
                         {/* キーワード入力 */}
                         <Input
                             value={searchKeyword}
-                            placeholder="検索..."
+                            placeholder="ファーム名を検索..."
                             onChange={(e) => setSearchKeyword(e.target.value)}
                         />
                         <HStack>

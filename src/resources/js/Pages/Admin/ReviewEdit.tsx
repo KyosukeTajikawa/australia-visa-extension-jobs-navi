@@ -95,7 +95,7 @@ const ReviewEdit = ({ review, applicationMethods }: ReviewEditProps) => {
                 isInvalid={!!serverErrors.hourly_wage}
                 >
                     <FormLabel htmlFor="hourly_wage" >時給<Text as="span" color="gray.500" fontSize="sm" pl={2}>*時給の方のみご入力ください。</Text></FormLabel>
-                    <Input id="hourly_wage" type="text" autoComplete="text" name="hourly_wage" value={data.hourly_wage} placeholder="30.7" inputMode="decimal"
+                    <Input id="hourly_wage" type="text" autoComplete="text" name="hourly_wage" value={data.hourly_wage ?? ""} placeholder="30.7" inputMode="decimal"
                         onChange={handleChange}
                         isDisabled={data.pay_type === 2}
                         opacity={data.pay_type === 2 ? 0.5 : 1}

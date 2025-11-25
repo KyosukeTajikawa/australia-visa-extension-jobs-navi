@@ -1,37 +1,17 @@
-// import { defineConfig } from 'vite';
-// import laravel from 'laravel-vite-plugin';
-// import react from '@vitejs/plugin-react';
-// import checker from 'vite-plugin-checker';
-
-// export default defineConfig({
-//     plugins: [
-//         laravel({
-//             input: 'resources/js/app.tsx',
-//             refresh: true,
-//         }),
-//         react(),
-//         checker({
-//             typescript: true,
-//             // ついでに ESLint も見たい場合は↓（ESLint導入済みなら）
-//             // eslint: { lintCommand: 'eslint "./resources/**/*.{ts,tsx}"' }
-//         })
-//     ],
-// });
-
-
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import react from '@vitejs/plugin-react';
 import checker from 'vite-plugin-checker';
 
-export default defineConfig(({ command }) => ({
+export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/js/app.tsx'],
+            input: 'resources/js/app.tsx',
             refresh: true,
         }),
         react(),
-        // 👇 開発サーバー(vite dev)のときだけ型チェックを有効にする
-        command === 'serve' && checker({ typescript: true }),
-    ].filter(Boolean), // false を取り除く
-}));
+        checker({
+            typescript: true,
+        })
+    ],
+});

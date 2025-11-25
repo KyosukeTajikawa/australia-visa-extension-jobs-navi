@@ -13,6 +13,7 @@ type FormData = {
 }
 
 type User = {
+    id: number;
     file?: File | null;
     nickname: string;
     email: string;

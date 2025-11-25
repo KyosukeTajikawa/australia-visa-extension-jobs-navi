@@ -52,7 +52,7 @@ const formatDate = (value: string) =>
 const formatDateTime = (value: string) =>
     new Date(value).toLocaleString("ja-JP");
 
-const Detail: React.FC<Props> = ({ user }) => {
+    const Detail = ({ user }: Props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const cancelRef = React.useRef<HTMLButtonElement>(null);
 

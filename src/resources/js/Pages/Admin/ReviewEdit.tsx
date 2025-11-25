@@ -7,7 +7,7 @@ import { useForm } from "@inertiajs/react";
 type FormData = {
     _method: string;
     work_position: string;
-    hourly_wage: string;
+    hourly_wage: string | null;
     pay_type: number;
     is_car_required: number;
     start_date: string;
@@ -45,10 +45,10 @@ type ReviewEditProps = {
 };
 
 const ReviewEdit = ({ review, applicationMethods }: ReviewEditProps) => {
-    const { data, setData, post, processing, errors: serverErrors, reset } = useForm<FormData>({
+    const { data, setData, post, processing, errors: serverErrors } = useForm<FormData>({
         _method: "put",
         work_position: review.work_position,
-        hourly_wage: review.hourly_wage,
+        hourly_wage: review.hourly_wage ?? null,
         pay_type: review.pay_type,
         is_car_required: review.is_car_required,
         start_date: review.start_date,

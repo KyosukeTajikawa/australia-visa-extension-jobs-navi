@@ -8,4 +8,4 @@ COPY ./src/public ./public
 
 COPY --from=app-built /var/www/html/public/build ./public/build
 
-COPY ./docker-config/nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY ./docker-config/nginx/prod.conf /etc/nginx/conf.d/default.conf

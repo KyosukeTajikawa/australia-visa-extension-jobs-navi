@@ -78,6 +78,7 @@ class FarmRepository implements FarmRepositoryInterface
                     'reviewUser.image:id,user_id,url',
                     'reviewComments:id,comment,review_id,user_id,created_at',
                     'reviewComments.user:id,nickname',
+                    'user.image;id,user_id,url'
                 ])->withExists([
                     'favoritedUsers as is_favorite' => fn($qq) =>
                     $qq->where('user_id', auth()->id()),

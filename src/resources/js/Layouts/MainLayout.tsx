@@ -7,9 +7,6 @@ import { TbDoorEnter, TbDoorExit } from "react-icons/tb";
 import { GiFarmTractor } from "react-icons/gi";
 import { PiPlantLight } from "react-icons/pi";
 
-
-
-
 type MainLayoutProps = {
     children: ReactNode;
     title?: string;
@@ -39,10 +36,13 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
             {/* ヘッダー */}
             <Box
                 bg={"green.800"}
-                p={"4px"}
                 display={"flex"}
                 justifyContent={"space-between"}
                 alignItems={"center"}
+                position={"fixed"}
+                w={"100%"}
+                height={"70px"}
+                zIndex={999}
             >
                 <Text
                     as={Link}
@@ -56,7 +56,7 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                     >
                         {/* ファーム一覧
                      */}
-                        <Image src="/images/farmTopIcon.png" alt="ファームアイコン" w={{ base: "80px", xl: "100px" }} h={{ base: "80px", xl: "100px" }} borderRadius={"full"} mt={2} mx={{ base: 3, xl: 5 }} />
+                        <Image src="/images/farmTopIcon.png" alt="ファームアイコン" w={"60px"} h={"60px"} borderRadius={"full"} mx={{ base: 3, xl: 5 }} />
                     </Heading>
                 </Text>
                 {auth.user ?
@@ -68,15 +68,15 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                         <Menu>
                             <MenuButton
                                 as={IconButton}
-                                size={"lg"}
-                                color={"white"}
+                                mr={3}
+                                icon={<HamburgerIcon
+                                    color={"white"}
+                                    fontSize={"50px"}
+                                />}
                                 variant={"ghost"}
-                                fontSize={{ base: "30px", sm: "40px" }}
                                 _hover={{ bg: "green.600" }}
                                 _active={{ bg: "green.600" }}
-                            >
-                                {auth.user.nickname}
-                            </MenuButton>
+                            />
                             <MenuList>
                                 <MenuItem
                                     onClick={() => router.get("/farm/create")}
@@ -276,6 +276,7 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
             <Box
                 as="main"
                 flexGrow={1}
+                pt={"70px"}
                 bg={{ base: hasCustomBg ? "#FAF7F0" : "transparent" }}
             >
                 {children}

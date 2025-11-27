@@ -155,20 +155,19 @@ const Detail = ({ farm }: DetailProps) => {
                                 {new Date(review.created_at).toLocaleDateString("ja-JP")}
                             </Text>
                         </HStack>
-                        <Text mb={1}>仕事のポジション{review.work_position}</Text>
+                        <Text mb={1}>仕事のポジション：{review.work_position}</Text>
                         <Text mb={1}>支払種別：{review.pay_type === 1 ? "Hourly-Rate" : "Piece-Rate"}</Text>
                         <Text mb={1}>時給：{review.hourly_wage}</Text>
                         <Text mb={1}>応募方法：{renderApplicationMethod(review)}</Text>
                         <Text mb={1}>車の有無：{review.is_car_required === 1 ? "必要" : "不要"}</Text>
-                        <HStack mb={1}>
-                            <Text>開始日: {review.start_date}</Text><Text>〜</Text><Text>終了日: {review.end_date}</Text>
-                        </HStack>
-                        <Text whiteSpace="pre-wrap">{review.comment}</Text>
+                        <Text mb={1}>開始日: {review.start_date}</Text>
+                        <Text mb={1}>終了日: {review.end_date}</Text>
+                        <Text whiteSpace="pre-wrap">コメント <br />{review.comment}</Text>
 
                         <Flex justifyContent={"flex-end"} alignItems="center">
 
                             {/* レビューお気に入り */}
-                            <HeartFavorite reviewId={review.id}  />
+                            <HeartFavorite reviewId={review.id} />
                             <Button ml={{ md: 5 }} mr={5} mt={2} bg={"green.800"} _hover={{ bg: "green.700" }} color={"white"} onClick={() => setShowCommentForm(showCommentForm === review.id ? null : review.id)}>
                                 コメントする
                             </Button>

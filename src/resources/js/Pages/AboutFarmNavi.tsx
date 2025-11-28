@@ -66,5 +66,5 @@ const AboutFarmNavi = () => {
     )
 };
 
-AboutFarmNavi.layout = (page: React.ReactNode) => (<MainLayout title="ファーム情報サイト">{page}</MainLayout>);
+AboutFarmNavi.layout = (page: React.ReactNode) => (<MainLayout title="AUSSIE FARM NAVI｜オーストラリア ワーホリのファーム探し・レビュー共有サイト">{page}</MainLayout>);
 export default AboutFarmNavi;

@@ -26,7 +26,7 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
 
     return (
         <Box
-            minH={"98vh"}
+            minH={"100vh"}
             display={"flex"}
             flexDirection={"column"}
         >
@@ -91,7 +91,7 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                                     fontSize={"18px"}
                                     justifyContent={"space-between"}
                                 >
-                                    あなたのファーム
+                                    登録したファーム
                                     <Icon as={PiPlantLight} />
                                 </MenuItem>
                                 <MenuItem
@@ -193,7 +193,7 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                             href={route("farm.myFarms")}
                             mr={{ base: "none", md: 2, xl: 4 }}
                         >
-                            あなたのファーム
+                            登録したファーム
                         </Text>
                         <Icon as={FaBookmark}
                             mr={1} color={"white"} />

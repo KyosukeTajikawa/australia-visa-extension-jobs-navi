@@ -62,7 +62,7 @@ const Home = ({ farms, states, keyword, stateName, status, auth }: HomeProps) =>
     const [searchStateName, setSearchStateName] = useState(stateName ?? "");
     const toast = useToast()
 
-    const isLoggedIn = Boolean(auth?.user);
+    const isLoggedIn = !!auth?.user;
     const [isOpen, setIsOpen] = useState(false);
     const onOpen = () => setIsOpen(true);
     const onClose = () => setIsOpen(false);
@@ -86,7 +86,7 @@ const Home = ({ farms, states, keyword, stateName, status, auth }: HomeProps) =>
             return;
         }
 
-        router.visit(`/detail/${farmId}`);
+        router.visit(`/farm/${farmId}`);
     };
 
     const farmItems = farms.data.map((farm) => (
@@ -362,7 +362,7 @@ const Home = ({ farms, states, keyword, stateName, status, auth }: HomeProps) =>
                             <VStack spacing={3}>
                                 <Button
                                     w="100%"
-                                    colorScheme="blue"
+                                    colorScheme="green"
                                     onClick={() => router.visit("/register")}
                                 >
                                     無料ユーザー登録
@@ -370,8 +370,9 @@ const Home = ({ farms, states, keyword, stateName, status, auth }: HomeProps) =>
                                 <Button
                                     w="100%"
                                     variant="outline"
-                                    colorScheme="blue"
+                                    colorScheme="green"
                                     onClick={() => router.visit("/login")}
+                                    mb={5}
                                 >
                                     ログインはこちら &gt;&gt;
                                 </Button>

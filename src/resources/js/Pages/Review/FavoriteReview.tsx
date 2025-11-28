@@ -51,6 +51,23 @@ const FavoriteReview = ({ reviews }: FavoriteReviewProps) => {
         }
         return name;
     };
+
+    if (reviews.length === 0) {
+        return (
+            <Box
+                textAlign="center"
+                mt="200px"
+                color="green.800"
+            >
+                <Heading as="h2" size="lg" mb={4} >
+                    お気に入りレビュー
+                </Heading>
+                <Text fontSize="xl">
+                    お気に入りレビューはございません。
+                </Text>
+            </Box>
+        );
+    }
     return (
         <Box bg={"#FAF7F0"} w={{ base: "90%", sm: "460px", md: "750px", xl: "1000px" }} mx={"auto"}>
             <Heading as={"h1"} mt={5} color={"#4D4D4F"}>お気に入りレビュー一覧</Heading>

@@ -4,6 +4,7 @@ namespace App\Repositories\Auth;
 
 use App\Repositories\Auth\UserRepositoryInterface;
 use App\Models\User;
+use App\Models\UserImage;
 use Illuminate\Support\Facades\Hash;
 
 class UserRepository implements UserRepositoryInterface
@@ -44,6 +45,18 @@ class UserRepository implements UserRepositoryInterface
         $previousUser->update($validated);
 
         return $previousUser->refresh();
+    }
+
+    /**
+     * ユーザー画像取得
+     * @param int $id
+     * @return UserImage
+     */
+    public function getImage(int $id): UserImage
+    {
+        $image = UserImage::where('user_id', $id)->first();
+
+        return $image;
     }
 
     /**

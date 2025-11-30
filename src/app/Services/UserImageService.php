@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\User;
-use App\Models\UserImage;
 use App\Repositories\Auth\UserImageRepositoryInterface;
 use App\Services\UserImageServiceInterface;
 use Illuminate\Http\UploadedFile;

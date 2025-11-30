@@ -1,12 +1,22 @@
 import React, { useState } from "react";
 import MainLayout from "@/Layouts/MainLayout";
-import { Box, Heading, Text, FormControl, FormLabel, FormErrorMessage, Input, Textarea, Button, Select, HStack, RadioGroup, Radio } from "@chakra-ui/react";
+import { Box, Heading, Text, FormControl, FormLabel, FormErrorMessage, Input, Select, Textarea, Button, HStack, RadioGroup, Radio } from "@chakra-ui/react";
 import { StarIcon } from '@chakra-ui/icons';
 import { useForm } from "@inertiajs/react";
 
-type Farm = {
-    id: number;
-    name: string;
+type FormData = {
+    _method: string;
+    work_position: string;
+    hourly_wage: string | null;
+    pay_type: number;
+    is_car_required: number;
+    start_date: string;
+    end_date?: string | null;
+    application_method_id: string;
+    application_method_other?: string | null;
+    farm_rating: number;
+    comment: string;
+    farm_id: number,
 }
 
 type ApplicationMethod = {
@@ -14,69 +24,76 @@ type ApplicationMethod = {
     name: string;
 }
 
-type FormData = {
+type Review = {
+    id: number;
     work_position: string;
-    hourly_wage: string;
+    hourly_wage?: string | null;
     pay_type: number;
     is_car_required: number;
     start_date: string;
-    end_date: string;
+    end_date?: string | null;
     application_method_id: string;
-    application_method_other: string;
+    application_method_other?: string | null;
     farm_rating: number;
     comment: string;
-    farm_id: number;
-};
-
-type CreateProps = {
-    farm: Farm;
-    applicationMethods: ApplicationMethod[];
+    farm_id: number,
 }
 
-const Create = ({ farm, applicationMethods }: CreateProps) => {
-    const [selectedApplicationMethod, setSelectedApplicationMethod] = useState("");
-    const [hoverFarmRating, setHoverFarmRating] = useState(0);
+type ReviewEditProps = {
+    review: Review;
+    applicationMethods: ApplicationMethod[];
+};
+
+const ReviewEdit = ({ review, applicationMethods }: ReviewEditProps) => {
     const { data, setData, post, processing, errors: serverErrors } = useForm<FormData>({
-        work_position: "",
-        hourly_wage: "",
-        pay_type: 1,
-        is_car_required: 1,
-        start_date: "",
-        end_date: "",
-        application_method_id: "",
-        application_method_other: "",
-        farm_rating: 1,
-        comment: "",
-        farm_id: farm.id,
+        _method: "put",
+        work_position: review.work_position,
+        hourly_wage: review.hourly_wage ?? null,
+        pay_type: review.pay_type,
+        is_car_required: review.is_car_required,
+        start_date: review.start_date,
+        end_date: review.end_date ?? null,
+        application_method_id: review.application_method_id,
+        application_method_other: review.application_method_other ?? null,
+        farm_rating: review.farm_rating,
+        comment: review.comment,
+        farm_id: review.farm_id,
     });
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const [selectedApplicationMethod, setSelectedApplicationMethod] = useState("");
+    const [hoverFarmRating, setHoverFarmRating] = useState(0);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setData(name as keyof typeof data, value);
-    }
+    };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(route("review.store", { 'id': farm.id }), {
+        post(route("admin.review.update", { id: review.id }), {
             preserveScroll: true,
+            forceFormData: true,
         });
-    }
-
+    };
 
     return (
         <Box my={2} w={{ base: "80%", xl: "1280px" }} mx={"auto"}>
-            <Heading as={"h1"} color={"#4D4D4F"} my={3}>{farm.name}のレビュー登録</Heading>
-            <form onSubmit={handleSubmit}>
+            <Heading as={"h4"} mb={4} color={"#4D4D4F"}>レビュー編集画面</Heading>
+            <form onSubmit={handleSubmit} encType="multipart/form-data">
                 {/* 仕事のポジション */}
                 <FormControl mb={2} isRequired isInvalid={!!serverErrors.work_position}>
                     <FormLabel htmlFor="work_position">仕事のポジション</FormLabel>
-                    <Input id="work_position" type="text" name="work_position" autoComplete="work_position" value={data.work_position} placeholder="ピッキング・パッキング..." maxLength={50}
-                        onChange={handleChange} />
+                    <Input
+                        id="work_position" type="text" name="work_position" value={data.work_position}
+                        onChange={handleChange} placeholder="Rugby Farm" maxLength={50}
+                    />
                     <FormErrorMessage>{serverErrors.work_position}</FormErrorMessage>
                 </FormControl>
 
                 {/* 時給 */}
-                <FormControl mb={2} isInvalid={!!serverErrors.hourly_wage}>
+                <FormControl mb={2}
+                isInvalid={!!serverErrors.hourly_wage}
+                >
                     <FormLabel htmlFor="hourly_wage" >時給<Text as="span" color="gray.500" fontSize="sm" pl={2}>*時給の方のみご入力ください。</Text></FormLabel>
                     <Input id="hourly_wage" type="text" autoComplete="text" name="hourly_wage" value={data.hourly_wage} placeholder="30.7" inputMode="decimal"
                         onChange={handleChange}
@@ -99,6 +116,7 @@ const Create = ({ farm, applicationMethods }: CreateProps) => {
                     </RadioGroup>
                     <FormErrorMessage>{serverErrors.pay_type}</FormErrorMessage>
                 </FormControl>
+
 
                 {/* 車の有無 */}
                 <FormControl as="fieldset" mb={2} isRequired isInvalid={!!serverErrors.is_car_required}>
@@ -125,7 +143,7 @@ const Create = ({ farm, applicationMethods }: CreateProps) => {
                 {/* 終了日 */}
                 <FormControl mb={2} isInvalid={!!serverErrors.end_date}>
                     <FormLabel htmlFor="end_date">終了日</FormLabel>
-                    <Input id="end_date" type="date" name="end_date" value={data.end_date} placeholder="yyyy-mm-dd" inputMode="numeric"
+                    <Input id="end_date" type="date" name="end_date" value={data.end_date ?? ""} placeholder="yyyy-mm-dd" inputMode="numeric"
                         onChange={handleChange} />
                     <FormErrorMessage>{serverErrors.end_date}</FormErrorMessage>
                 </FormControl>
@@ -154,7 +172,7 @@ const Create = ({ farm, applicationMethods }: CreateProps) => {
                 {/* その他の応募方法 */}
                 <FormControl mb={2} isInvalid={!!serverErrors.application_method_other}>
                     <FormLabel htmlFor="application_method_other">その他の応募方法<Text as="span" color="gray.500" fontSize="sm">（その他を選択場合は、必須項目となります。）</Text></FormLabel>
-                    <Input id="application_method_other" type="text" name="application_method_other" autoComplete="application_method_other" value={data.application_method_other}
+                    <Input id="application_method_other" type="text" name="application_method_other" autoComplete="application_method_other" value={data.application_method_other ?? ""}
                         isDisabled={selectedApplicationMethod !== "99"}
                         opacity={selectedApplicationMethod !== "99" ? 0.5 : 1}
                         cursor={selectedApplicationMethod !== "99" ? "not-allowed" : "text"}
@@ -182,13 +200,14 @@ const Create = ({ farm, applicationMethods }: CreateProps) => {
                 </FormControl>
 
                 {/* ボタン */}
-                <Button type="submit" bg={"green.800"} _hover={{ bg: "green.700" }} color={"white"} isLoading={processing}>投稿</Button>
+                <Button type="submit" bg={"green.800"} _hover={{ bg: "green.700" }} color={"white"} isLoading={processing} mt={5}>更新</Button>
             </form>
+
         </Box>
     );
 };
 
-Create.layout = (page: React.ReactNode) => (
-    <MainLayout title="レビュー登録">{page}</MainLayout>
+ReviewEdit.layout = (page: React.ReactNode) => (
+    <MainLayout title="ファーム編集">{page}</MainLayout>
 );
-export default Create;
+export default ReviewEdit;

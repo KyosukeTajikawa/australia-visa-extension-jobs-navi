@@ -62,6 +62,15 @@ class User extends Authenticatable
     }
 
     /**
+     * ユーザーが作成したファームを取得
+     * @return HasMany
+     */
+    public function userReviews(): HasMany
+    {
+        return $this->hasMany(Review::class, 'user_id');
+    }
+
+    /**
      * ユーザーがお気に入りしたレビューを取得（中間テーブル）
      * @return BelongsToMany
      */

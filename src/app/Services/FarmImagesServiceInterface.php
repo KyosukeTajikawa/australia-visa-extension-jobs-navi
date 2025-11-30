@@ -19,4 +19,10 @@ interface FarmImagesServiceInterface
      * @param array $files 画像ファイル | null
      */
     public function imagesUpdate(Farm $farm, ?array $files = null): void;
+
+    /**
+     * ファーム画像を削除
+     * @param int $id
+     */
+    public function destroy(int $id): void;
 }

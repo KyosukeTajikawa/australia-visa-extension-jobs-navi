@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import MainLayout from "@/Layouts/MainLayout";
 import { Box, Heading, Text, FormControl, FormLabel, FormErrorMessage, Input, Select, Textarea, Button, HStack, } from "@chakra-ui/react";
-import { useForm, router } from "@inertiajs/react";
+import { useForm } from "@inertiajs/react";
 import ReactSelect from "react-select";
 import { MultiValue } from "react-select";
 
@@ -100,7 +100,7 @@ const Edit = ({ farm, states, crops }: EditProps) => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(route("farm.update", { id: farm.id }), {
+        post(route("admin.farm.update", { id: farm.id }), {
             preserveScroll: true,
             onSuccess: () => reset("files"),
             forceFormData: true,
@@ -219,14 +219,7 @@ const Edit = ({ farm, states, crops }: EditProps) => {
                 {/* 画像 */}
                 <FormControl mb={2} isInvalid={!!serverErrors.files}>
                     <FormLabel htmlFor="files">ファーム画像（最大5MB目安）<Text as="span" color="gray.500" fontSize="sm">（任意）</Text></FormLabel>
-                    <Box display={{ base: "block", md: "flex" }} justifyContent={"space-between"} alignItems={"end"}>
-                        <Text as="span" color="gray.500" fontSize="sm">※画像を選択しない場合は、前回の画像登録から変更ありません。</Text>
-                        {farm.images && farm.images.length > 0 && (
-                            <Button display={{ base: "none", md: "block" }} onClick={() => router.delete(route("farm.image.destroy", {id: farm.id}))}>
-                                前回登録の画像削除
-                            </Button>
-                        )}
-                    </Box>
+                    <Text as="span" color="gray.500" fontSize="sm">※画像を選択しない場合は、前回の画像登録から変更ありません。</Text>
                     {/* プレビュー */}
                     <HStack mb={2}>
                         {
@@ -242,14 +235,7 @@ const Edit = ({ farm, states, crops }: EditProps) => {
                 </FormControl>
 
                 {/* ボタン */}
-                <Box display={{ base: "flex", md: "block" }} justifyContent={"space-between"} mt={5}>
-                    <Button type="submit" bg={"green.800"} _hover={{ bg: "green.700" }} color={"white"} isLoading={processing} >登録</Button>
-                    {farm.images && farm.images.length > 0 && (
-                        <Button display={{ base: "block", md: "none" }} onClick={() => router.delete(route("farm.image.destroy", { id: farm.id }))}>
-                            前回登録の画像削除
-                        </Button>
-                    )}
-                </Box>
+                <Button type="submit" bg={"green.800"} _hover={{ bg: "green.700" }} color={"white"} isLoading={processing} mt={5}>登録</Button>
             </form>
 
         </Box>

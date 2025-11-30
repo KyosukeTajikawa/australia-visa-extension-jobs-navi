@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Models\User;
+use App\Models\UserImage;
 use App\Repositories\Auth\UserRepositoryInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -73,6 +74,25 @@ class UserRepositoryTest extends TestCase
 
         $this->assertSame($result['nickname'], 'Test');
         $this->assertSame($result['gender'], 2);
+    }
+
+    /**
+     * getImage()のテスト
+     * getImage() 取得できている
+     */
+    public function testGetImage(): void
+    {
+        $user = User::factory()->create();
+        $image =UserImage::create([
+            'user_id' => $user->id,
+            'url' => 'url',
+            'path' => 'path',
+        ]);
+
+        $this->repository->getImage($user->id);
+
+        $this->assertSame('url', $image->url);
+        $this->assertSame('path', $image->path);
     }
 
     /**

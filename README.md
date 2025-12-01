@@ -34,28 +34,134 @@ https://aussie-farm-navi.com
 ## メイン機能の使い方
 
 
-https://github.com/user-attachments/assets/0941a5fc-8443-41e9-b949-5d835fe941c8
-https://github.com/user-attachments/assets/203654cf-df2d-407b-b11d-7342dc774314
 
 
 
 
 
 ## 使用技術一覧
-バックエンド: php 8.3.28 / Laravel 12.0
 
-コード解析 / フォーマッター: 
-テストフレームワーク: 
-フロントエンド: TypeScript 5.9.2 / React 18.2.0 / Chakra ui  2.8.2
+### バックエンド
+- PHP 8.3.28  
+- Laravel 12.0  
+- Inertia.js（Laravel × React ブリッジ）
 
-コード解析: 
-フォーマッター: 
-テストフレームワーク:
-主要パッケージ: Axios / Font Awesome / React Paginate / React Responsive Modal / React Toastify
-インフラ: AWS(Route53 / Certificate Manager / ALB / VPC / ECR / ECS Fargate / RDS MySQL / S3) / Nginx / Vercel
+### フロントエンド
+- TypeScript 5.9.2  
+- React 18.2.0  
+- Chakra UI 2.8.2  
+- ビルドツール: Vite（Node.js 20.19.5）
 
-CI / CD: GitHub Actions
+### テスト
+- PHPUnit
 
-環境構築: Docker / Docker Compose
+### インフラ
+- AWS  
+  - VPC  
+  - Route 53  
+  - Certificate Manager  
+  - ALB  
+  - ECS Fargate  
+  - ECR  
+  - RDS MySQL  
+  - S3（画像ストレージ）  
+  - SES（メール送信）  
+- Nginx
 
-認証: Firebase Authentication
+### 環境構築
+- Docker / Docker Compose
+
+### CI / CD
+- GitHub Actions
+
+### 認証
+- Laravel の認証機能（メールアドレス・パスワード認証）
+
+## 主要対応一覧
+
+### ユーザー向け（フロントエンド機能）
+**機能**
+- メールアドレスとパスワードを利用したユーザー登録 / ログイン機能  
+- ユーザー情報変更機能  
+- パスワード再設定機能（AWS SES によるメール送信）  
+- ユーザー削除（退会）機能  
+
+- ファームの **作成 / 更新 / 削除機能**  
+- ファームの **検索機能（条件検索）**  
+- ファーム一覧のページネーション機能  
+- ファーム画像の **登録 / アップロード / 削除機能（S3 連携）**  
+
+- レビューの **作成 / 修正機能**  
+- レビュー評価の平均値算出機能  
+
+- お気に入り（Favorite）機能  
+- トースト通知（成功・エラー表示）  
+- ローディング画面  
+- モーダル画面の表示（画像拡大、レビュー詳細、検索条件変更など）  
+
+- **レスポンシブデザイン対応（スマホ / タブレット / PC）**
+
+---
+
+### 非ユーザー向け（ゲスト向け）
+- ログインしていないユーザーでもファーム一覧・詳細を閲覧可能
+- 未ログインユーザーが特定の操作を行おうとした時にログインを促すモーダル表示機能
+- ファーム検索機能の一部を利用可能  
+
+---
+
+### システム / インフラ
+- Docker による開発環境のコンテナ化  
+- AWS を利用した本番環境構築  
+  - VPC / ALB / ECS Fargate / ECR  
+  - RDS MySQL  
+  - S3（画像ストレージ）  
+  - Route53（独自ドメイン）  
+  - Certificate Manager（SSL化）  
+  - SES（パスワードリセットメール）  
+
+- お名前.com によるドメイン取得  
+- Nginx によるフロントリバースプロキシ構成  
+
+---
+
+### バックエンド
+- Laravel 12  
+- Inertia.js（Laravel × React ブリッジ）  
+- PHPUnit によるバックエンドテスト  
+- Laravel Pint による PHP コードフォーマット  
+- Laravel Sanctum による認証  
+
+---
+
+### CI / CD
+- **CI:** GitHub Actions 
+- **CD:** ECS Fargate によるコンテナデプロイ  
+- Docker Hub へのビルド & プッシュ  
+
+---
+
+### フロントエンド
+- React / TypeScript  
+- Chakra UI による UI コンポーネント  
+- Vite による高速ビルド  
+- Axios を使った API 通信  
+
+---
+
+### テスト / セキュリティ
+**クロスブラウザテスト**
+
+- **PC**
+  - Windows10 / 11: Google Chrome / Firefox / Edge  
+  - macOS: Google Chrome / Firefox / Safari  
+
+- **スマートフォン**
+  - Android: Google Chrome  
+  - iOS: Safari  
+
+**セキュリティ対策**
+- Dependabot Alerts による脆弱性チェック  
+- GitHub Code Scanning  
+- GitGuardian による秘密鍵漏洩チェック  
+

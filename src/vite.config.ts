@@ -12,8 +12,6 @@ export default defineConfig({
         react(),
         checker({
             typescript: true,
-            // ついでに ESLint も見たい場合は↓（ESLint導入済みなら）
-            // eslint: { lintCommand: 'eslint "./resources/**/*.{ts,tsx}"' }
         })
     ],
 });

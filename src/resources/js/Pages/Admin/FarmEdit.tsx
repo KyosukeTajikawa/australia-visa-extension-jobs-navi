@@ -1,0 +1,248 @@
+import React from "react";
+import MainLayout from "@/Layouts/MainLayout";
+import { Box, Heading, Text, FormControl, FormLabel, FormErrorMessage, Input, Select, Textarea, Button, HStack, } from "@chakra-ui/react";
+import { useForm } from "@inertiajs/react";
+import ReactSelect from "react-select";
+import { MultiValue } from "react-select";
+
+type FormData = {
+    _method: string;
+    name: string;
+    phone_number: string | null;
+    email: string | null;
+    street_address: string;
+    suburb: string;
+    postcode: string;
+    state_id: string;
+    description: string;
+    files: File[];
+    crop_ids: number[];
+}
+
+type Farm = {
+    id: number;
+    name: string;
+    phone_number?: string;
+    email?: string;
+    description: string;
+    street_address: string;
+    suburb: string;
+    postcode: string;
+    state: State;
+    images?: FarmImages[];
+    crops: Crops[];
+}
+
+type FarmImages = {
+    id: number;
+    farm_id: number;
+    url: string;
+}
+
+type State = {
+    id: number;
+    name: string;
+}
+
+type Crops = {
+    id: number;
+    name: string;
+}
+
+type EditProps = {
+    farm: Farm;
+    states: State[];
+    crops: Crops[];
+};
+
+const Edit = ({ farm, states, crops }: EditProps) => {
+    const { data, setData, post, processing, errors: serverErrors, reset } = useForm<FormData>({
+        _method: "put",
+        name: farm.name,
+        phone_number: farm.phone_number ?? null,
+        email: farm.email ?? null,
+        street_address: farm.street_address,
+        suburb: farm.suburb,
+        postcode: farm.postcode,
+        state_id: String(farm.state.id),
+        description: farm.description,
+        files: [],
+        crop_ids: farm.crops.map(crop => crop.id),
+    });
+
+    const cropOptions = crops.map(crop => ({ value: crop.id, label: crop.name }));
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setData(name as keyof typeof data, value);
+    };
+
+    const handleOptionChange = (selectedOptions: MultiValue<any>) => {
+        const selectedIds = selectedOptions.map((option) => option.value);
+        setData("crop_ids", selectedIds);
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const images = e.target.files ? Array.from(e.target.files) : [];
+        const newFiles = [...data.files, ...images];
+
+        if (newFiles.length > 2) {
+            const initialize = newFiles.slice(0, 0);
+            setData("files", initialize);
+            e.target.value = "";
+
+            alert("画像は2枚以下にしてください。");
+            return;
+        }
+
+        setData("files", newFiles);
+    }
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        post(route("admin.farm.update", { id: farm.id }), {
+            preserveScroll: true,
+            onSuccess: () => reset("files"),
+            forceFormData: true,
+        });
+    };
+
+    return (
+        <Box my={2} w={{ base: "80%", xl: "1280px" }} mx={"auto"}>
+            <Heading as={"h4"} mb={4} color={"#4D4D4F"}>ファーム編集画面</Heading>
+            <form onSubmit={handleSubmit} encType="multipart/form-data">
+                {/* ファーム名 */}
+                <FormControl mb={2} isRequired isInvalid={!!serverErrors.name}>
+                    <FormLabel htmlFor="name">ファーム名</FormLabel>
+                    <Input
+                        id="name" type="text" name="name" value={data.name}
+                        onChange={handleChange} placeholder="Rugby Farm" maxLength={50}
+                    />
+                    <FormErrorMessage>{serverErrors.name}</FormErrorMessage>
+                </FormControl>
+
+                {/* 作物 */}
+                <FormControl mb={2} isRequired isInvalid={!!serverErrors.crop_ids}>
+                    <FormLabel htmlFor="crop_ids">作物（複数選択可）</FormLabel>
+                    <ReactSelect
+                        inputId="crop_ids"
+                        isMulti
+                        options={cropOptions}
+                        value={cropOptions.filter(cropOption => data.crop_ids.includes(cropOption.value))}
+                        onChange={handleOptionChange}
+                        closeMenuOnSelect={false}
+                        placeholder="作物を選択してください"
+                    />
+                    <FormErrorMessage>{serverErrors.crop_ids}</FormErrorMessage>
+                </FormControl>
+
+                {/* 電話番号 */}
+                <FormControl mb={2} isInvalid={!!serverErrors.phone_number}>
+                    <FormLabel htmlFor="phone_number">
+                        電話番号 <Text as="span" color="gray.500" fontSize="sm">（任意）</Text>
+                    </FormLabel>
+                    <Input
+                        id="phone_number" type="tel" name="phone_number" value={data.phone_number ?? ""}
+                        onChange={handleChange} placeholder="0754663200" inputMode="numeric" pattern="^\d{10,11}$" title="電話番号はハイフンなしの数字10桁または11桁で入力してください。"
+                    />
+                    <FormErrorMessage>{serverErrors.phone_number}</FormErrorMessage>
+                </FormControl>
+
+                {/* メール */}
+                <FormControl mb={2} isInvalid={!!serverErrors.email}>
+                    <FormLabel htmlFor="email">
+                        メールアドレス <Text as="span" color="gray.500" fontSize="sm">（任意）</Text>
+                    </FormLabel>
+                    <Input
+                        id="email" type="email" name="email" value={data.email ?? ""}
+                        onChange={handleChange} placeholder="test@example.com" maxLength={255}
+                    />
+                    <FormErrorMessage>{serverErrors.email}</FormErrorMessage>
+                </FormControl>
+
+                {/* 住所 */}
+                <FormControl mb={2} isRequired isInvalid={!!serverErrors.street_address}>
+                    <FormLabel htmlFor="street_address">Street Address</FormLabel>
+                    <Input
+                        id="street_address" type="text" name="street_address" value={data.street_address}
+                        onChange={handleChange} placeholder="22 Hoods Road" maxLength={100}
+                    />
+                    <FormErrorMessage>{serverErrors.street_address}</FormErrorMessage>
+                </FormControl>
+
+                {/* Suburb */}
+                <FormControl mb={2} isRequired isInvalid={!!serverErrors.suburb}>
+                    <FormLabel htmlFor="suburb">Suburb / Town</FormLabel>
+                    <Input
+                        id="suburb" type="text" name="suburb" value={data.suburb}
+                        onChange={handleChange} placeholder="Gatton" maxLength={50}
+                    />
+                    <FormErrorMessage>{serverErrors.suburb}</FormErrorMessage>
+                </FormControl>
+
+                {/* Postcode */}
+                <FormControl mb={2} isRequired isInvalid={!!serverErrors.postcode}>
+                    <FormLabel htmlFor="postcode">Postcode</FormLabel>
+                    <Input
+                        id="postcode" type="text" name="postcode" value={data.postcode}
+                        onChange={handleChange} placeholder="4343" inputMode="numeric" maxLength={4}
+                    />
+                    <FormErrorMessage>{serverErrors.postcode}</FormErrorMessage>
+                </FormControl>
+
+                {/* State */}
+                <FormControl mb={2} isRequired isInvalid={!!serverErrors.state_id}>
+                    <FormLabel htmlFor="state_id">State</FormLabel>
+                    <Select
+                        id="state_id" name="state_id" value={data.state_id}
+                        onChange={handleChange} placeholder="select a state"
+                    >
+                        {states.map((state) => (
+                            <option key={state.id} value={state.id}>{state.name}</option>
+                        ))}
+                    </Select>
+                    <FormErrorMessage>{serverErrors.state_id}</FormErrorMessage>
+                </FormControl>
+
+                {/* 説明 */}
+                <FormControl mb={2} isInvalid={!!serverErrors.description}>
+                    <FormLabel htmlFor="description">
+                        説明 <Text as="span" color="gray.500" fontSize="sm">（任意）</Text>
+                    </FormLabel>
+                    <Textarea
+                        id="description" name="description" value={data.description}
+                        onChange={handleChange} placeholder="自由記述欄（なるべく記入をお願いします）" maxLength={1000}
+                    />
+                    <FormErrorMessage>{serverErrors.description}</FormErrorMessage>
+                </FormControl>
+
+                {/* 画像 */}
+                <FormControl mb={2} isInvalid={!!serverErrors.files}>
+                    <FormLabel htmlFor="files">ファーム画像（最大5MB目安）<Text as="span" color="gray.500" fontSize="sm">（任意）</Text></FormLabel>
+                    <Text as="span" color="gray.500" fontSize="sm">※画像を選択しない場合は、前回の画像登録から変更ありません。</Text>
+                    {/* プレビュー */}
+                    <HStack mb={2}>
+                        {
+                            data.files.map((file) => (
+                                <Box key={file.name} px={2} >
+                                    <img src={URL.createObjectURL(file)} alt={file.name} style={{ "width": 100, "height": 100, objectFit: "contain" }} />
+                                </Box>
+                            ))
+                        }
+                    </HStack>
+                    <Input type="file" name="files[]" id="files" accept="image/*" multiple onChange={handleFileChange} />
+                    <FormErrorMessage>{serverErrors.files}</FormErrorMessage>
+                </FormControl>
+
+                {/* ボタン */}
+                <Button type="submit" bg={"green.800"} _hover={{ bg: "green.700" }} color={"white"} isLoading={processing} mt={5}>登録</Button>
+            </form>
+
+        </Box>
+    );
+};
+
+Edit.layout = (page: React.ReactNode) => (
+    <MainLayout title="ファーム編集">{page}</MainLayout>
+);
+export default Edit;

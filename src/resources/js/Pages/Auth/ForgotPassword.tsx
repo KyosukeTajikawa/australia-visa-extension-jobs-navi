@@ -1,56 +1,57 @@
-// import InputError from '@/Components/InputError';
-// import PrimaryButton from '@/Components/PrimaryButton';
-// import TextInput from '@/Components/TextInput';
-// import GuestLayout from '@/Layouts/GuestLayout';
-// import { Head, useForm } from '@inertiajs/react';
-// import { FormEventHandler } from 'react';
+import { Box, Heading, Text, Input, Button, FormControl, FormLabel, FormErrorMessage } from "@chakra-ui/react";
+import { useForm } from "@inertiajs/react";
+import MainLayout from "@/Layouts/MainLayout";
 
-// export default function ForgotPassword({ status }: { status?: string }) {
-//     const { data, setData, post, processing, errors } = useForm({
-//         email: '',
-//     });
+const ForgotPassword = ({ status }: { status?: string }) => {
+    const { data, setData, post, processing, errors } = useForm({ email: '' });
 
-//     const submit: FormEventHandler = (e) => {
-//         e.preventDefault();
+    function submit(e) {
+        e.preventDefault();
+        post(route('password.email'));
+    }
 
-//         post(route('password.email'));
-//     };
+    return (
+        <Box maxW="md" mx="auto" mt={10} p={6} borderWidth={1} rounded="md">
+            <Heading size="lg" mb={4} color={"#4D4D4F"}>パスワード再設定</Heading>
+            <Text mb={4}>
+                登録したメールアドレスを入力してください。<br />
+                パスワード再設定用リンクを送信します。
+            </Text>
 
-//     return (
-//         <GuestLayout>
-//             <Head title="Forgot Password" />
+            {status && <Text color="green.500" mb={4}>{status}</Text>}
 
-//             <div className="mb-4 text-sm text-gray-600">
-//                 Forgot your password? No problem. Just let us know your email
-//                 address and we will email you a password reset link that will
-//                 allow you to choose a new one.
-//             </div>
+            <form onSubmit={submit}>
+                <FormControl isInvalid={!!errors.email}>
+                    <FormLabel>メールアドレス</FormLabel>
+                    <Input
+                        type="email"
+                        value={data.email}
+                        onChange={e => setData('email', e.target.value)}
+                    />
+                    <FormErrorMessage>{errors.email}</FormErrorMessage>
+                </FormControl>
 
-//             {status && (
-//                 <div className="mb-4 text-sm font-medium text-green-600">
-//                     {status}
-//                 </div>
-//             )}
+                <Button
+                    mt={4}
+                    color="white"
+                    bg="green.800"
+                    _hover={{ bg: "green.700" }}
+                    _disabled={{ bg: "green.300", cursor: "not-allowed" }}
+                    borderRadius="md"
+                    px={6}
+                    h="48px"
+                    fontWeight="bold"
+                    isLoading={processing}
+                    type="submit">
+                    リセットリンクを送信
+                </Button>
+            </form>
+        </Box>
+    );
+}
 
-//             <form onSubmit={submit}>
-//                 <TextInput
-//                     id="email"
-//                     type="email"
-//                     name="email"
-//                     value={data.email}
-//                     className="mt-1 block w-full"
-//                     isFocused={true}
-//                     onChange={(e) => setData('email', e.target.value)}
-//                 />
+ForgotPassword.layout = (page: React.ReactNode) => (
+    <MainLayout title="パスワードリセット">{page}</MainLayout>
+);
 
-//                 <InputError message={errors.email} className="mt-2" />
-
-//                 <div className="mt-4 flex items-center justify-end">
-//                     <PrimaryButton className="ms-4" disabled={processing}>
-//                         Email Password Reset Link
-//                     </PrimaryButton>
-//                 </div>
-//             </form>
-//         </GuestLayout>
-//     );
-// }
+export default ForgotPassword;

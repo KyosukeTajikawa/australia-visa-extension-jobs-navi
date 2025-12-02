@@ -1,0 +1,68 @@
+name: Deploy to ECS
+
+on:
+  push:
+    branches:
+      - main   # ← メインブランチ名に合わせてね（main / master など）
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ① ソースをチェックアウト
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ② Docker Buildx セットアップ
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # ③ DockerHub にログイン
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # ④ app イメージを build & push
+      - name: Build and push app image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker-config/php/Dockerfile
+          push: true
+          tags: bajiou/farm-info-app:latest
+
+      # ⑤ nginx イメージを build & push（※app のあとに実行）
+      - name: Build and push nginx image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker-config/nginx/Dockerfile
+          push: true
+          tags: bajiou/farm-info-nginx:latest
+
+      # ⑥ AWS 認証情報を設定
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      # ⑦ app サービスを再デプロイ
+      - name: Force new deployment for app service
+        run: |
+          aws ecs update-service \
+            --cluster farm-info \
+            --service farm-app-service \
+            --force-new-deployment
+
+      # ⑧ nginx サービスを再デプロイ
+      - name: Force new deployment for nginx service
+        run: |
+          aws ecs update-service \
+            --cluster farm-info \
+            --service farm-nginx-service \
+            --force-new-deployment

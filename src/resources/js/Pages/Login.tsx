@@ -1,26 +1,26 @@
 import React from "react";
 import axios from 'axios';
-import { Box, Heading, FormControl, FormLabel, FormErrorMessage, Input, Button } from "@chakra-ui/react";
+import { Box, Heading, FormControl, FormLabel, FormErrorMessage, Input, Button, Text } from "@chakra-ui/react";
 import { LockIcon } from '@chakra-ui/icons';
-import { useForm, router } from "@inertiajs/react";
+import { useForm, Link } from "@inertiajs/react";
 import MainLayout from "@/Layouts/MainLayout";
 
-    const Login = () => {
-        const { data, setData, post, processing, errors } = useForm({
-            email: "",
-            password: "",
+const Login = () => {
+    const { data, setData, post, processing, errors } = useForm({
+        email: "",
+        password: "",
+    });
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        // SanctumのCSRF初期化（必要なら最初の1回）
+        await axios.get("/sanctum/csrf-cookie");
+
+        post("/login", {
+            preserveScroll: true,
         });
-
-        const handleSubmit = async (e: React.FormEvent) => {
-            e.preventDefault();
-
-            // SanctumのCSRF初期化（必要なら最初の1回）
-            await axios.get("/sanctum/csrf-cookie");
-
-            post("/login", {
-                preserveScroll: true,
-            });
-        };
+    };
 
 
     return (
@@ -86,19 +86,36 @@ import MainLayout from "@/Layouts/MainLayout";
                         {errors.password}
                     </FormErrorMessage>
                 </FormControl>
-                <Button
-                    type="submit"
-                    bg={"green.800"}
-                    color={"white"}
-                    _hover={{ bg: "green.700" }}
-                    isLoading={processing}
-                >
-                    ログイン
-                </Button>
+                <Box display={"flex"}
+                    alignItems={"center"}
+                    justifyContent={"flex-end"}>
+                    <Text
+                        as={Link}
+                        href={route('password.request')}
+                        size={"sm"}
+                        color={"gray.700"}
+                        borderRadius={"md"}
+                        _hover={{
+                            color: "gray.900",
+                        }}
+                    >
+                        パスワードをお忘れですか？
+                    </Text>
+                    <Button
+                        type="submit"
+                        ml="4"
+                        bg={"green.800"}
+                        color={"white"}
+                        _hover={{ bg: "green.700" }}
+                        isLoading={processing}
+                    >
+                        ログイン
+                    </Button>
+                </Box>
             </form>
         </Box>
     )
 }
 
-Login.layout = (page: React.ReactNode) => <MainLayout children={page} title="ファーム情報サイト" />
+Login.layout = (page: React.ReactNode) => <MainLayout children={page} title="ログイン" />
 export default Login;

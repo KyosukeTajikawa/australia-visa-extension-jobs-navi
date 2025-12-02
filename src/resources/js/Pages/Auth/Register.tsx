@@ -4,6 +4,7 @@ import { Box, Heading, Text, HStack, FormControl, FormLabel, FormErrorMessage, I
 import { useForm, Link } from "@inertiajs/react";
 
 type FormData = {
+    file: File | null;
     nickname: string;
     email: string;
     password: string;
@@ -14,6 +15,7 @@ type FormData = {
 
 const Register = () => {
     const { data, setData, post, processing, errors, reset } = useForm<FormData>({
+        file: null,
         nickname: '',
         email: '',
         password: '',
@@ -41,6 +43,24 @@ const Register = () => {
             <Heading as={"h3"} mb={4} fontWeight={"bold"} fontSize={{ base: "18px", md: "24px" }} color={"gray.600"}>新規登録</Heading>
 
             <form onSubmit={handleSubmit}>
+
+                {/* 画像 */}
+                <FormControl mb={2}>
+                    <FormLabel htmlFor="file">名前<Text as="span" color="gray.500" fontSize="sm">（任意）</Text></FormLabel>
+                    <Input
+                        id="file"
+                        name="file"
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {const file = e.target.files?.[0] ?? null;
+                            setData('file', file );
+                        }}
+                        mt={"1"}
+                        w={"full"}
+                    />
+                    <FormErrorMessage>{errors.nickname}</FormErrorMessage>
+                </FormControl>
+
                 {/* 名前 */}
                 <FormControl mb={2} isRequired isInvalid={!!errors.nickname}>
                     <FormLabel htmlFor="nickname">名前</FormLabel>
@@ -59,6 +79,7 @@ const Register = () => {
                     />
                     <FormErrorMessage>{errors.nickname}</FormErrorMessage>
                 </FormControl>
+
                 {/* メールアドレス */}
                 <FormControl mb={2} isRequired isInvalid={!!errors.email}>
                     <FormLabel htmlFor="email">メールアドレス</FormLabel>
@@ -77,6 +98,7 @@ const Register = () => {
                     />
                     <FormErrorMessage>{errors.email}</FormErrorMessage>
                 </FormControl>
+
                 {/* 性別 */}
                 <FormControl as="fieldset" mb={2} isRequired isInvalid={!!errors.gender}>
                     <FormLabel as="legend" id="gender">性別</FormLabel>
@@ -91,6 +113,7 @@ const Register = () => {
                     </RadioGroup>
                     <FormErrorMessage>{errors.gender}</FormErrorMessage>
                 </FormControl>
+
                 {/* 生年月日 */}
                 <FormControl mb={2} isInvalid={!!errors.birthday}>
                     <FormLabel htmlFor="birthday">生年月日<Text as="span" color="gray.500" fontSize="sm">（任意）</Text></FormLabel>
@@ -108,6 +131,7 @@ const Register = () => {
                     />
                     <FormErrorMessage>{errors.birthday}</FormErrorMessage>
                 </FormControl>
+
                 {/* パスワード */}
                 <FormControl mb={2} isRequired isInvalid={!!errors.password}>
                     <FormLabel htmlFor="password">パスワード</FormLabel>
@@ -125,6 +149,7 @@ const Register = () => {
                     />
                     <FormErrorMessage>{errors.password}</FormErrorMessage>
                 </FormControl>
+
                 {/* パスワード確認 */}
                 <FormControl mb={2} isRequired isInvalid={!!errors.password_confirmation}>
                     <FormLabel htmlFor="password_confirmation">パスワード確認</FormLabel>
@@ -143,7 +168,7 @@ const Register = () => {
                     <FormErrorMessage>{errors.password_confirmation}</FormErrorMessage>
                 </FormControl>
 
-                <Box mt="4"
+                <Box my="4"
                     display={"flex"}
                     alignItems={"center"}
                     justifyContent={"flex-end"}
@@ -178,6 +203,6 @@ const Register = () => {
 }
 
 Register.layout = (page: React.ReactNode) => (
-    <MainLayout title="新規登録">{page}</MainLayout>
+    <MainLayout title="ユーザー登録">{page}</MainLayout>
 );
 export default Register;

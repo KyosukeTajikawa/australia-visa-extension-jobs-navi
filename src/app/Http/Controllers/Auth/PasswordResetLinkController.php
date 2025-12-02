@@ -13,19 +13,22 @@ use Inertia\Response;
 class PasswordResetLinkController extends Controller
 {
     /**
-     * Display the password reset link request view.
+     * メールリセットリンク送信画面
+     * @return Response
      */
     public function create(): Response
     {
+        //送信完了時のSessionに入るstatusを渡す
         return Inertia::render('Auth/ForgotPassword', [
             'status' => session('status'),
         ]);
     }
 
     /**
-     * Handle an incoming password reset link request.
-     *
-     * @throws \Illuminate\Validation\ValidationException
+     * リクエストリンクス送信.
+     * @param Request $request
+     * @return RedirectResponse
+     * @throws ValidationException
      */
     public function store(Request $request): RedirectResponse
     {
@@ -33,17 +36,17 @@ class PasswordResetLinkController extends Controller
             'email' => 'required|email',
         ]);
 
-        // We will send the password reset link to this user. Once we have attempted
-        // to send the link, we will examine the response then see the message we
-        // need to show to the user. Finally, we'll send out a proper response.
+        // 入力メールアドレスが登録されているメールアドレスと同じか確認しあっていたらトークンを発行しリンクを送信
         $status = Password::sendResetLink(
             $request->only('email')
         );
 
+        //あれば送信してstatusを渡す
         if ($status == Password::RESET_LINK_SENT) {
             return back()->with('status', __($status));
         }
 
+        //なければバリデーションメッセージ表示
         throw ValidationException::withMessages([
             'email' => [trans($status)],
         ]);

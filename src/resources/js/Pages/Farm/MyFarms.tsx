@@ -38,9 +38,9 @@ const MyFarms = ({ farms }: MyFarmsProps) => {
             <Box
                 textAlign="center"
                 mt="200px"
-                color="gray.600"
+                color="green.800"
             >
-                <Heading as="h2" size="lg" mb={4} color="green.800">
+                <Heading as="h2" size="lg" mb={4} >
                     あなたのファーム
                 </Heading>
                 <Text fontSize="xl">
@@ -57,6 +57,7 @@ const MyFarms = ({ farms }: MyFarmsProps) => {
             w={{ base: "90%", md: "48%", xl: "45%" }}
             mb={5}
             mx={"auto"}
+            color={"gray.600"}
         >
             <Image
                 src={farm.images?.[0]?.url ?? "https://placehold.co/100x100"}
@@ -70,12 +71,10 @@ const MyFarms = ({ farms }: MyFarmsProps) => {
             >
                 <Heading
                     as={"h3"}
-                    color={"green.800"}
                 >
                     {farm.name}
                 </Heading>
                 <Text
-                    color={"green.800"}
                     fontSize={"20px"}
                     mb={1}
                 >
@@ -85,10 +84,6 @@ const MyFarms = ({ farms }: MyFarmsProps) => {
                     <Text
                         key={crop.id}
                         display={"inline-block"}
-                        bg="green.50"
-                        color="green.800"
-                        borderColor="green.200"
-                        borderRadius="md"
                         p={1}
                         fontSize={"20px"}
                         mr={2}
@@ -101,7 +96,6 @@ const MyFarms = ({ farms }: MyFarmsProps) => {
                 as={Link}
                 href={`/farm/${farm.id}`}
                 mt={2}
-                fontWeight={"normal"}
                 bg="green.800"
                 _hover={{ bg: "green.700", textDecoration: "none" }}
                 color="white"
@@ -113,7 +107,6 @@ const MyFarms = ({ farms }: MyFarmsProps) => {
                 as={Link}
                 href={`/farm/${farm.id}/edit`}
                 mt={2}
-                fontWeight={"normal"}
                 bg="green.800"
                 _hover={{ bg: "green.700", textDecoration: "none" }}
                 color="white"
@@ -141,7 +134,7 @@ const MyFarms = ({ farms }: MyFarmsProps) => {
     return (
         <Box>
             {/* ファーム一覧 */}
-            <Heading as={"h1"}>あなたが作成したファーム一覧</Heading>
+            <Heading as={"h1"} color={"#4D4D4F"} m={5}>あなたのファーム一覧</Heading>
             <Flex
                 wrap={"wrap"}
                 w={{ base: "80%", xl: "1280px" }}
@@ -153,5 +146,5 @@ const MyFarms = ({ farms }: MyFarmsProps) => {
     );
 };
 
-MyFarms.layout = (page: React.ReactNode) => (<MainLayout title="ファーム情報サイト">{page}</MainLayout>);
+MyFarms.layout = (page: React.ReactNode) => (<MainLayout title="作成済ファーム一覧">{page}</MainLayout>);
 export default MyFarms;

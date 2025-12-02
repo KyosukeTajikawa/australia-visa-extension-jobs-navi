@@ -65,7 +65,30 @@ class FarmRepository implements FarmRepositoryInterface
      */
     public function getDetailById(int $id, array $relations = []): Farm
     {
-        return Farm::with($relations)->findOrFail($id);
+        $farm = Farm::with($relations)->findOrFail($id);
+
+        return $farm->load([
+            'state',
+            'images',
+            'crops',
+            'reviews' => function ($q) {
+                $q->with([
+                    'applicationMethod:id,name',
+                    'reviewUser:id,nickname',
+                    'reviewUser.image' => function ($qq) {
+                        $qq->select('id', 'user_id', 'url');
+                    },
+                    'reviewComments:id,comment,review_id,user_id,created_at',
+                    'reviewComments.user:id,nickname',
+                    'reviewComments.user.image' => function ($qq) {
+                        $qq->select('id', 'user_id', 'url');
+                    },
+                ])->withExists([
+                    'favoritedUsers as is_favorite' => fn($qq) =>
+                    $qq->where('user_id', auth()->id()),
+                ]);
+            },
+        ]);
     }
 
     /**

@@ -8,6 +8,7 @@ use App\Models\Review;
 use App\Models\User;
 use App\Repositories\Reviews\ReviewRepositoryInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Request;
 use Tests\TestCase;
 
 class ReviewRepositoryTest extends TestCase
@@ -29,7 +30,6 @@ class ReviewRepositoryTest extends TestCase
     public function testGetCreateById(): void
     {
         $farm = Farm::factory()->create();
-
         $result = $this->repository->getCreateById($farm->id);
 
         $this->assertSame($farm->id, $result->id);
@@ -114,5 +114,51 @@ class ReviewRepositoryTest extends TestCase
                 'review_id' => $review->id,
             ]);
         }
+    }
+
+    /**
+     * destroyFavoriteReview()のテスト
+     * destroyFavoriteReview() がpivot(review_favorites)のデータを削除できている
+     */
+    public function testDestroyFavoriteReview(): void
+    {
+        $user = User::factory()->create();
+        $reviews = Review::factory()->sequence(['id' => 10], ['id' => 15], ['id' => 20])->count(3)->create();
+
+        $this->actingAs($user);
+
+        foreach ($reviews as $review) {
+            $this->repository->destroyFavoriteReview($review);
+        };
+
+        foreach ($reviews as $review) {
+            $this->assertDatabaseMissing('review_favorites',[
+                'user_id' => $user->id,
+                'review_id' => $review->id,
+            ]);
+        }
+    }
+
+    /**
+     * registerReviewComment()のテスト
+     * registerReviewComment() がレビューコメントを登録できている
+     */
+    public function testRegisterReviewComment(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+        $review = Review::factory()->create();
+
+        $request = new Request([
+            'reviewComment' => 'テストコメント',
+        ]);
+
+        $this->repository->registerReviewComment($request, $review);
+
+        $this->assertDatabaseHas('review_comments', [
+            'review_id' => $review->id,
+            'user_id'   => $user->id,
+            'comment'   => 'テストコメント',
+        ]);
     }
 }

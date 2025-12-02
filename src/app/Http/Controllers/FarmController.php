@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Farms\FarmStoreRequest;
-use App\Models\Farm;
-use App\Models\State;
 use App\Repositories\Farms\FarmRepositoryInterface;
 use App\Repositories\StateRepositoryInterface;
+use App\Services\FarmImagesServiceInterface;
 use App\Services\FarmServiceInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -26,7 +25,8 @@ class FarmController extends Controller
     public function __construct(
         private readonly FarmRepositoryInterface $farmRepository,
         private readonly StateRepositoryInterface $stateRepository,
-        private readonly FarmServiceInterface $farmService
+        private readonly FarmServiceInterface $farmService,
+        private readonly FarmImagesServiceInterface $farmImageService
     ) {}
 
     /**
@@ -36,6 +36,8 @@ class FarmController extends Controller
      */
     public function index(Request $request): Response
     {
+        $status = request('status');
+
         $keyword = $request->input('keyword' ?? '');
         $stateName = $request->input('stateName' ?? '');
 
@@ -52,6 +54,7 @@ class FarmController extends Controller
             'states' => $states,
             'keyword' => $keyword,
             'stateName' => $stateName,
+            'status' => $status,
         ]);
     }
 
@@ -62,12 +65,13 @@ class FarmController extends Controller
      */
     public function detail(int $id): Response
     {
-        $farm = $this->farmRepository->getDetailById($id, ['reviews.applicationMethod:id,name', 'reviews.reviewUser:id,nickname', 'state', 'images', 'crops']);
+        $farm = $this->farmRepository->getDetailById($id);
 
         return Inertia::render('Farm/Detail', [
             'farm' => $farm,
         ]);
     }
+
 
     /**
      * ファーム新規作成のページを表示
@@ -107,7 +111,7 @@ class FarmController extends Controller
     }
 
     /**
-     * ファーム新規作成のページを表示
+     * ファーム編集ページを表示
      * @param $id
      * @return Response
      */
@@ -127,8 +131,9 @@ class FarmController extends Controller
     }
 
     /**
-     * ファームの新規登録
+     * ファームの編集
      * @param FarmStoreRequest $request
+     * @param int $id
      * @return RedirectResponse
      */
     public function update(FarmStoreRequest $request, int $id): RedirectResponse
@@ -159,6 +164,20 @@ class FarmController extends Controller
 
         return Inertia::render('Farm/MyFarms', [
             'farms' => $farms,
+        ]);
+    }
+
+    /**
+     * ファーム画像を削除
+     * @param int $id
+     * @return RedirectResponse
+     */
+    public function destroy(int $id): RedirectResponse
+    {
+        $this->farmImageService->destroy($id);
+
+        return redirect()->route('farm.detail', [
+            'id' => $id,
         ]);
     }
 }

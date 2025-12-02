@@ -7,7 +7,7 @@ type FarmDescriptionProps = {
 
 const FarmDescription = ({ description }: FarmDescriptionProps) => {
     return (
-        <Text>{description}</Text>
+        <Text whiteSpace="pre-wrap">{description}</Text>
     );
 };
 

@@ -4,6 +4,7 @@ namespace App\Repositories\Auth;
 
 use App\Repositories\Auth\UserRepositoryInterface;
 use App\Models\User;
+use App\Models\UserImage;
 use Illuminate\Support\Facades\Hash;
 
 class UserRepository implements UserRepositoryInterface
@@ -24,4 +25,47 @@ class UserRepository implements UserRepositoryInterface
         ]);
     }
 
+    /**
+     * ユーザー情報取得
+     * @return User
+     */
+    public function getUser(array $relation = []): User
+    {
+        return User::with($relation)->findOrFail(auth()->id());
+    }
+
+    /**
+     * ユーザー更新
+     * @param array $validated
+     * @param User $user
+     * @return User
+     */
+    public function updateUser(array $validated, User $previousUser): User
+    {
+        $previousUser->update($validated);
+
+        return $previousUser->refresh();
+    }
+
+    /**
+     * ユーザー画像取得
+     * @param int $id
+     * @return UserImage
+     */
+    public function getImage(int $id): UserImage
+    {
+        $image = UserImage::where('user_id', $id)->first();
+
+        return $image;
+    }
+
+    /**
+     * ユーザー削除
+     */
+    public function destroyUser():void
+    {
+        $user = auth()->user();
+
+        $user->delete();
+    }
 }

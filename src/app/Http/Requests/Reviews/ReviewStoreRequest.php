@@ -23,13 +23,13 @@ class ReviewStoreRequest extends FormRequest
     {
         return [
             'work_position'   => ['required', 'string', 'max:50'],
-            'hourly_wage'     => ['nullable', 'required_if:pay_type,1', 'regex:/^\d{1,2}(\.\d)?$/'],
+            'hourly_wage'     => ['nullable', 'required_if:pay_type,1', 'numeric', 'between:0,99.9'],
             'pay_type'        => ['required', 'integer', 'in:1,2'],
             'is_car_required' => ['required', 'integer', 'in:1,2'],
             'start_date'      => ['required', 'date_format:Y-m-d'],
             'end_date'        => ['nullable', 'date_format:Y-m-d', 'after_or_equal:start_date'],
             'application_method_id' => ['required', 'integer', 'exists:application_methods,id'],
-            'application_method_other' => ['exclude_unless:application_method_id,99','required','string'],
+            'application_method_other' => ['exclude_unless:application_method_id,99', 'required', 'string'],
             'farm_rating'  => ['required', 'integer', 'between:1,5'],
             'comment'         => ['required', 'string', 'max:1000'],
             'farm_id'         => ['required', 'integer', 'exists:farms,id'],
@@ -46,8 +46,8 @@ class ReviewStoreRequest extends FormRequest
             'work_position.required' => '仕事のポジションは必須です。',
             'work_position.max' => '仕事のポジションは50文字以内で入力してください。',
             'hourly_wage.required_if' => '支払種別が「時給」の場合、時給は必須です。',
-            'hourly_wage.numeric' => '時給は数値で入力してください。',
-            'hourly_wage.regex' => '時給は整数2桁または小数1桁までで入力してください（例: 12.3）。',
+            'hourly_wage.numeric'     => '時給は数値で入力してください。',
+            'hourly_wage.between'     => '時給は0〜99.9の範囲で入力してください。',
             'start_date.date_format' => '開始日は「YYYY-MM-DD」の形式で入力してください。',
             'end_date.date_format' => '終了日は「YYYY-MM-DD」の形式で入力してください。',
             'end_date.after_or_equal' => '終了日は開始日以降の日付を指定してください。',
@@ -56,29 +56,27 @@ class ReviewStoreRequest extends FormRequest
         ];
     }
 
+    /**
+     * バリデーション前の入力値を整形
+     */
     public function prepareForValidation(): void
     {
-        $hourly = $this->input('hourly_wage');
-        $hourly = ($hourly === '' || $hourly === null) ? null : str_replace(',', '.', $hourly);
+        if ($this->has('hourly_wage')) {
+            $value = $this->input('hourly_wage');
 
-        $end = $this->input('end_date');
-        $end  = ($end === '' ? null : $end);
+            if ($value === '' || $value === null) {
+                $this->merge(['hourly_wage' => null]);
+            } else {
+                $normalized = trim($value);
 
-        $appId = (int) $this->input('application_method_id');
-        $other = $appId === 99 ? $this->input('application_method_other') : null;
+                $normalized = mb_convert_kana($normalized, 'n');
 
-        $payType = $this->input('pay_type');
-        if ($payType !== 1) {
-            $hourly = null;
+                $this->merge(['hourly_wage' => $normalized]);
+            }
         }
 
-        $this->merge([
-            'farm_id'         => (int)$this->route('id'),
-            'pay_type'        => $payType,
-            'hourly_wage'     => $hourly,
-            'end_date'        => $end,
-            'application_method_id' => $appId,
-            'application_method_other' => $other,
-        ]);
+        if ($this->input('end_date') === '') {
+            $this->merge(['end_date' => null]);
+        }
     }
 }

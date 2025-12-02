@@ -7,7 +7,7 @@ type ReviewCommentProps = {
 
 const ReviewComment = ({ comment }: ReviewCommentProps) => {
     return (
-        <Text mb={4}>{comment}</Text>
+        <Text whiteSpace="pre-wrap">{comment}</Text>
     );
 };
 

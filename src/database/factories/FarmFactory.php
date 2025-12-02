@@ -19,7 +19,7 @@ class FarmFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->company(),
+            'name' => fake()->unique()->company(),
             'phone_number' => fake()->unique()->phoneNumber(),
             'email' => fake()->unique()->safeEmail(),
             'street_address' => fake()->streetAddress(),

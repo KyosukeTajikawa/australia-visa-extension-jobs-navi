@@ -3,7 +3,7 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "vite",
+        "dev": "vite --host 0.0.0.0 --port 5173",
         "typecheck": "tsc --noEmit -p tsconfig.json",
         "build": "tsc --noEmit -p tsconfig.json && vite build",
         "preview": "vite preview"
@@ -31,6 +31,7 @@
         "@emotion/react": "^11.14.0",
         "@emotion/styled": "^11.14.1",
         "framer-motion": "^10.18.0",
+        "react-icons": "^5.5.0",
         "react-select": "^5.10.2",
         "ziggy-js": "^2.6.0"
     }

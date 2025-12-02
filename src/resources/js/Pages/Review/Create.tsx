@@ -25,6 +25,7 @@ type FormData = {
     application_method_other: string;
     farm_rating: number;
     comment: string;
+    farm_id: number;
 };
 
 type CreateProps = {
@@ -46,6 +47,7 @@ const Create = ({ farm, applicationMethods }: CreateProps) => {
         application_method_other: "",
         farm_rating: 1,
         comment: "",
+        farm_id: farm.id,
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -63,7 +65,7 @@ const Create = ({ farm, applicationMethods }: CreateProps) => {
 
     return (
         <Box my={2} w={{ base: "80%", xl: "1280px" }} mx={"auto"}>
-            <Heading as={"h1"}>{farm.name}のレビュー登録</Heading>
+            <Heading as={"h1"} color={"#4D4D4F"} my={3}>{farm.name}のレビュー登録</Heading>
             <form onSubmit={handleSubmit}>
                 {/* 仕事のポジション */}
                 <FormControl mb={2} isRequired isInvalid={!!serverErrors.work_position}>

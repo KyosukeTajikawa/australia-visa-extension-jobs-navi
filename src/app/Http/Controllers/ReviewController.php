@@ -7,6 +7,7 @@ use App\Models\ApplicationMethod;
 use App\Models\Review;
 use App\Repositories\Reviews\ReviewRepositoryInterface;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -18,7 +19,7 @@ class ReviewController extends Controller
      */
     public function __construct(
         private readonly ReviewRepositoryInterface $reviewRepository,
-    ){}
+    ) {}
 
     /**
      * ファーム新規作成のページを表示
@@ -30,14 +31,14 @@ class ReviewController extends Controller
 
         $applicationMethods = ApplicationMethod::orderBy('id')->get();
 
-        return Inertia::render('Review/Create',[
+        return Inertia::render('Review/Create', [
             'farm' => $farm,
             'applicationMethods' => $applicationMethods,
         ]);
     }
 
     /**
-     * ファームの新規登録
+     * レビューの登録
      * @param FarmStoreRequest $request
      * @return RedirectResponse
      */
@@ -54,7 +55,7 @@ class ReviewController extends Controller
     }
 
     /**
-     * ファームの新規登録
+     * お気に入りレビューページの表示
      * @return Response
      */
     public function favorites(): Response
@@ -74,7 +75,29 @@ class ReviewController extends Controller
     public function favoritesStore(Review $review): RedirectResponse
     {
         $this->reviewRepository->registerFavoriteReview($review);
+        return back();
+    }
 
-        return redirect()->route('review.favorites');
+    /**
+     * お気に入りレビューの削除
+     * @param Review $review
+     * @return RedirectResponse
+     */
+    public function favoritesDestroy(Review $review): RedirectResponse
+    {
+        $this->reviewRepository->destroyFavoriteReview($review);
+        return back();
+    }
+
+    /**
+     * レビューコメントの登録
+     * @param Request $request
+     * @param Review $review
+     * @return RedirectResponse
+     */
+    public function reviewCommentStore(Request $request, Review $review): RedirectResponse
+    {
+        $this->reviewRepository->registerReviewComment($request, $review);
+        return back();
     }
 }

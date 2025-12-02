@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import MainLayout from "@/Layouts/MainLayout";
 import { Box, Heading, Text, FormControl, FormLabel, FormErrorMessage, Input, Select, Textarea, Button, HStack, } from "@chakra-ui/react";
-import { useForm } from "@inertiajs/react";
+import { useForm, router } from "@inertiajs/react";
 import ReactSelect from "react-select";
 import { MultiValue } from "react-select";
 
@@ -64,7 +64,7 @@ const Edit = ({ farm, states, crops }: EditProps) => {
         street_address: farm.street_address,
         suburb: farm.suburb,
         postcode: farm.postcode,
-        state_id:String(farm.state.id),
+        state_id: String(farm.state.id),
         description: farm.description,
         files: [],
         crop_ids: farm.crops.map(crop => crop.id),
@@ -77,7 +77,7 @@ const Edit = ({ farm, states, crops }: EditProps) => {
         setData(name as keyof typeof data, value);
     };
 
-    const handleOptionChange = (selectedOptions: MultiValue<Option>) => {
+    const handleOptionChange = (selectedOptions: MultiValue<any>) => {
         const selectedIds = selectedOptions.map((option) => option.value);
         setData("crop_ids", selectedIds);
     };
@@ -86,12 +86,12 @@ const Edit = ({ farm, states, crops }: EditProps) => {
         const images = e.target.files ? Array.from(e.target.files) : [];
         const newFiles = [...data.files, ...images];
 
-        if (newFiles.length > 3) {
+        if (newFiles.length > 2) {
             const initialize = newFiles.slice(0, 0);
             setData("files", initialize);
             e.target.value = "";
 
-            alert("画像は3枚以下にしてください。");
+            alert("画像は2枚以下にしてください。");
             return;
         }
 
@@ -100,7 +100,7 @@ const Edit = ({ farm, states, crops }: EditProps) => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(route("farm.update", {id: farm.id}), {
+        post(route("farm.update", { id: farm.id }), {
             preserveScroll: true,
             onSuccess: () => reset("files"),
             forceFormData: true,
@@ -109,7 +109,7 @@ const Edit = ({ farm, states, crops }: EditProps) => {
 
     return (
         <Box my={2} w={{ base: "80%", xl: "1280px" }} mx={"auto"}>
-            <Heading as={"h4"} mb={4}>ファーム編集画面</Heading>
+            <Heading as={"h4"} mb={4} color={"#4D4D4F"}>ファーム編集画面</Heading>
             <form onSubmit={handleSubmit} encType="multipart/form-data">
                 {/* ファーム名 */}
                 <FormControl mb={2} isRequired isInvalid={!!serverErrors.name}>
@@ -219,7 +219,14 @@ const Edit = ({ farm, states, crops }: EditProps) => {
                 {/* 画像 */}
                 <FormControl mb={2} isInvalid={!!serverErrors.files}>
                     <FormLabel htmlFor="files">ファーム画像（最大5MB目安）<Text as="span" color="gray.500" fontSize="sm">（任意）</Text></FormLabel>
-                    <Text as="span" color="gray.500" fontSize="sm">※画像を選択しない場合は、前回の画像登録から変更ありません。</Text>
+                    <Box display={{ base: "block", md: "flex" }} justifyContent={"space-between"} alignItems={"end"}>
+                        <Text as="span" color="gray.500" fontSize="sm">※画像を選択しない場合は、前回の画像登録から変更ありません。</Text>
+                        {farm.images && farm.images.length > 0 && (
+                            <Button display={{ base: "none", md: "block" }} onClick={() => router.delete(route("farm.image.destroy", {id: farm.id}))}>
+                                前回登録の画像削除
+                            </Button>
+                        )}
+                    </Box>
                     {/* プレビュー */}
                     <HStack mb={2}>
                         {
@@ -235,7 +242,14 @@ const Edit = ({ farm, states, crops }: EditProps) => {
                 </FormControl>
 
                 {/* ボタン */}
-                <Button type="submit" bg={"green.800"} _hover={{ bg: "green.700" }} color={"white"} isLoading={processing}>登録</Button>
+                <Box display={{ base: "flex", md: "block" }} justifyContent={"space-between"} mt={5}>
+                    <Button type="submit" bg={"green.800"} _hover={{ bg: "green.700" }} color={"white"} isLoading={processing} >登録</Button>
+                    {farm.images && farm.images.length > 0 && (
+                        <Button display={{ base: "block", md: "none" }} onClick={() => router.delete(route("farm.image.destroy", { id: farm.id }))}>
+                            前回登録の画像削除
+                        </Button>
+                    )}
+                </Box>
             </form>
 
         </Box>
@@ -243,6 +257,6 @@ const Edit = ({ farm, states, crops }: EditProps) => {
 };
 
 Edit.layout = (page: React.ReactNode) => (
-    <MainLayout title="ファーム情報サイト">{page}</MainLayout>
+    <MainLayout title="ファーム編集">{page}</MainLayout>
 );
 export default Edit;

@@ -1,6 +1,6 @@
 # AUSSIE FARM NAVI/ファーム情報共有サービス
 
-あとで画像追加する（FarmMain）
+![AUSSIE FARM NAVI画像](/src/public/images/farmMain.png)
 
 ![PHP](https://img.shields.io/badge/PHP-8.3.28-blue)
 ![Laravel](https://img.shields.io/badge/Laravel-12.0-ff2d20?logo=laravel&logoColor=white)
@@ -33,8 +33,8 @@ https://aussie-farm-navi.com
 
 ## メイン機能の使い方
 
-
-
+![ファーム登録ボタン案内](/src/public/images/readme1.gif)
+![ファーム内容登録画面案内](/src/public/images/readme2.gif)
 
 
 
@@ -163,5 +163,8 @@ https://aussie-farm-navi.com
 **セキュリティ対策**
 - Dependabot Alerts による脆弱性チェック  
 - GitHub Code Scanning  
-- GitGuardian による秘密鍵漏洩チェック  
+- GitGuardian による秘密鍵漏洩チェック
+
+＃＃ インフラ構成図
+![インフラ構成図](/src/public/images/AWS.png)
 

@@ -168,7 +168,7 @@ const Register = () => {
                     <FormErrorMessage>{errors.password_confirmation}</FormErrorMessage>
                 </FormControl>
 
-                <Box mt="4"
+                <Box my="4"
                     display={"flex"}
                     alignItems={"center"}
                     justifyContent={"flex-end"}

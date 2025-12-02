@@ -51,6 +51,23 @@ const FavoriteReview = ({ reviews }: FavoriteReviewProps) => {
         }
         return name;
     };
+
+    if (reviews.length === 0) {
+        return (
+            <Box
+                textAlign="center"
+                mt="200px"
+                color="green.800"
+            >
+                <Heading as="h2" size="lg" mb={4} >
+                    お気に入りレビュー
+                </Heading>
+                <Text fontSize="xl">
+                    お気に入りレビューはございません。
+                </Text>
+            </Box>
+        );
+    }
     return (
         <Box bg={"#FAF7F0"} w={{ base: "90%", sm: "460px", md: "750px", xl: "1000px" }} mx={"auto"}>
             <Heading as={"h1"} mt={5} color={"#4D4D4F"}>お気に入りレビュー一覧</Heading>
@@ -81,13 +98,12 @@ const FavoriteReview = ({ reviews }: FavoriteReviewProps) => {
                     <Text mb={1}>時給：{review.hourly_wage}</Text>
                     <Text mb={1}>応募方法：{renderApplicationMethod(review)}</Text>
                     <Text mb={1}>車の有無：{review.is_car_required === 1 ? "必要" : "不要"}</Text>
-                    <HStack mb={1}>
-                        <Text>開始日: {review.start_date}</Text><Text>〜</Text><Text>終了日: {review.end_date}</Text>
-                    </HStack>
-                    <Text whiteSpace="pre-wrap" mb={2}>{review.comment}</Text>
+                    <Text mb={1}>開始日: {review.start_date}</Text>
+                    <Text mb={1}>終了日: {review.end_date}</Text>
+                    <Text whiteSpace="pre-wrap" mb={2}>コメント <br />{review.comment}</Text>
                     {/* レビューお気に入り */}
                     <Flex justifyContent={"flex-end"} mb={5}>
-                    <HeartFavorite reviewId={review.id} initial={true}/>
+                        <HeartFavorite reviewId={review.id} initial={true} />
                     </Flex>
                 </Box>
             ))}

@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Box, Heading, VStack, HStack, Image, Text, Link, Input, Button, Select, Flex, useToast } from "@chakra-ui/react";
+import {
+    Box, Heading, VStack, HStack, Image, Text, Link, Input, Button, Select, Flex, useToast,
+    Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, ModalCloseButton
+} from "@chakra-ui/react";
 import MainLayout from "@/Layouts/MainLayout";
 import { router } from "@inertiajs/react";
 import { ArrowForwardIcon } from '@chakra-ui/icons';
@@ -29,6 +32,12 @@ type Farm = {
     crops: Crops[];
 }
 
+type User = {
+    id: number;
+    name: string;
+    email: string;
+};
+
 type PaginateFarm = {
     data: Farm[];
     current_page: number;
@@ -43,12 +52,20 @@ type HomeProps = {
     keyword: string;
     stateName: string;
     status: string;
+    auth: {
+        user: User | null;
+    };
 }
 
-const Home = ({ farms, states, keyword, stateName, status }: HomeProps) => {
+const Home = ({ farms, states, keyword, stateName, status, auth }: HomeProps) => {
     const [searchKeyword, setSearchKeyword] = useState(keyword ?? "");
     const [searchStateName, setSearchStateName] = useState(stateName ?? "");
     const toast = useToast()
+
+    const isLoggedIn = !!auth?.user;
+    const [isOpen, setIsOpen] = useState(false);
+    const onOpen = () => setIsOpen(true);
+    const onClose = () => setIsOpen(false);
 
     useEffect(() => {
         if (status === "delete_success") {
@@ -62,6 +79,15 @@ const Home = ({ farms, states, keyword, stateName, status }: HomeProps) => {
             })
         }
     }, [status]);
+
+    const handleClickDetail = (farmId: number) => {
+        if (!isLoggedIn) {
+            onOpen();
+            return;
+        }
+
+        router.visit(`/farm/${farmId}`);
+    };
 
     const farmItems = farms.data.map((farm) => (
         <Box
@@ -127,13 +153,12 @@ const Home = ({ farms, states, keyword, stateName, status }: HomeProps) => {
                         ))}
                     </Box>
                     <Button
-                        as={Link}
-                        href={`/farm/${farm.id}`}
                         mt={4}
                         fontSize={{ base: "20px", xl: "30px" }}
                         bg={"005133"}
                         _hover={{ opacity: 0.7, textDecoration: "none" }}
                         color="white"
+                        onClick={() => handleClickDetail(farm.id)}
                     >
                         詳しく見る
                         <ArrowForwardIcon />
@@ -174,8 +199,6 @@ const Home = ({ farms, states, keyword, stateName, status }: HomeProps) => {
                     ))}
                 </Box>
                 <Button
-                    as={Link}
-                    href={`/farm/${farm.id}`}
                     mt={2}
                     fontWeight="normal"
                     bg="green.800"
@@ -188,6 +211,7 @@ const Home = ({ farms, states, keyword, stateName, status }: HomeProps) => {
                     py={2}
                     borderRadius="md"
                     w="auto"
+                    onClick={() => handleClickDetail(farm.id)}
                 >
                     詳しく見る
                 </Button>
@@ -323,6 +347,40 @@ const Home = ({ farms, states, keyword, stateName, status }: HomeProps) => {
                     </Text>
                 )}
             </Box>
+
+            {/* ★ 未ログインの時に表示されるポップアップ（モーダル） ★ */}
+            {!isLoggedIn && (
+                <Modal isOpen={isOpen} onClose={onClose} isCentered>
+                    <ModalOverlay />
+                    <ModalContent mx={4}>
+                        <ModalHeader>無料のユーザー登録をお願いします</ModalHeader>
+                        <ModalCloseButton />
+                        <ModalBody>
+                            <Text mb={4}>
+                                詳しく見るには、無料登録またはログインが必要です。
+                            </Text>
+                            <VStack spacing={3}>
+                                <Button
+                                    w="100%"
+                                    colorScheme="green"
+                                    onClick={() => router.visit("/register")}
+                                >
+                                    無料ユーザー登録
+                                </Button>
+                                <Button
+                                    w="100%"
+                                    variant="outline"
+                                    colorScheme="green"
+                                    onClick={() => router.visit("/login")}
+                                    mb={5}
+                                >
+                                    ログインはこちら &gt;&gt;
+                                </Button>
+                            </VStack>
+                        </ModalBody>
+                    </ModalContent>
+                </Modal>
+            )}
         </Box >
     );
 };

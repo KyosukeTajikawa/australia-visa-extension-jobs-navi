@@ -1,6 +1,6 @@
 import React from "react";
 import MainLayout from "@/Layouts/MainLayout";
-import { Box, Heading, Text, VStack, Button, Image, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, useDisclosure } from "@chakra-ui/react";
+import { Box, Heading, Text, VStack, HStack, Button, Image, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, useDisclosure } from "@chakra-ui/react";
 import { Icon } from '@chakra-ui/icons';
 import { Link, router } from "@inertiajs/react";
 import { FaUserCircle } from "react-icons/fa";
@@ -29,8 +29,7 @@ const Profile = ({ user }: ProfileProps) => {
     const cancelRef = React.useRef<HTMLButtonElement>(null)
 
     return (
-
-        <Box w={{ base: "90%", md: "60%" }} mx={"auto"} mt={"150px"}>
+        <Box w={{ base: "90%", md: "60%" }} mx={"auto"} mt={"150px"} mb={10}>
 
             <AlertDialog
                 isOpen={isOpen}
@@ -77,22 +76,22 @@ const Profile = ({ user }: ProfileProps) => {
                 <Text>{user?.birthday ?? "登録なし"}</Text>
                 <Text mt={3}>{user.gender === 1 ? "男性" : "女性"}</Text>
             </VStack>
-            <VStack>
+            <HStack justifyContent={"center"} my={5}>
                 <Button
                     as={Link}
                     href={"/edit"}
-                    mt={5}
+                    mr={{base:2, md:5}}
                     fontWeight={"bold"}
                     bg="green.800"
                     _hover={{ bg: "green.700", textDecoration: "none" }}
                     color="white"
-                    w={{md:"150px"}}
+                    w={{ md: "150px" }}
                 >
                     編集
                 </Button>
                 <Button
                     onClick={() => { onOpen() }}
-                    mt={5}
+                    // mt={5}
                     fontWeight={"bold"}
                     bg="green.800"
                     _hover={{ bg: "green.700", textDecoration: "none" }}
@@ -101,9 +100,7 @@ const Profile = ({ user }: ProfileProps) => {
                 >
                     削除
                 </Button>
-            </VStack>
-
-
+            </HStack>
         </Box >
     );
 }

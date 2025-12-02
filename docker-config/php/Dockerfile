@@ -10,7 +10,9 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
-COPY ./src /var/www/html
+COPY src /var/www/html
+
+RUN rm -f .env
 
 RUN php artisan config:clear || true \
     && rm -f public/hot
@@ -23,11 +25,12 @@ RUN mkdir -p storage/logs \
 FROM node:20 AS node-build
 WORKDIR /var/www/html
 
-COPY ./src/package.json ./src/package-lock.json ./
-COPY ./src/tsconfig*.json ./
-COPY ./src/vite.config.* ./
-COPY ./src/resources ./resources
-COPY ./src/public ./public
+COPY src/package*.json ./
+COPY src/tsconfig*.json ./
+COPY src/vite.config.* ./
+COPY src/resources ./resources
+COPY src/public ./public
+COPY src/.env.production ./.env.production
 
 RUN npm ci
 RUN npm run build   # => public/build 生成

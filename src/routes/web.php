@@ -15,6 +15,11 @@ Route::get('/login-test', function () {
     return Inertia::render('LoginTest');
 });
 
+// LP
+Route::get('/', function () {
+    return Inertia::render('AboutFarmNavi');
+});
+
 // ホーム画面
 Route::get('/home', [FarmController::class, 'index'])->name('home');
 

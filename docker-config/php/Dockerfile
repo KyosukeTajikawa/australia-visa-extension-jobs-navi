@@ -10,7 +10,18 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
+COPY src/composer.json src/composer.lock ./
+
+RUN composer install \
+    --no-dev \
+    --optimize-autoloader \
+    --no-interaction \
+    --no-progress
+
 COPY src /var/www/html
+
+
+
 
 RUN rm -f .env
 

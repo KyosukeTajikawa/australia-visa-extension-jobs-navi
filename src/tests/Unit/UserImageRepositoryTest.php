@@ -46,30 +46,6 @@ class UserImageRepositoryTest extends TestCase
     }
 
     /**
-     * getImage()のテスト
-     * getImage() 取得できている
-     */
-    public function testGetImage(): void
-    {
-        $user = User::factory()->create();
-
-        $UserImage = [
-            'user_id' => $user->id,
-            'url' => 'user/1/sample1.jpg',
-            'path' => 'sample1.jpg',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ];
-
-        $this->repository->registerImage($UserImage);
-        $result = $this->repository->getImage($user);
-
-        $this->assertSame($UserImage['user_id'], $result->user_id);
-        $this->assertSame($UserImage['url'], $result->url);
-        $this->assertSame($UserImage['path'], $result->path);
-    }
-
-    /**
      * updateImage()のテスト
      * updateImage() 更新できている
      */

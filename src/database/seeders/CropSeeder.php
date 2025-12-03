@@ -4,19 +4,96 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 
 class CropSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        $cropsFile = base_path('storage/app/json/crops.json');
+        $crops = [
+            ['name' => 'Tomato'],
+            ['name' => 'Potato'],
+            ['name' => 'Sweet Potato'],
+            ['name' => 'Carrot'],
+            ['name' => 'Onion'],
+            ['name' => 'Garlic'],
+            ['name' => 'Ginger'],
+            ['name' => 'Broccoli'],
+            ['name' => 'Cauliflower'],
+            ['name' => 'Cabbage'],
+            ['name' => 'Lettuce'],
+            ['name' => 'Spinach'],
+            ['name' => 'Kale'],
+            ['name' => 'Rocket'],
+            ['name' => 'Cucumber'],
+            ['name' => 'Zucchini'],
+            ['name' => 'Eggplant'],
+            ['name' => 'Capsicum'],
+            ['name' => 'Pumpkin'],
+            ['name' => 'Butternut Pumpkin'],
+            ['name' => 'Sweet Corn'],
+            ['name' => 'Peas'],
+            ['name' => 'Green Beans'],
+            ['name' => 'Snow Peas'],
+            ['name' => 'Asparagus'],
+            ['name' => 'Celery'],
+            ['name' => 'Leek'],
+            ['name' => 'Spring Onion'],
+            ['name' => 'Shallot'],
+            ['name' => 'Beetroot'],
+            ['name' => 'Radish'],
+            ['name' => 'Turnip'],
+            ['name' => 'Daikon'],
+            ['name' => 'Bok Choy'],
+            ['name' => 'Pak Choi'],
+            ['name' => 'Chinese Cabbage'],
+            ['name' => 'Silverbeet'],
+            ['name' => 'Brussels Sprouts'],
+            ['name' => 'Artichoke'],
+            ['name' => 'Fennel'],
+            ['name' => 'Mushroom'],
+            ['name' => 'Okra'],
+            ['name' => 'Chilli'],
+            ['name' => 'Pumpkin Kent'],
+            ['name' => 'Pumpkin Jap'],
+            ['name' => 'Tomatillo'],
+            ['name' => 'Rhubarb'],
+            ['name' => 'Apple'],
+            ['name' => 'Banana'],
+            ['name' => 'Mango'],
+            ['name' => 'Pineapple'],
+            ['name' => 'Orange'],
+            ['name' => 'Mandarin'],
+            ['name' => 'Lemon'],
+            ['name' => 'Lime'],
+            ['name' => 'Grapefruit'],
+            ['name' => 'Finger Lime'],
+            ['name' => 'Grape'],
+            ['name' => 'Strawberry'],
+            ['name' => 'Blueberry'],
+            ['name' => 'Raspberry'],
+            ['name' => 'Blackberry'],
+            ['name' => 'Cherry'],
+            ['name' => 'Peach'],
+            ['name' => 'Nectarine'],
+            ['name' => 'Plum'],
+            ['name' => 'Apricot'],
+            ['name' => 'Pear'],
+            ['name' => 'Persimmon'],
+            ['name' => 'Pomegranate'],
+            ['name' => 'Fig'],
+            ['name' => 'Kiwifruit'],
+            ['name' => 'Passionfruit'],
+            ['name' => 'Watermelon'],
+            ['name' => 'Rockmelon'],
+            ['name' => 'Honeydew'],
+            ['name' => 'Papaya'],
+            ['name' => 'Lychee'],
+            ['name' => 'Dragon Fruit'],
+            ['name' => 'Custard Apple'],
+            ['name' => 'Avocado'],
+            ['name' => 'Olive'],
+        ];
 
-        $cropsData = json_decode(File::get($cropsFile), true);
-
-        DB::table('crops')->insert($cropsData);
+        DB::table('crops')->insert($crops);
     }
 }

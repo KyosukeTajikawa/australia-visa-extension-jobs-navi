@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\UserStoreRequest;
 use App\Http\Requests\Auth\UserUpdateRequest;
+use App\Repositories\Auth\UserImageRepositoryInterface;
 use App\Repositories\Auth\UserRepositoryInterface;
 use App\Services\UserServiceInterface;
 use Illuminate\Http\RedirectResponse;
@@ -18,6 +19,7 @@ class RegisteredUserController extends Controller
 
     public function __construct(
         private readonly UserRepositoryInterface $userRepository,
+        private readonly UserImageRepositoryInterface $userImageRepository,
         private readonly UserServiceInterface $userService,
     ) {}
 
@@ -94,7 +96,7 @@ class RegisteredUserController extends Controller
      */
     public function imageDestroy(int $id): RedirectResponse
     {
-        $image = $this->userRepository->getImage($id);
+        $image = $this->userImageRepository->getImage($id);
 
             Storage::disk('s3')->delete($image->path);
             $image->delete();

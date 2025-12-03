@@ -25,9 +25,9 @@ class EditTest extends TestCase
 
         $farm = Farm::factory()->create();
 
-        State::factory()->sequence(['id' => 10], ['id' => 11], ['id' => 12])->count(3)->create();
+        State::factory()->sequence(['id' => 100], ['id' => 101], ['id' => 102])->count(3)->create();
 
-        Crop::factory()->sequence(['id' => 20], ['id' => 21], ['id' => 22])->count(3)->create();
+        Crop::factory()->sequence(['id' => 200], ['id' => 201], ['id' => 202])->count(3)->create();
 
         $response = $this->actingAs($user)->get("/farm/{$farm->id}/edit");
 
@@ -35,14 +35,13 @@ class EditTest extends TestCase
             fn(Assert $page) => $page
                 ->component('Farm/Edit')
                 ->has('states', 4)
-                ->where('states.0.id', 1)
-                ->where('states.1.id', 10)
-                ->where('states.2.id', 11)
-                ->where('states.3.id', 12)
+                ->where('states.1.id', 100)
+                ->where('states.2.id', 101)
+                ->where('states.3.id', 102)
                 ->has('crops', 3)
-                ->where('crops.0.id', 20)
-                ->where('crops.1.id', 21)
-                ->where('crops.2.id', 22)
+                ->where('crops.0.id', 200)
+                ->where('crops.1.id', 201)
+                ->where('crops.2.id', 202)
         );
     }
 

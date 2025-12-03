@@ -89,6 +89,14 @@ const Home = ({ farms, states, keyword, stateName, status, auth }: HomeProps) =>
         router.visit(`/farm/${farmId}`);
     };
 
+    const getFarmNameFontSize = (name: string) => {
+    if (name.length >= 10) {
+        return { base: "30px", xl: "40px" };
+    }
+
+    return { base: "40px", xl: "50px" };
+};
+
     const farmItems = farms.data.map((farm) => (
         <Box
             key={farm.id}
@@ -122,11 +130,11 @@ const Home = ({ farms, states, keyword, stateName, status, auth }: HomeProps) =>
                     opacity={0}
                     bg="#005133"
                     transform={"translateY(100%)"}
-                    transition={"transform 1s ease"}
+                    transition={"transform 0.5s ease"}
                     _groupHover={{ transform: "translateY(0)", opacity: 0.8 }}
                 >
                     <Heading
-                        fontSize={{ base: "40px", xl: "50px" }}
+                        fontSize={getFarmNameFontSize(farm.name)}
                         as={"h3"}
                         color={"white"}
                         mx={2}

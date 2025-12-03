@@ -188,7 +188,7 @@ const Create = ({ states, crops }: CreateProps) => {
                     </FormLabel>
                     <Textarea
                         id="description" name="description" value={data.description}
-                        onChange={handleChange} placeholder="自由記述欄（なるべく記入をお願いします）" maxLength={1000}
+                        onChange={handleChange} placeholder="例）シーズン:6月〜10月　募集職種:パッキング" maxLength={1000}
                     />
                     <FormErrorMessage>{serverErrors.description}</FormErrorMessage>
                 </FormControl>

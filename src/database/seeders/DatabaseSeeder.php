@@ -14,23 +14,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-
-        // NOTE: テストデータを作り直す際に必要なので取っておく
-        // User::factory(10)->create();
-
-        // $this->call(CropSeeder::class);
-        // $this->call(StateSeeder::class);
-        // $this->call(ApplicationMethodSeeder::class);
-
-        // Farm::factory(10)->create();
-        // Review::factory(10)->create();
-
-        User::create([
-            'nickname' => 'テストユーザー',
-            'email' => 'test@example.com',
-            'gender' => 1,
-            'birthday' => "1929-01-01",
-            'password' => 'password123',
-        ]);
+        $this->call(CropSeeder::class);
+        $this->call(StateSeeder::class);
+        $this->call(ApplicationMethodSeeder::class);
     }
 }

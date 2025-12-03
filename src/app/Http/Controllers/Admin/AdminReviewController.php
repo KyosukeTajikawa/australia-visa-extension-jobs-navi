@@ -59,8 +59,6 @@ class AdminReviewController extends Controller
     {
         $review = Review::with(['reviewComments', 'favoritedUsers'])->findOrFail($id);
 
-        Review::where('id', $id)->delete();
-
         $review->favoritedUsers()->detach();
 
         $review->reviewComments()->delete();

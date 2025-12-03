@@ -2,6 +2,8 @@
 
 ![AUSSIE FARM NAVI画像](/src/public/images/farmMain.png)
 
+![CI/CD](https://github.com/KyosukeTajikawa/australia-visa-extension-jobs-navi/actions/workflows/test-and-coverage.yml/badge.svg)
+[![codecov](https://codecov.io/github/KyosukeTajikawa/australia-visa-extension-jobs-navi/branch/main/graph/badge.svg)](https://codecov.io/github/KyosukeTajikawa/australia-visa-extension-jobs-navi)
 ![PHP](https://img.shields.io/badge/PHP-8.3.28-blue)
 ![Laravel](https://img.shields.io/badge/Laravel-12.0-ff2d20?logo=laravel&logoColor=white)
 ![Inertia.js](https://img.shields.io/badge/Inertia.js-Laravel_×_React_bridge-59666C)
@@ -35,7 +37,7 @@ https://aussie-farm-navi.com
 
 ![ファーム登録ボタン案内](/src/public/images/readme1.gif)
 ![ファーム内容登録画面案内](/src/public/images/readme2.gif)
-
+![レビュー内容登録画面案内](/src/public/images/readme3.gif)
 
 
 
@@ -167,4 +169,5 @@ https://aussie-farm-navi.com
 
 ＃＃ インフラ構成図
 ![インフラ構成図](/src/public/images/AWS.png)
+
 

@@ -25,7 +25,7 @@ class FarmFactory extends Factory
             'street_address' => fake()->streetAddress(),
             'suburb' => fake()->streetName(),
             'state_id' => state::factory(),
-            'postcode' => fake()->postcode2(),
+            'postcode' => (string) fake()->numberBetween(2000, 9999),
             'description' => fake()->realText(200),
             'created_user_id' => User::factory(),
         ];

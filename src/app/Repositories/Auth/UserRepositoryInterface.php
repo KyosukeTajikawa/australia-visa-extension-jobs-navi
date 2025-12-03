@@ -30,13 +30,6 @@ interface UserRepositoryInterface
     public function updateUser(array $validated, User $previousUser): User;
 
     /**
-     * ユーザー画像削除
-     * @param int $id
-     * @return UserImage
-     */
-    public function getImage(int $id): UserImage;
-
-    /**
      * ユーザー削除
      */
     public function destroyUser(): void;

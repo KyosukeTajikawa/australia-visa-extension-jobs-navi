@@ -48,18 +48,6 @@ class UserRepository implements UserRepositoryInterface
     }
 
     /**
-     * ユーザー画像取得
-     * @param int $id
-     * @return UserImage
-     */
-    public function getImage(int $id): UserImage
-    {
-        $image = UserImage::where('user_id', $id)->first();
-
-        return $image;
-    }
-
-    /**
      * ユーザー削除
      */
     public function destroyUser():void

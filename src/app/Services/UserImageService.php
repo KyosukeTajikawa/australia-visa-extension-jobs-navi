@@ -56,7 +56,7 @@ class UserImageService implements UserImageServiceInterface
             return;
         }
 
-        $previousImage = $this->userImageRepository->getImage($user);
+        $previousImage = $this->userImageRepository->getImage($user->id);
 
         Storage::disk('s3')->delete($previousImage->path);
 

@@ -15,6 +15,13 @@ interface UserImageRepositoryInterface
     public function registerImage(array $imageData): void;
 
     /**
+     * ユーザー画像削除
+     * @param int $id
+     * @return UserImage
+     */
+    public function getImage(int $id): UserImage;
+
+    /**
      * ユーザー画像更新
      * @param array $imageData
      * @param UserImage $previousImage

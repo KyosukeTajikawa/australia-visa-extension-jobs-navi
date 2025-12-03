@@ -21,9 +21,6 @@ RUN composer install \
 
 COPY src /var/www/html
 
-
-
-
 RUN rm -f .env
 
 RUN php artisan config:clear || true \

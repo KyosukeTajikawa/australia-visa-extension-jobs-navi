@@ -1,4 +1,4 @@
-name: Test & Coverage
+name: Test, Coverage & Deploy
 
 on:
   push:
@@ -43,7 +43,6 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --no-progress
 
-      # MySQL が立ち上がるのを少し待つ
       - name: Wait for MySQL
         run: |
           for i in {1..30}; do
@@ -76,3 +75,59 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: src/coverage.xml
           fail_ci_if_error: true
+
+  deploy:
+    needs: php-tests
+    # ★ テストが成功した「main への push」のときだけ実行
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push app image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker-config/php/Dockerfile
+          push: true
+          tags: bajiou/farm-info-app:latest
+
+      - name: Build and push nginx image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker-config/nginx/Dockerfile
+          push: true
+          tags: bajiou/farm-info-nginx:latest
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Force new deployment for app service
+        run: |
+          aws ecs update-service \
+            --cluster farm-info \
+            --service farm-app-service \
+            --force-new-deployment
+
+      - name: Force new deployment for nginx service
+        run: |
+          aws ecs update-service \
+            --cluster farm-info \
+            --service farm-nginx-service \
+            --force-new-deployment

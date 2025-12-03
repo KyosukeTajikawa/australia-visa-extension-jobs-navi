@@ -1,3 +1,11 @@
+name: Test & Coverage
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
 jobs:
   php-tests:
     runs-on: ubuntu-latest

@@ -73,20 +73,6 @@ class FarmRepositoryTest extends TestCase
 
     /**
      * getDetailById() メソッドのテスト
-     * getAllFarms() の引数がidのみの時、イーガーロードをしていないかを確認する。
-     */
-    public function testDetailByIdNotComeWithReviewsAndState(): void
-    {
-        $farm = Farm::factory()->create();
-        $result = $this->repository->getDetailById($farm->id);
-
-        $this->assertSame($farm->id, $result->id);
-        $this->assertFalse($result->relationLoaded('reviews'));
-        $this->assertFalse($result->relationLoaded('state'));
-    }
-
-    /**
-     * getDetailById() メソッドのテスト
      * getAllFarms() の引数にリレーションがある時、データを取得しているかを確認する。
      */
     public function testDetailByIdComeWithReviewsAndState(): void

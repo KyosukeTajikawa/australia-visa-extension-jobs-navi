@@ -20,7 +20,7 @@ class FarmFactory extends Factory
     {
         return [
             'name' => fake()->unique()->company(),
-            'phone_number' => fake()->unique()->phoneNumber(),
+            'phone_number' => fake()->numerify('0#########'),
             'email' => fake()->unique()->safeEmail(),
             'street_address' => fake()->streetAddress(),
             'suburb' => fake()->streetName(),

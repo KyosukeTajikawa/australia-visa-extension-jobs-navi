@@ -1,26 +1,30 @@
-name: Test & Coverage
-
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
 jobs:
   php-tests:
     runs-on: ubuntu-latest
 
-    # ここで「run: のカレントディレクトリは src にする」と指定
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: test_db
+          MYSQL_USER: app
+          MYSQL_PASSWORD: secret
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot || exit 1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
     defaults:
       run:
         working-directory: src
 
     steps:
-      # ① ソースコードを取得
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      # ② PHP 8.3 + Xdebug をセットアップ
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -28,35 +32,36 @@ jobs:
           extensions: mbstring, intl, pdo_mysql
           coverage: xdebug
 
-      # ③ Composer インストール
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --no-progress
 
-      # ④ Laravel の準備（.env, APP_KEY, SQLite, migrate）
+      # MySQL が立ち上がるのを少し待つ
+      - name: Wait for MySQL
+        run: |
+          for i in {1..30}; do
+            mysql -h 127.0.0.1 -uapp -psecret -e "SELECT 1;" && break
+            echo "Waiting for MySQL..."
+            sleep 5
+          done
+
       - name: Prepare Laravel application
         run: |
           cp .env.example .env
           php artisan key:generate
-
-          # SQLite DB 作成
-          touch database/database.sqlite
-
-          # マイグレーション
           php artisan migrate --force
         env:
           APP_ENV: testing
           APP_DEBUG: true
-          DB_CONNECTION: sqlite
-          DB_DATABASE: database/database.sqlite
-          CACHE_DRIVER: file
-          SESSION_DRIVER: file
-          QUEUE_CONNECTION: sync
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: test_db
+          DB_USERNAME: app
+          DB_PASSWORD: secret
 
-      # ⑤ テスト＋カバレッジ出力
       - name: Run tests with coverage
         run: php artisan test --coverage-clover=coverage.xml
 
-      # ⑥ Codecov にアップロード
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:

@@ -1,0 +1,60 @@
+name: Test & Coverage
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  php-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ① ソースコードを取得
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ② PHP 8.3 + Xdebug をセットアップ
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, intl, pdo_mysql
+          coverage: xdebug
+
+      # ③ Composer インストール
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      # ④ Laravel の準備（.env, APP_KEY, SQLite, migrate）
+      - name: Prepare Laravel application
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+          # SQLite DB 作成
+          touch database/database.sqlite
+
+          # マイグレーション
+          php artisan migrate --force
+        env:
+          APP_ENV: testing
+          APP_DEBUG: true
+          DB_CONNECTION: sqlite
+          DB_DATABASE: database/database.sqlite
+          CACHE_DRIVER: file
+          SESSION_DRIVER: file
+          QUEUE_CONNECTION: sync
+
+      # ⑤ テスト＋カバレッジ出力
+      - name: Run tests with coverage
+        run: php artisan test --coverage-clover=coverage.xml
+
+      # ⑥ Codecov にアップロード
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.xml
+          fail_ci_if_error: true

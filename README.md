@@ -2,7 +2,7 @@
 
 ![AUSSIE FARM NAVI画像](/src/public/images/farmMain.png)
 
-![CI/CD](https://github.com/KyosukeTajikawa/australia-visa-extension-jobs-navi/actions/workflows/ci.yml/badge.svg)
+[![CI/CD](https://github.com/KyosukeTajikawa/australia-visa-extension-jobs-navi/actions/workflows/ci.yml/badge.svg)](https://github.com/KyosukeTajikawa/australia-visa-extension-jobs-navi/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/github/KyosukeTajikawa/australia-visa-extension-jobs-navi/branch/main/graph/badge.svg)](https://codecov.io/github/KyosukeTajikawa/australia-visa-extension-jobs-navi)
 ![PHP](https://img.shields.io/badge/PHP-8.3.28-blue)
 ![Laravel](https://img.shields.io/badge/Laravel-12.0-ff2d20?logo=laravel&logoColor=white)
@@ -36,9 +36,9 @@ https://aussie-farm-navi.com
 ## メイン機能の使い方
 
 <p align="center">
-  <img src="/src/public/images/readme1.gif" width="30%" />
-  <img src="/src/public/images/readme2.gif" width="30%" />
-  <img src="/mnt/data/readme3_loop.gif" width="30%" />
+  <img src="/src/public/images/readme1.gif"/>
+  <img src="/src/public/images/readme2.gif"/>
+  <img src="/src/public/images/readme3.gif" width="27%" />
 </p>
 
 ## 使用技術一覧
@@ -167,9 +167,10 @@ https://aussie-farm-navi.com
 - GitHub Code Scanning  
 - GitGuardian による秘密鍵漏洩チェック
 
-＃＃ インフラ構成図
+## インフラ構成図
 ![インフラ構成図](/src/public/images/AWS.png)
 
-
+## ER図
+![ER図](/src/public/images/ER.png)
 
 

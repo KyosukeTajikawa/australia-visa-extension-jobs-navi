@@ -207,7 +207,7 @@ const Edit = ({ farm, states, crops }: EditProps) => {
                 {/* 説明 */}
                 <FormControl mb={2} isInvalid={!!serverErrors.description}>
                     <FormLabel htmlFor="description">
-                        説明 <Text as="span" color="gray.500" fontSize="sm">（任意）</Text>
+                        ファームの説明<Text as="span" color="gray.500" fontSize="sm">（任意）</Text>
                     </FormLabel>
                     <Textarea
                         id="description" name="description" value={data.description}

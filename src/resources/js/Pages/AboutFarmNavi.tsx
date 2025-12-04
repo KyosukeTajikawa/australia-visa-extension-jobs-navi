@@ -38,7 +38,7 @@ const AboutFarmNavi = () => {
                     <HStack w={{ base: "768px", lg: "990px" }} mx={"auto"}>
                         <Box minW={{ base: "230px", md: "230px", lg: "300px" }} maxW={{ base: "230px", md: "230px", lg: "300px" }} flexShrink={0} p={5} bg={"green.100"} borderRadius={"30px"} mx={"auto"}>
                             <Image src="/images/phone2.png" />
-                            <Text>まずは、ファーム登録を押してます。</Text>
+                            <Text>まずは、ファーム登録を押します。</Text>
                         </Box>
                         <Box minW={{ base: "230px", md: "230px", lg: "300px" }} maxW={{ base: "230px", md: "230px", lg: "300px" }} flexShrink={0} p={5} bg={"green.100"} borderRadius={"30px"} mx={"auto"}>
                             <Image src="/images/phone3.png" />

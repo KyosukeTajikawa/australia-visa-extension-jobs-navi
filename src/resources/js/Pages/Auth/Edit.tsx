@@ -59,7 +59,7 @@ const Edit = ({ user }: UserProps) => {
 
                 {/* 画像 */}
                 <FormControl mb={2}>
-                    <FormLabel htmlFor="file">名前<Text as="span" color="gray.500" fontSize="sm">（任意）</Text></FormLabel>
+                    <FormLabel htmlFor="file">プロフィール画像<Text as="span" color="gray.500" fontSize="sm">（任意）</Text></FormLabel>
                     <Text as="span" color="gray.500" fontSize="sm">※画像を選択しない場合は、前回の画像登録から変更ありません。</Text>
                     <Input
                         id="file"

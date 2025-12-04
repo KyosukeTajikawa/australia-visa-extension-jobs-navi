@@ -40,9 +40,6 @@ const MyFarms = ({ farms }: MyFarmsProps) => {
                 mt="200px"
                 color="green.800"
             >
-                <Heading as="h2" size="lg" mb={4} >
-                    あなたのファーム
-                </Heading>
                 <Text fontSize="xl">
                     登録したファームはございません。
                 </Text>
@@ -134,7 +131,7 @@ const MyFarms = ({ farms }: MyFarmsProps) => {
     return (
         <Box>
             {/* ファーム一覧 */}
-            <Heading as={"h1"} color={"#4D4D4F"} m={5}>あなたのファーム一覧</Heading>
+            <Heading as={"h1"} color={"#4D4D4F"} m={5}>登録したファーム一覧</Heading>
             <Flex
                 wrap={"wrap"}
                 w={{ base: "80%", xl: "1280px" }}

@@ -34,7 +34,6 @@ https://aussie-farm-navi.com
 開発背景や、サービスのリリースまでに勉強したことなどをまとめています。
 
 ## メイン機能の使い方
-
 <p align="center">
   <img src="/src/public/images/readme1.gif"/>
   <img src="/src/public/images/readme2.gif"/>
@@ -172,5 +171,6 @@ https://aussie-farm-navi.com
 
 ## ER図
 ![ER図](/src/public/images/ER.png)
+
 
 

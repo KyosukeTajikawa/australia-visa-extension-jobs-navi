@@ -63,7 +63,7 @@ const Register = () => {
 
                 {/* 名前 */}
                 <FormControl mb={2} isRequired isInvalid={!!errors.nickname}>
-                    <FormLabel htmlFor="nickname">名前</FormLabel>
+                    <FormLabel htmlFor="nickname">ニックネーム</FormLabel>
                     <Input
                         id="nickname"
                         name="nickname"

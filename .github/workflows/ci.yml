@@ -78,7 +78,6 @@ jobs:
 
   deploy:
     needs: php-tests
-    # ★ テストが成功した「main への push」のときだけ実行
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 

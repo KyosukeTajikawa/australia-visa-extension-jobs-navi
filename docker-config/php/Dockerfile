@@ -6,6 +6,11 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install pdo_mysql mbstring zip intl gd bcmath \
     && rm -rf /var/lib/apt/lists/*
 
+RUN { \
+    echo "upload_max_filesize=10M"; \
+    echo "post_max_size=20M"; \
+    } > /usr/local/etc/php/conf.d/uploads.ini
+
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
@@ -44,7 +49,6 @@ COPY src/.env.production ./.env.production
 RUN npm ci
 RUN npm run build   # => public/build 生成
 
-# ----- 最終 app イメージ -----
 FROM app-base AS final
 WORKDIR /var/www/html
 

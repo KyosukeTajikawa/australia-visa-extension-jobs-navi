@@ -293,7 +293,7 @@ const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLay
                     <Text
                         fontSize={{ base: 13, md: 16 }}
                     >
-                        &copy; Farm Info Site<br />
+                        &copy; AUSSIE FARM NAVI<br />
                         掲載されている情報はユーザー投稿に基づいています
                     </Text>
                 </Box>

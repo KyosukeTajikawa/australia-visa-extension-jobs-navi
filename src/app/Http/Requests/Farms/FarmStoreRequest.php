@@ -31,7 +31,7 @@ class FarmStoreRequest extends FormRequest
             'state_id'        => ['required', 'integer', 'exists:states,id'],
             'description'     => ['nullable', 'string', 'max:1000'],
             'files'           => ['nullable', 'array', 'max:2'],
-            'files.*'         => ['image', 'mimes:jpg,jpeg,png', 'max:5120'],
+            'files.*'         => ['image', 'mimes:jpg,jpeg,png', 'max:10240'],
             'crop_ids'        => ['required','array', 'min:1'],
             'crop_ids.*'      => ['integer', 'exists:crops,id', 'distinct'],
         ];

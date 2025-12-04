@@ -35,11 +35,11 @@ https://aussie-farm-navi.com
 
 ## メイン機能の使い方
 
-![ファーム登録ボタン案内](/src/public/images/readme1.gif)
-![ファーム内容登録画面案内](/src/public/images/readme2.gif)
-![レビュー内容登録画面案内](/src/public/images/readme3.gif)
-
-
+<p align="center">
+  <img src="/src/public/images/readme1.gif" width="30%" />
+  <img src="/src/public/images/readme2.gif" width="30%" />
+  <img src="/mnt/data/readme3_loop.gif" width="30%" />
+</p>
 
 ## 使用技術一覧
 
@@ -169,6 +169,7 @@ https://aussie-farm-navi.com
 
 ＃＃ インフラ構成図
 ![インフラ構成図](/src/public/images/AWS.png)
+
 
 
 

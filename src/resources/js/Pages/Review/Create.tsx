@@ -176,7 +176,7 @@ const Create = ({ farm, applicationMethods }: CreateProps) => {
                 {/* コメント */}
                 <FormControl mb={2} isRequired isInvalid={!!serverErrors.comment}>
                     <FormLabel htmlFor="comment">コメント</FormLabel>
-                    <Textarea id="comment" name="comment" value={data.comment} placeholder="自由記述欄（なるべく記入をお願いします）" maxLength={1000} inputMode="numeric"
+                    <Textarea id="comment" name="comment" value={data.comment} placeholder="自由記述欄（なるべく記入をお願いします）" maxLength={1000}
                         onChange={handleChange} />
                     <FormErrorMessage>{serverErrors.comment}</FormErrorMessage>
                 </FormControl>

@@ -42,6 +42,10 @@ class UserRepository implements UserRepositoryInterface
      */
     public function updateUser(array $validated, User $previousUser): User
     {
+        if (!empty($validated['password'])) {
+            $validated['password'] = Hash::make($validated['password']);
+        }
+
         $previousUser->update($validated);
 
         return $previousUser->refresh();
@@ -50,7 +54,7 @@ class UserRepository implements UserRepositoryInterface
     /**
      * ユーザー削除
      */
-    public function destroyUser():void
+    public function destroyUser(): void
     {
         $user = auth()->user();
 

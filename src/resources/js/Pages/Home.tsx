@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
     Box, Heading, VStack, HStack, Image, Text, Link, Input, Button, Select, Flex, useToast,
-    Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, ModalCloseButton
+    Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton
 } from "@chakra-ui/react";
 import MainLayout from "@/Layouts/MainLayout";
 import { router } from "@inertiajs/react";
@@ -90,12 +90,12 @@ const Home = ({ farms, states, keyword, stateName, status, auth }: HomeProps) =>
     };
 
     const getFarmNameFontSize = (name: string) => {
-    if (name.length >= 10) {
-        return { base: "30px", xl: "40px" };
-    }
+        if (name.length >= 10) {
+            return { base: "30px", xl: "40px" };
+        }
 
-    return { base: "40px", xl: "50px" };
-};
+        return { base: "40px", xl: "50px" };
+    };
 
     const farmItems = farms.data.map((farm) => (
         <Box
@@ -321,13 +321,26 @@ const Home = ({ farms, states, keyword, stateName, status, auth }: HomeProps) =>
             </Box>
 
             {/* ファーム一覧 */}
-            <Flex
-                wrap={"wrap"}
-                w={{ base: "90%", sm: "460px", md: "750px", xl: "1000px" }}
-                mx={"auto"}
-            >
-                {farmItems}
-            </Flex>
+            {farms.data.length === 0 ? (
+                <Box
+                    w={{ base: "90%", sm: "460px", md: "750px", xl: "1000px" }}
+                    mx="auto"
+                    py={10}
+                    textAlign="center"
+                >
+                    <Text fontSize="lg" color="gray.600">
+                        検索結果がありません
+                    </Text>
+                </Box>
+            ) : (
+                <Flex
+                    wrap={"wrap"}
+                    w={{ base: "90%", sm: "460px", md: "750px", xl: "1000px" }}
+                    mx={"auto"}
+                >
+                    {farmItems}
+                </Flex>
+            )}
             <Box
                 justifyContent={"center"}
                 display={"flex"}

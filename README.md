@@ -1,4 +1,13 @@
 # AUSSIE FARM NAVI/ファーム情報共有サービス
+Laravel × React × AWS（ECS Fargate）で構築したフルスタック Web アプリです。
+
+オーストラリアのファーム情報・レビュー・画像投稿を管理し、
+
+ユーザー同士で安全に働ける環境づくりをサポートします。
+
+技術要素： Docker / Nginx / GitHub Actions / S3 / RDS / SES / Fargate
+
+主要機能： ファーム検索、レビュー投稿、画像アップロード、認証、S3画像管理 など
 
 ![AUSSIE FARM NAVI画像](/src/public/images/farmMain.png)
 
@@ -23,8 +32,32 @@ AUSSIE FARM NAVIは、「ファーム探しがもっと楽に安全に！」と�
 
 わずか2ステップで旅行プランを共有できる直感的なUIで、ユーザーの面倒な旅行の準備をサポートします。
 
+## 開発背景
+私自身、オーストラリアでワーキングホリデー制度を利用して2年間生活していました。
+ワーキングホリデー制度では、ビザを延長するために 1 年ごとに更新が必要で、
+更新には「政府指定の仕事（例：農場＝ファームでの就労）」に従事する必要があります。
+
+私が初めてファームの仕事を探した際、
+「どのように探せばいいのか分からない」
+「信頼できる情報源がない」
+と非常に苦労しました。
+
+実際、ファーム探しのプラットフォームはほとんど存在せず、
+現在でも多くの人が 友人の紹介や口コミだけ を頼りに探している状況です。
+当時の私と同じように、
+「情報不足によって苦労する人を少しでも減らしたい」
+という思いから、このアプリを開発しました。
+
+このサービスが、ワーホリで訪豪する方々の不安を軽減し、
+安全かつスムーズにファームを探せる支えとなれば幸いです。
+
 ## ▼ サービスURL
 https://aussie-farm-navi.com
+
+### ゲスト用アカウント
+メールアドレス：guest@example.com
+
+パスワード：guest123
 
 レスポンシブ対応済のため、PCでもスマートフォンでも快適にご利用いただけます。
 
@@ -37,7 +70,7 @@ https://aussie-farm-navi.com
 <p align="center">
   <img src="/src/public/images/readme1.gif"/>
   <img src="/src/public/images/readme2.gif"/>
-  <img src="/src/public/images/readme3.gif" width="27%" />
+  <img src="/src/public/images/readme3.gif" width="120%"/>
 </p>
 
 ## 使用技術一覧
@@ -117,7 +150,7 @@ https://aussie-farm-navi.com
   - VPC / ALB / ECS Fargate / ECR  
   - RDS MySQL  
   - S3（画像ストレージ）  
-  - Route53（独自ドメイン）  
+  - Route53（DNS ホスティング：お名前.com で取得したドメインを委譲）
   - Certificate Manager（SSL化）  
   - SES（パスワードリセットメール）  
 
@@ -136,9 +169,14 @@ https://aussie-farm-navi.com
 ---
 
 ### CI / CD
-- **CI:** GitHub Actions 
-- **CD:** ECS Fargate によるコンテナデプロイ  
-- Docker Hub へのビルド & プッシュ  
+- **CI（継続的インテグレーション）：GitHub Actions**
+  - PHPUnit テストの自動実行
+  - Docker イメージのビルド & Docker Hub へのプッシュ
+
+- **CD（継続的デリバリー／継続的デプロイ）：ECS Fargate**
+  - 新しい Docker イメージを自動的に ECS タスク定義へ反映
+  - ECS サービスを更新し、本番環境へ自動デプロイ
+
 
 ---
 
@@ -161,16 +199,12 @@ https://aussie-farm-navi.com
   - Android: Google Chrome  
   - iOS: Safari  
 
-**セキュリティ対策**
-- Dependabot Alerts による脆弱性チェック  
-- GitHub Code Scanning  
-- GitGuardian による秘密鍵漏洩チェック
-
 ## インフラ構成図
 ![インフラ構成図](/src/public/images/AWS.png)
 
 ## ER図
 ![ER図](/src/public/images/ER.png)
+
 
 
 

@@ -393,5 +393,5 @@ const Home = ({ farms, states, keyword, stateName, status, auth }: HomeProps) =>
     );
 };
 
-Home.layout = (page: React.ReactNode) => (<MainLayout title="ファーム情報サイト">{page}</MainLayout>);
+Home.layout = (page: React.ReactNode) => (<MainLayout title="ファーム一覧">{page}</MainLayout>);
 export default Home;

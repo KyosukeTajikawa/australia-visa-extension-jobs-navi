@@ -70,7 +70,7 @@ https://aussie-farm-navi.com
 <p align="center">
   <img src="/src/public/images/readme1.gif"/>
   <img src="/src/public/images/readme2.gif"/>
-  <img src="/src/public/images/readme3.gif" width="120%"/>
+  <img src="/src/public/images/readme3.gif" width="32%"/>
 </p>
 
 ## 使用技術一覧
@@ -204,6 +204,7 @@ https://aussie-farm-navi.com
 
 ## ER図
 ![ER図](/src/public/images/ER.png)
+
 
 
 

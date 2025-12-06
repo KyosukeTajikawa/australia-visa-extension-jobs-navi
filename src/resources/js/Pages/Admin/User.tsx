@@ -63,7 +63,7 @@ const UserList = ({ users }: UserListProps) => {
                     fontWeight="bold"
                     color="gray.600"
                 >
-                    <Box flex="2">ユーザー名</Box>
+                    <Box flex="2">ユーザーID</Box>
                     <Box flex="3">メールアドレス</Box>
                     <Box flex="1" textAlign="right">
                         ファーム数

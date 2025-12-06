@@ -73,7 +73,7 @@ https://aussie-farm-navi.com
   <img src="/src/public/images/readme3.gif" width="250px"/>
 </p>
 
-##　管理画面
+## 管理画面の紹介
 <p align="center">
   <img src="/src/public/images/admin-dashboard.gif" width="250px"/>
   <img src="/src/public/images/admin-user.gif" width="250px"/>
@@ -221,6 +221,7 @@ https://aussie-farm-navi.com
 
 ## ER図
 ![ER図](/src/public/images/ER.png)
+
 
 
 

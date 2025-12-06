@@ -65,8 +65,8 @@ const FarmRatingGraph = ({ reviews }: FarmRatingGraphProps) => {
         }
 
         // 平均値（小数1位まで）
-        const rawAvg =
-            farmRatings.reduce((sum, rating) => sum + rating, 0) / total;
+        const rawAvg = farmRatings.reduce((sum, rating) => sum + rating, 0) / total;
+
         const avg = Math.round(rawAvg * 10) / 10;
 
         // 星表示用に 0.5 刻みに丸める

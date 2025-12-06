@@ -68,9 +68,16 @@ https://aussie-farm-navi.com
 
 ## メイン機能の使い方
 <p align="center">
-  <img src="/src/public/images/readme1.gif" width="300px"/>
-  <img src="/src/public/images/readme2.gif" width="300px"/>
-  <img src="/src/public/images/readme3.gif" width="300px"/>
+  <img src="/src/public/images/readme1.gif" width="250px"/>
+  <img src="/src/public/images/readme2.gif" width="250px"/>
+  <img src="/src/public/images/readme3.gif" width="250px"/>
+</p>
+
+##　管理画面
+<p align="center">
+  <img src="/src/public/images/admin-dashboard.gif" width="250px"/>
+  <img src="/src/public/images/admin-user.gif" width="250px"/>
+  <img src="/src/public/images/admin-detail.gif" width="250px"/>
 </p>
 
 ## 使用技術一覧
@@ -197,13 +204,24 @@ https://aussie-farm-navi.com
 
 - **スマートフォン**
   - Android: Google Chrome  
-  - iOS: Safari  
+  - iOS: Safari
+
+ ###  苦労した点/難しかった点
+ 
+- **レビュー平均値・星評価をリアルタイム集計**  
+  - レビュー一覧（farm_rating）から平均スコアと 5〜1の新しいレビューを計算し、
+    小数第1位までの平均値と 0.5 刻みの星アイコンを動的に表示しました。
+    
+    useMemo で不要な再計算を避けつつ、最大件数を基準にした棒グラフで
+    評価の偏り（どの★が多いか）も可視化しました。
+
 
 ## インフラ構成図
 ![インフラ構成図](/src/public/images/AWS.png)
 
 ## ER図
 ![ER図](/src/public/images/ER.png)
+
 
 
 

@@ -62,9 +62,11 @@ https://aussie-farm-navi.com
 レスポンシブ対応済のため、PCでもスマートフォンでも快適にご利用いただけます。
 
 ## ▼ 紹介記事(Qiita)
-独学で未経験のモダンな技術を学習してポートフォリオを作るまで【Laravel / React / AWS / Docker / GitHub Actions】
+独学でポートフォリオを作るまで【Laravel / Inertia / AWS / Docker / GitHub Actions】
 
 開発背景や、サービスのリリースまでに勉強したことなどをまとめています。
+
+https://qiita.com/KyosukeTajikawa/items/36cb9967a697a9433155
 
 ## メイン機能の使い方
 <p align="center">
@@ -221,6 +223,7 @@ https://aussie-farm-navi.com
 
 ## ER図
 ![ER図](/src/public/images/ER.png)
+
 
 
 

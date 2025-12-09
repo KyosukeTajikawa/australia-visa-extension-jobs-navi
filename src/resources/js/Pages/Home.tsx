@@ -111,7 +111,7 @@ const Home = ({ farms, states, keyword, stateName, status, auth }: HomeProps) =>
                 overflow={"hidden"}
             >
                 <Image
-                    src={farm.images?.[0]?.url ?? "https://placehold.co/100x100"}
+                    src={farm.images?.[0]?.url ?? "images/no_image.png"}
                     alt={farm.name}
                     w={{ base: "full" }}
                     h={{ base: "200px", sm: "300px", md: "200px", xl: "300px" }}

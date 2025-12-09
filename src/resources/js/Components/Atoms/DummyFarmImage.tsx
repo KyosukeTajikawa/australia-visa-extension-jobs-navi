@@ -8,13 +8,13 @@ type DummyFarmImageProps = {
 
 const DummyFarmImage = ({ name }: DummyFarmImageProps) => {
     return (
-                        <Image
-                            src={"https://placehold.co/300x300"}
-                            alt={name}
-                            w={{ base: "full" }}
-                            h={{ base: "200px", sm: "300px", md: "200px", xl: "300px" }}
-                            objectFit={"cover"}
-                        />
+        <Image
+            src="/images/no_image.png"
+            alt={name}
+            w={{ base: "full" }}
+            h={{ base: "200px", sm: "300px", md: "200px", xl: "300px" }}
+            objectFit={"cover"}
+        />
     );
 }
 

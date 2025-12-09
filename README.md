@@ -70,16 +70,15 @@ https://qiita.com/KyosukeTajikawa/items/36cb9967a697a9433155
 
 ## メイン機能の使い方
 <p align="center">
-  <img src="/src/public/images/readme1.gif" width="250px"/>
-  <img src="/src/public/images/readme2.gif" width="250px"/>
-  <img src="/src/public/images/readme3.gif" width="250px"/>
+  <img src="/src/public/videos/readme1.gif" width="250px"/>
+  <img src="/src/public/videos/readme2.gif" width="250px"/>
+  <img src="/src/public/videos/readme3.gif" width="250px"/>
 </p>
 
 ## 管理画面の紹介
 <p align="center">
-  <img src="/src/public/images/admin-dashboard.gif" width="250px"/>
-  <img src="/src/public/images/admin-user.gif" width="250px"/>
-  <img src="/src/public/images/admin-detail.gif" width="250px"/>
+  <img src="/src/public/videos/admin1.gif" width="375px"/>
+  <img src="/src/public/videos/admin2.gif" width="375px"/>
 </p>
 
 ## 使用技術一覧
@@ -149,7 +148,15 @@ https://qiita.com/KyosukeTajikawa/items/36cb9967a697a9433155
 ### 非ユーザー向け（ゲスト向け）
 - ログインしていないユーザーでもファーム一覧・詳細を閲覧可能
 - 未ログインユーザーが特定の操作を行おうとした時にログインを促すモーダル表示機能
-- ファーム検索機能の一部を利用可能  
+- ファーム検索機能の一部を利用可能
+
+---
+
+### 管理者向け
+- ユーザー・ファーム・レビューの登録数を一覧で確認
+- ユーザーが作成したファーム・レビュー情報の確認
+- 問題のある投稿に対する 編集・削除（モデレーション機能）
+- 管理画面からのクイックアクセスによる円滑な運用
 
 ---
 
@@ -223,6 +230,7 @@ https://qiita.com/KyosukeTajikawa/items/36cb9967a697a9433155
 
 ## ER図
 ![ER図](/src/public/images/ER.png)
+
 
 
 

@@ -15,16 +15,16 @@ jobs:
         image: mysql:8.0
         env:
           MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: test_db
-          MYSQL_USER: app
-          MYSQL_PASSWORD: secret
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot || exit 1"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=10
+            MYSQL_DATABASE: test_db
+            MYSQL_USER: app
+            MYSQL_PASSWORD: secret
+          ports:
+            - 3306:3306
+          options: >-
+            --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot || exit 1"
+            --health-interval=10s
+            --health-timeout=5s
+            --health-retries=10
 
     defaults:
       run:
@@ -58,6 +58,7 @@ jobs:
           php artisan migrate --force
         env:
           APP_ENV: testing
+          APP_KEY: ${{ secrets.APP_KEY }}
           APP_DEBUG: true
           DB_CONNECTION: mysql
           DB_HOST: 127.0.0.1

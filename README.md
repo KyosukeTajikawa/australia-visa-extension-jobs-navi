@@ -156,7 +156,6 @@ https://qiita.com/KyosukeTajikawa/items/36cb9967a697a9433155
 - ユーザー・ファーム・レビューの登録数を一覧で確認
 - ユーザーが作成したファーム・レビュー情報の確認
 - 問題のある投稿に対する 編集・削除（モデレーション機能）
-- 管理画面からのクイックアクセスによる円滑な運用
 
 ---
 
@@ -230,6 +229,7 @@ https://qiita.com/KyosukeTajikawa/items/36cb9967a697a9433155
 
 ## ER図
 ![ER図](/src/public/images/ER.png)
+
 
 
 

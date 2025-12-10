@@ -21,9 +21,9 @@ class UserImageRepository implements UserImageRepositoryInterface
      * @param int $id
      * @return UserImage
      */
-    public function getImage(int $id): UserImage
+    public function getImage(int $id): ?UserImage
     {
-        $image = UserImage::where('user_id', $id)->get();
+        $image = UserImage::where('user_id', $id)->first();
 
         return $image;
     }

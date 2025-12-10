@@ -19,7 +19,7 @@ interface UserImageRepositoryInterface
      * @param int $id
      * @return UserImage
      */
-    public function getImage(int $id): UserImage;
+    public function getImage(int $id): ?UserImage;
 
     /**
      * ユーザー画像更新

@@ -56,9 +56,11 @@ class UserImageService implements UserImageServiceInterface
             return;
         }
 
-        $previousImage = $this->userImageRepository->getImage($user->id);
+            $previousImage = $this->userImageRepository->getImage($user->id);
 
-        Storage::disk('s3')->delete($previousImage->path);
+            if ($previousImage) {
+                Storage::disk('s3')->delete($previousImage->path);
+            }
 
         $name = $file->getClientOriginalName();
         $path = Storage::disk('s3')->putFileAs("users/{$user->id}", $file, $name);
@@ -71,8 +73,10 @@ class UserImageService implements UserImageServiceInterface
             'created_at' => now(),
             'updated_at' => now(),
         ];
-
+        if ($previousImage) {
         $this->userImageRepository->updateImage($imageData, $previousImage);
+        } else {
+            $this->userImageRepository->registerImage($imageData);
+        }
     }
-
 }

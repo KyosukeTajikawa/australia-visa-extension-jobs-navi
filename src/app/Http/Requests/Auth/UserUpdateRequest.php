@@ -22,7 +22,7 @@ class UserUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:5240'],
+            'file' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:52400'],
             'nickname' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique('users', 'email')->ignore($this->user()->id)],
             'gender'        => ['required', 'integer', 'in:1,2'],

@@ -25,7 +25,7 @@ class UserStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+            'file' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:5240'],
             'nickname' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'gender'        => ['required', 'integer', 'in:1,2'],

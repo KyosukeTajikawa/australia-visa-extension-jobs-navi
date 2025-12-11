@@ -7,8 +7,8 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 RUN { \
-    echo "upload_max_filesize=10M"; \
-    echo "post_max_size=20M"; \
+    echo "upload_max_filesize=50M"; \
+    echo "post_max_size=50M"; \
     } > /usr/local/etc/php/conf.d/uploads.ini
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer

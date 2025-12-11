@@ -201,7 +201,7 @@ const Detail = ({ farm }: DetailProps) => {
                                             </HStack>
 
                                             <Text mb={1} color="gray.500" fontSize="16px" textAlign={"center"}>
-                                                {new Date(review.created_at).toLocaleDateString("ja-JP")}
+                                                {new Date(review_comment.created_at).toLocaleDateString("ja-JP")}
                                             </Text>
                                         </Flex>
                                         <Text whiteSpace="pre-wrap">{review_comment.comment}</Text>

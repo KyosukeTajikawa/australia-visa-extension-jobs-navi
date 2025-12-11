@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Box, Heading, VStack, HStack, Image, Text, Link, Input, Button, Select, Flex, useToast } from "@chakra-ui/react";
 import MainLayout from "@/Layouts/MainLayout";
-import { router } from "@inertiajs/react";
-import { ArrowForwardIcon } from '@chakra-ui/icons';
 
 const AboutFarmNavi = () => {
     return (
@@ -60,7 +58,7 @@ const AboutFarmNavi = () => {
                 <Text>それでは、皆さんのワーホリが素晴らしいものになることを祈っています！</Text>
             </VStack>
             <VStack>
-                <Button as={Link} w={{ base: "40%", md: "20%" }} bg={"green.800"} _hover={{ bg: "green.700", textDecoration: "none" }} color={"white"} href={route("login")} my={10}>無料で始める</Button>
+                <Button as={Link} w={{ base: "40%", md: "20%" }} bg={"green.800"} _hover={{ bg: "green.700", textDecoration: "none" }} color={"white"} href={route("register")} my={10}>無料で始める</Button>
             </VStack>
         </Box>
     )

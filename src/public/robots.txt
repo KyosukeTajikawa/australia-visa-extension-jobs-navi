@@ -1,2 +1,3 @@
 User-agent: *
 Disallow:
+Sitemap: https://aussie-farm-navi.com/sitemap.xml

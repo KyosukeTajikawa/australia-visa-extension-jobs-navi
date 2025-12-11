@@ -12,7 +12,7 @@ type MainLayoutProps = {
     title?: string;
 }
 
-const MainLayout = ({ children, title = 'ファーム情報サイト' }: MainLayoutProps) => {
+const MainLayout = ({ children, title = 'オーストラリア ワーホリのファーム探し・レビュー共有サイト' }: MainLayoutProps) => {
     const page = usePage();
     const { auth } = page.props;
     const component = page.component;

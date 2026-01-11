@@ -2,28 +2,28 @@
 
 namespace App\Models;
 
-use App\Events\ReviewCommentCreated;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ReviewComments extends Model
+class ReviewMailBadge extends Model
 {
+    protected $table= 'review_mail_badges';
+
     protected $fillable = [
-        'review_id',
         'user_id',
-        'comment',
+        'review_id',
+        'sent_at',
+        'failed_at',
+        'last_error',
     ];
 
-        public static function booted()
-    {
-        static::created(function(ReviewComments $reviewComments) {
-            event(new ReviewCommentCreated($reviewComments));
-        });
-    }
-
+    protected $casts = [
+        'sent_at' => 'datetime',
+        'failed_at' => 'datetime',
+    ];
 
     /**
-     * レビューコメントの投稿者を取得
+     * 親テーブル
      * @return BelongsTo
      */
     public function user(): BelongsTo
@@ -32,7 +32,7 @@ class ReviewComments extends Model
     }
 
     /**
-     * レビューコメントが紐づくレビューを取得
+     * 親テーブル
      * @return BelongsTo
      */
     public function review(): BelongsTo

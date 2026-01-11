@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\FarmCreated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -23,6 +24,13 @@ class Farm extends Model
         'description',
         'created_user_id',
     ];
+
+    protected static function booted()
+    {
+        static::created(function (Farm $farm) {
+            event(new FarmCreated($farm));
+        });
+    }
 
     /**
      * ファーム情報を登録したユーザーを取得
@@ -67,5 +75,14 @@ class Farm extends Model
     public function images(): HasMany
     {
         return $this->hasMany(FarmImages::class);
+    }
+
+    /**
+     * ファームにもとづく送信結果
+     * @return HasMany
+     */
+    public function farmMailBadges(): HasMany
+    {
+        return $this->hasMany(FarmMailBadge::class);
     }
 }

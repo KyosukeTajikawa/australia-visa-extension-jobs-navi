@@ -85,4 +85,23 @@ class Farm extends Model
     {
         return $this->hasMany(FarmMailBadge::class);
     }
+
+    /**
+     * 住所を1つに繋げる
+     * @return string $parts
+     */
+    public function fullAddress():string
+    {
+        $stateName = $this->state?->name ?? '';
+
+        $parts = array_filter([
+            $this->street_address,
+            $this->suburb,
+            $stateName,
+            $this->postcode,
+            'Australia',
+        ], fn($part) => filled($part));
+
+        return implode(',', $parts);
+    }
 }

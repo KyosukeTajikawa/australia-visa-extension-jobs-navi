@@ -70,6 +70,10 @@ const FarmList = ({ farm }: FarmListProps) => {
                 </HStack>
                 <Text mb={1}>説明</Text>
                 <FarmDescription description={farm.description} />
+
+
+
+
             </Box>
         </Box>
     );

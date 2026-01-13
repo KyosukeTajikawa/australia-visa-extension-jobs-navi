@@ -25,6 +25,6 @@ class GeocodingService
         $loc = $data['results'][0]['geometry']['location'] ?? null;
         if(!$loc) return null;
 
-        return ['lat' => $loc['lat'], 'log' => $loc['log']];
+        return ['lat' => $loc['lat'], 'lng' => $loc['lng']];
     }
 }

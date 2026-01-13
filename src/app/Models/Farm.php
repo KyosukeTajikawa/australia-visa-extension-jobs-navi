@@ -26,31 +26,6 @@ class Farm extends Model
         'created_user_id',
     ];
 
-    protected static function booted()
-    {
-        static::created(function (Farm $farm) {
-            event(new FarmCreated($farm));
-        });
-
-        static::saved(function (Farm $farm) {
-            $addressFields = ['street_address', 'suburb', 'state_id', 'postcode'];
-
-            $changed = collect($addressFields)->contains(fn($f) => $farm->wasChanged($f));
-            if (!$changed) return;
-
-            $address = $farm->fullAddress();
-            if (blank($address)) return;
-
-            $geo = app(GeocodingService::class)->geocode($address);
-            if (!$geo) return;
-
-            $farm->forceFill([
-                'latitude'  => $geo['lat'],
-                'longitude' => $geo['lng'],
-            ])->saveQuietly();
-        });
-    }
-
     /**
      * ファーム情報を登録したユーザーを取得
      * @return BelongsTo
@@ -122,5 +97,34 @@ class Farm extends Model
         ], fn($part) => filled($part));
 
         return implode(',', $parts);
+    }
+
+    /**
+     * 新規ファームが登録されたらイベント実行
+     * ファーム住所に変更があったら変更した軽度と緯度の登録
+     */
+    protected static function booted(): void
+    {
+        static::created(function (Farm $farm) {
+            event(new FarmCreated($farm));
+        });
+
+        static::saved(function (Farm $farm) {
+            $addressFields = ['street_address', 'suburb', 'state_id', 'postcode'];
+
+            $changed = collect($addressFields)->contains(fn($f) => $farm->wasChanged($f));
+            if (!$changed) return;
+
+            $address = $farm->fullAddress();
+            if (blank($address)) return;
+
+            $geo = app(GeocodingService::class)->geocode($address);
+            if (!$geo) return;
+
+            $farm->forceFill([
+                'latitude'  => $geo['lat'],
+                'longitude' => $geo['lng'],
+            ])->saveQuietly();
+        });
     }
 }

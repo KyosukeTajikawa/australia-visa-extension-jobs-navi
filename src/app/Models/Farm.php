@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Events\FarmCreated;
+use App\Services\GeocodingService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -29,6 +30,24 @@ class Farm extends Model
     {
         static::created(function (Farm $farm) {
             event(new FarmCreated($farm));
+        });
+
+        static::saved(function (Farm $farm) {
+            $addressFields = ['street_address', 'suburb', 'state_id', 'postcode'];
+
+            $changed = collect($addressFields)->contains(fn($f) => $farm->wasChanged($f));
+            if (!$changed) return;
+
+            $address = $farm->fullAddress();
+            if (blank($address)) return;
+
+            $geo = app(GeocodingService::class)->geocode($address);
+            if (!$geo) return;
+
+            $farm->forceFill([
+                'latitude'  => $geo['lat'],
+                'longitude' => $geo['lng'],
+            ])->saveQuietly();
         });
     }
 
@@ -90,7 +109,7 @@ class Farm extends Model
      * 住所を1つに繋げる
      * @return string $parts
      */
-    public function fullAddress():string
+    public function fullAddress(): string
     {
         $stateName = $this->state?->name ?? '';
 

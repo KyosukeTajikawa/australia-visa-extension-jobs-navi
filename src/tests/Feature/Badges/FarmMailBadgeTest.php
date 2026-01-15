@@ -107,7 +107,7 @@ class FarmMailBadgeTest extends TestCase
 
         $this->assertDatabaseHas('farm_mail_badges', [
             'id'         => $badge->id,
-            'send_at'    => null,
+            'sent_at'    => null,
             'failed_at'  => $testTime->format('Y-m-d H:i:s'),
             'last_error'  => 'Mail failure',
         ]);

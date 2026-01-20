@@ -30,11 +30,44 @@ type Farm = {
     postcode: string;
     state: State;
     crops: Crops[];
+    latitude?: number | string | null;
+    longitude?: number | string | null;
 };
 
 type FarmListProps = {
     farm: Farm;
 }
+
+const FarmMap = ({ farm }: { farm: Farm }) => {
+    // ① 緯度経度があるか確認（あるなら座標優先）
+    const hasLatLng = farm.latitude != null && farm.longitude != null;
+
+    // ② 住所を組み立て（lat/lngがない時の保険）
+    const address = `${farm.street_address},${farm.suburb},${farm.state?.name ?? ""}, ${farm.postcode}, Australia`;
+
+
+    // ③ iframeのsrcを作る（lat/lngがあればそれ、なければ住所）
+    const src = hasLatLng
+        ? `https://www.google.com/maps?q=${farm.latitude},${farm.longitude}&z=15&output=embed`
+        : `https://www.google.com/maps?q=${encodeURIComponent(address)}&z=15&output=embed`;
+
+    // ④ 住所も緯度経度も無いなら何も表示しない（安全）
+    if (!hasLatLng && !farm.street_address) return null;
+
+    return (
+        <>
+            <Box mt={4}>
+                <Text mb={2} fontWeight={"bold"}>地図</Text>
+                <Box borderRadius={"md"} overflow={"hidden"}>
+                    <iframe src={src} title="farm_map" width={"100%"} height={"320"} style={{border: 0}} loading="lazy" />
+                </Box>
+            </Box>
+        </>
+
+    )
+
+}
+
 
 const FarmList = ({ farm }: FarmListProps) => {
     return (
@@ -70,6 +103,11 @@ const FarmList = ({ farm }: FarmListProps) => {
                 </HStack>
                 <Text mb={1}>説明</Text>
                 <FarmDescription description={farm.description} />
+
+                    <FarmMap farm={farm} />
+
+
+
             </Box>
         </Box>
     );

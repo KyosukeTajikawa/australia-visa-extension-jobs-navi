@@ -75,4 +75,13 @@ class Review extends Model
     {
         return $this->belongsToMany(User::class, 'review_favorites', 'review_id', 'user_id')->withTimestamps();
     }
+
+    /**
+     * レビューに紐づく送信結果
+     * @return HasMany
+     */
+    public function reviewMailBadges(): HasMany
+    {
+        return $this->hasMany(ReviewMailBadge::class);
+    }
 }
